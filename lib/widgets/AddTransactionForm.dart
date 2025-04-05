@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:untitled1/screens/TransactionsListPage.dart';
 import '../db/database_helper.dart';
 import '../models/TransactionModel.dart';
 
@@ -17,7 +18,7 @@ class _AddTransactionFormState extends State<AddTransactionForm>{
   final _titleController = TextEditingController();
   final _amountController = TextEditingController();
   final _categoryController = TextEditingController();
-  String _type = 'income';
+  String _type = 'expense';
 
   Future<void> _addTransaction() async {
     if (_formKey.currentState!.validate()) {
