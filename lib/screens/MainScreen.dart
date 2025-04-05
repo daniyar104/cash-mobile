@@ -11,6 +11,7 @@ class MainScreen extends StatefulWidget{
 }
 
 class _MainScreenState extends State<MainScreen>{
+
   int _currentIndex = 0;
   late List<Widget> _pages;
   late int _userId = 0;
@@ -21,6 +22,7 @@ class _MainScreenState extends State<MainScreen>{
     _pages = [
       TransactionsListPage(userID: _userId),
       MainAcountPage(),
+
     ];
     _loadUserId();
   }

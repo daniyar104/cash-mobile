@@ -33,19 +33,25 @@ class _AccountSummaryWidgetState extends State<AccountSummaryWidget>{
       height: 200,
       child: Card(
         elevation: 4,
-        margin: EdgeInsets.all(16),
         child: Padding(
-          padding: EdgeInsets.all(16),
+          padding: EdgeInsets.only(top: 20, left: 20),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                'Total Amount',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              Row(
+                children: [
+                  Icon(
+                    Icons.account_balance_wallet,
+                    size: 30,
+                  ),
+                  Text("Account Summary",
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
+                ],
               ),
-              SizedBox(height: 8),
+              SizedBox(height: 10),
               Text(
-                '\$${userAmount.toStringAsFixed(1)}',
+                '₸ ${userAmount.toStringAsFixed(1)}',
                 style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
               ),
             ],
