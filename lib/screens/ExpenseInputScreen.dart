@@ -114,7 +114,7 @@ class _ExpenseInputScreenState extends State<ExpenseInputScreen> {
                   ],
                   onPressed: (index) {
                     setState(() {
-                      selectedTypeIndex = index; // Изменяем индекс в зависимости от выбора
+                      selectedTypeIndex = index;
                     });
                   },
                 ),
@@ -128,7 +128,7 @@ class _ExpenseInputScreenState extends State<ExpenseInputScreen> {
                 Padding(
                     padding: EdgeInsets.only(left: 35),
                     child: Text(
-                    '\$${amount.isEmpty ? '0.00' : amount}',
+                    '₸ ${amount.isEmpty ? '0.00' : amount}',
                       style: const TextStyle(fontSize: 48, fontWeight: FontWeight.bold),
                     ),
                 ),

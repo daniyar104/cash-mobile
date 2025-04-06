@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:untitled1/screens/ExpenseInputScreen.dart';
-import 'package:untitled1/screens/accountPage/MainAcountPage.dart';
-
-import '../widgets/AddTransactionForm.dart';
+import 'package:untitled1/screens/accountPage/MainAccountPage.dart';
 import 'TransactionsListPage.dart';
 
 class MainScreen extends StatefulWidget{
