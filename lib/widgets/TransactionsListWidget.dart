@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:untitled1/models/TransactionModel.dart';
 import '../db/database_helper.dart';
+import 'EditTransactionScreen.dart';
 
+// Icon for category
 IconData getCategoryIcon(String category) {
   switch (category.toLowerCase()) {
     case 'food':
@@ -14,7 +16,7 @@ IconData getCategoryIcon(String category) {
       return Icons.movie;
     case 'health':
       return Icons.health_and_safety;
-    case "taxi":
+    case 'taxi':
       return Icons.local_taxi;
     default:
       return Icons.category;
@@ -49,31 +51,30 @@ class _TransactionsListWidgetState extends State<TransactionsListWidget> {
 
           final transactions = snapshot.data ?? [];
 
-          // Группировка транзакций по дате
-          final Map<String, List<TransactionModel>> groupedTransactions = {};
-
+          // Group by formatted date
+          final Map<String, List<TransactionModel>> grouped = {};
           for (var tx in transactions) {
-            final formattedDate = _formatDate(tx.date);
-            if (!groupedTransactions.containsKey(formattedDate)) {
-              groupedTransactions[formattedDate] = [];
+            final formattedDate = _formatDate(tx.date ?? '');
+            if (!grouped.containsKey(formattedDate)) {
+              grouped[formattedDate] = [];
             }
-            groupedTransactions[formattedDate]!.add(tx);
+            grouped[formattedDate]!.add(tx);
           }
 
-          final sortedKeys = groupedTransactions.keys.toList()
-            ..sort((a, b) => _compareDates(b, a)); // Новые даты сверху
+          final sortedDates = grouped.keys.toList()
+            ..sort((a, b) => _compareDates(b, a));
 
           return ListView.builder(
-            itemCount: sortedKeys.length,
+            itemCount: sortedDates.length,
             itemBuilder: (context, index) {
-              final date = sortedKeys[index];
-              final items = groupedTransactions[date]!;
+              final date = sortedDates[index];
+              final items = grouped[date]!;
 
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                     child: Text(
                       date,
                       style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
@@ -90,95 +91,142 @@ class _TransactionsListWidgetState extends State<TransactionsListWidget> {
   }
 
   Widget _buildTransactionItem(TransactionModel tx) {
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10),
-        color: Theme.of(context).colorScheme.primaryContainer,
+    return Dismissible(
+      key: Key(tx.id.toString()),
+      background: Container(
+        color: Colors.red,
+        alignment: Alignment.centerLeft,
+        padding: EdgeInsets.symmetric(horizontal: 20),
+        child: Icon(Icons.delete, color: Colors.white),
       ),
-      padding: EdgeInsets.all(8),
-      margin: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Row(
-            children: [
-              Container(
-                padding: const EdgeInsets.all(8),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  color: Theme.of(context).colorScheme.primary.withOpacity(0.1),
-                ),
-                child: Icon(
-                  getCategoryIcon(tx.category!),
-                  color: Theme.of(context).colorScheme.primary,
-                ),
-              ),
-              const SizedBox(width: 12),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    tx.category!,
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: Theme.of(context).primaryColor,
-                    ),
-                  ),
-                  Text(
-                    tx.date,
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Colors.grey,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-          Text(
-            '-${tx.amount}',
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
+      secondaryBackground: Container(
+        color: Colors.blue,
+        alignment: Alignment.centerRight,
+        padding: EdgeInsets.symmetric(horizontal: 20),
+        child: Icon(Icons.edit, color: Colors.white),
+      ),
+      confirmDismiss: (direction) async {
+        if (direction == DismissDirection.startToEnd) {
+          // Swipe right to delete
+          final confirm = await showDialog(
+            context: context,
+            builder: (ctx) => AlertDialog(
+              title: Text('Delete Transaction'),
+              content: Text('Are you sure you want to delete this transaction?'),
+              actions: [
+                TextButton(onPressed: () => Navigator.of(ctx).pop(false), child: Text('Cancel')),
+                TextButton(onPressed: () => Navigator.of(ctx).pop(true), child: Text('Delete')),
+              ],
             ),
-          ),
-        ],
+          );
+
+          if (confirm == true) {
+            await DataBaseHelper.instance.deleteTransaction(tx.id!);
+            setState(() {});
+          }
+
+          return confirm;
+        } else {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => EditTransactionScreen(transaction: tx),
+            ),
+          );
+          return false;
+        }
+      },
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          color: Theme.of(context).colorScheme.primaryContainer,
+        ),
+        padding: EdgeInsets.all(8),
+        margin: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Row(
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: Theme.of(context).colorScheme.primary.withOpacity(0.1),
+                  ),
+                  child: Icon(
+                    getCategoryIcon(tx.category!),
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
+                ),
+                const SizedBox(width: 12),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      tx.category!,
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Theme.of(context).primaryColor,
+                      ),
+                    ),
+                    Text(
+                      tx.date ?? 'Unknown',
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.grey,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+            Text(
+              '-${tx.amount}',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
 
-  /// Форматирует дату вида '2025-04-06' в '6 Апр'
   String _formatDate(String rawDate) {
     try {
-      final parts = rawDate.split('-'); // ['06', '04', '2025']
-      if (parts.length != 3) return 'Неизвестно';
+      final parts = rawDate.split('-');
+      if (parts.length != 3) return 'Unknown';
 
       final day = int.parse(parts[0]);
       final month = int.parse(parts[1]);
-      final year = int.parse(parts[2]);
 
       final months = [
-        '', 'Янв', 'Фев', 'Мар', 'Апр', 'Май', 'Июн',
-        'Июл', 'Авг', 'Сен', 'Окт', 'Ноя', 'Дек'
+        '', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+        'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
       ];
 
       return '$day ${months[month]}';
     } catch (e) {
-      return 'Неизвестно';
+      return 'Unknown';
     }
   }
 
   int _compareDates(String a, String b) {
     final months = {
-      'Янв': 1, 'Фев': 2, 'Мар': 3, 'Апр': 4, 'Май': 5, 'Июн': 6,
-      'Июл': 7, 'Авг': 8, 'Сен': 9, 'Окт': 10, 'Ноя': 11, 'Дек': 12,
+      'Jan': 1, 'Feb': 2, 'Mar': 3, 'Apr': 4, 'May': 5, 'Jun': 6,
+      'Jul': 7, 'Aug': 8, 'Sep': 9, 'Oct': 10, 'Nov': 11, 'Dec': 12,
     };
 
     int parse(String dateStr) {
       final parts = dateStr.split(' ');
-      return DateTime(2025, months[parts[1]]!, int.parse(parts[0])).millisecondsSinceEpoch;
+      if (parts.length != 2) return 0;
+      final day = int.tryParse(parts[0]) ?? 0;
+      final month = months[parts[1]] ?? 0;
+      return DateTime(2025, month, day).millisecondsSinceEpoch;
     }
 
     return parse(a).compareTo(parse(b));
