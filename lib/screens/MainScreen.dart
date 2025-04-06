@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:untitled1/screens/ExpenseInputScreen.dart';
 import 'package:untitled1/screens/accountPage/MainAcountPage.dart';
 
 import '../widgets/AddTransactionForm.dart';
@@ -42,11 +43,10 @@ class _MainScreenState extends State<MainScreen>{
   }
 
   void _showAddTransactionForm() {
-    showModalBottomSheet(
-      context: context,
-      builder: (context) {
-        return AddTransactionForm(userId: _userId);
-      },
+    Navigator.push(context,
+      MaterialPageRoute(
+        builder: (context) => ExpenseInputScreen(userId: _userId,)
+      ),
     );
   }
   @override

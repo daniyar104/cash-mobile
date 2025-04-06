@@ -95,10 +95,13 @@ class _LoginPageState extends State<LoginPage> {
               SizedBox(height: 20),
               ElevatedButton(
                 onPressed: _login,
-                child: Text('Sign In'),
+                child: Text('Sign In',
+                  style: TextStyle(fontSize: 18, color: Theme.of(context).colorScheme.onPrimary),
+                ),
                 style: ElevatedButton.styleFrom(
                   // primary: Colors.blue,
                   minimumSize: Size(double.infinity, 50),
+                  backgroundColor: Theme.of(context).colorScheme.primary,
                 ),
               ),
               SizedBox(height: 10),
