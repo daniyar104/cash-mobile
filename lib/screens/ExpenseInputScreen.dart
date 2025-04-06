@@ -222,7 +222,7 @@ class _ExpenseInputScreenState extends State<ExpenseInputScreen> {
                   final value = buttons[index];
                   return ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: value == '✔' ? Colors.black : Colors.grey[200],
+                      backgroundColor: value == '✔' ? Theme.of(context).colorScheme.primary : Colors.grey[200],
                       foregroundColor: value == '✔' ? Colors.white : Colors.black,
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                     ),

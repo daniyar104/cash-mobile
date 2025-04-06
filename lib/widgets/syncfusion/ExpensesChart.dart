@@ -15,12 +15,6 @@ class ExpensesChart extends StatefulWidget {
 class _ExpensesChartState extends State<ExpensesChart> {
   late Future<List<_DailyExpense>> futureGroupedExpenses;
 
-  @override
-  void initState() {
-    super.initState();
-    futureGroupedExpenses = _fetchGroupedExpenses();
-  }
-
   Future<List<_DailyExpense>> _fetchGroupedExpenses() async {
     final expenses = await DataBaseHelper.instance.getTransactionsOnlyExpanse(widget.userId);
 
@@ -40,19 +34,17 @@ class _ExpensesChartState extends State<ExpensesChart> {
     return result;
   }
 
-
-
-
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<_DailyExpense>>(
-      future: futureGroupedExpenses,
+      future: _fetchGroupedExpenses(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Center(child: CircularProgressIndicator());
         } else if (snapshot.hasError) {
           return Center(child: Text("Ошибка: ${snapshot.error}"));
-        } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+        } else if (snapshot.connectionState == ConnectionState.done &&
+            (snapshot.hasData == false || snapshot.data!.isEmpty)) {
           return Center(child: Text("Нет данных для отображения"));
         } else {
           final data = snapshot.data!;

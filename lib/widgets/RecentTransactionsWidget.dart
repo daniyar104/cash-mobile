@@ -86,7 +86,7 @@ class _RecentTransactionsWidgetState extends State<RecentTransactionsWidget> {
                           ),
                           Text(
                             transaction.date,
-                            style: const TextStyle(fontSize: 14, color: Colors.grey),
+                            style: const TextStyle(fontSize: 14, color: Colors.grey, fontWeight: FontWeight.bold,),
                           ),
                         ],
                       ),
