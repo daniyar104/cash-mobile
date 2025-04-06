@@ -43,9 +43,9 @@ class _RecentTransactionsWidgetState extends State<RecentTransactionsWidget> {
         }
 
         final allItems = snapshot.data ?? [];
-        final items = allItems.length > 3
-            ? allItems.sublist(allItems.length - 3) // последние 3
-            : allItems; // если меньше 3, показать все
+        final items = (allItems.length > 3
+            ? allItems.sublist(allItems.length - 3)
+            : allItems).reversed.toList();
 
         return Column(
           children: items.map((transaction) {

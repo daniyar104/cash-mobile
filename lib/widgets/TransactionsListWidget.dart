@@ -50,8 +50,8 @@ class _TransactionsListWidgetState extends State<TransactionsListWidget>{
           return Align(
             alignment: Alignment.topCenter,
             child: ListView.builder(
-              // shrinkWrap: true,
-              // reverse: true,
+              shrinkWrap: true,
+              reverse: true,
               itemCount: items.length,
               itemBuilder: (context, index) {
                 return Column(
