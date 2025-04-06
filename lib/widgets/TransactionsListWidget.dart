@@ -94,13 +94,13 @@ class _TransactionsListWidgetState extends State<TransactionsListWidget> {
     return Dismissible(
       key: Key(tx.id.toString()),
       background: Container(
-        color: Colors.red,
+        color: Theme.of(context).colorScheme.secondary,
         alignment: Alignment.centerLeft,
         padding: EdgeInsets.symmetric(horizontal: 20),
         child: Icon(Icons.delete, color: Colors.white),
       ),
       secondaryBackground: Container(
-        color: Colors.blue,
+        color: Theme.of(context).colorScheme.tertiary,
         alignment: Alignment.centerRight,
         padding: EdgeInsets.symmetric(horizontal: 20),
         child: Icon(Icons.edit, color: Colors.white),
@@ -175,7 +175,7 @@ class _TransactionsListWidgetState extends State<TransactionsListWidget> {
                       tx.date ?? 'Unknown',
                       style: TextStyle(
                         fontSize: 16,
-                        color: Colors.grey,
+                        color: Theme.of(context).textTheme.bodyMedium?.color,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
