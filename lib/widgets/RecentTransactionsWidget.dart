@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:untitled1/models/TransactionModel.dart';
 
 import '../db/database_helper.dart';
+import '../db/sembast_database_helper.dart';
 IconData getCategoryIcon(String category) {
   switch (category.toLowerCase()) {
     case 'food':
@@ -33,7 +34,8 @@ class _RecentTransactionsWidgetState extends State<RecentTransactionsWidget> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<TransactionModel>>(
-      future: DataBaseHelper.instance.getTransactionsOnlyExpanse(widget.userID),
+      // future: DataBaseHelper.instance.getTransactionsOnlyExpanse(widget.userID),
+      future: SembastDatabaseHelper().getTransactionsOnlyExpanse(widget.userID),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator());

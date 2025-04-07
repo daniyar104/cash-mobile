@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../db/database_helper.dart';
+import '../../db/sembast_database_helper.dart';
 import '../../models/UserModel.dart';
 
 class RegistrationPage extends StatefulWidget{
@@ -14,6 +15,8 @@ class _RegistrationPageState extends State<RegistrationPage>{
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
+  final _dbHelper = SembastDatabaseHelper();
+
   Future<void> _register() async {
     if (_formKey.currentState!.validate()) {
       final newUser = UserModel(
@@ -21,8 +24,8 @@ class _RegistrationPageState extends State<RegistrationPage>{
         email: _emailController.text,
         password: _passwordController.text,
       );
-      final newUserId = await DataBaseHelper.instance.insertUser(newUser);
-
+      // final newUserId = await DataBaseHelper.instance.insertUser(newUser);
+      final newUserId = await _dbHelper.insertUser(newUser);
       if (newUserId > 0) {
         Navigator.pop(context);
       } else {

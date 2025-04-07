@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 import '../db/database_helper.dart';
+import '../db/sembast_database_helper.dart';
 import '../models/TransactionModel.dart';
 
 class ExpenseInputScreen extends StatefulWidget {
@@ -20,6 +21,7 @@ class _ExpenseInputScreenState extends State<ExpenseInputScreen> {
   int selectedTypeIndex = 0;
   final List<String> categories = ['Food', 'Transportation', 'Entertainment', 'Shopping', 'Other'];
 
+  final _dbHelper = SembastDatabaseHelper();
   void _deleteLast() {
     setState(() {
       if (amount.isNotEmpty) {
@@ -54,8 +56,8 @@ class _ExpenseInputScreenState extends State<ExpenseInputScreen> {
       title: '',
     );
 
-    await DataBaseHelper.instance.insertTransaction(transaction);
-
+    // await DataBaseHelper.instance.insertTransaction(transaction);
+    await _dbHelper.insertTransaction(transaction);
     Navigator.pop(context);
   }
 

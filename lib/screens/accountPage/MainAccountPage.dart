@@ -5,10 +5,10 @@ import '../login/login_page.dart';
 
 class MainAcountPage extends StatefulWidget {
   @override
-  State<MainAcountPage> createState() => _MainAcountPageState();
+  State<MainAcountPage> createState() => _MainAccountPageState();
 }
 
-class _MainAcountPageState extends State<MainAcountPage> {
+class _MainAccountPageState extends State<MainAcountPage> {
   Future<void> _logout() async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.remove('userId');

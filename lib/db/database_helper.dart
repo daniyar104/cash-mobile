@@ -157,7 +157,7 @@ class DataBaseHelper {
     await db.transaction((txn) async {
       await txn.update('transactions', transaction.toMap(), where: 'id = ?', whereArgs: [transaction.id]);
       final user = await txn.query('users', where: 'id = ?', whereArgs: [transaction.userId]);
-      if (user.isNotEmpty) { // Проверка на пустоту
+      if (user.isNotEmpty) {
         final userAmount = user.first['amount'];
         double newAmount = userAmount != null ? userAmount as double : 0.0;
         if (transaction.type == 'income') {

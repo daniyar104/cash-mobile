@@ -29,6 +29,8 @@ environment:
 # versions available, run `flutter pub outdated`.
 dependencies:
   syncfusion_flutter_charts: ^29.1.35
+  sembast: ^3.3.0
+  path_provider: ^2.0.11
   shared_preferences: ^2.5.3
   path: ^1.9.1
   sqflite: ^2.4.2

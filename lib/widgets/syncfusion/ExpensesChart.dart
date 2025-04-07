@@ -3,6 +3,8 @@ import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:untitled1/db/database_helper.dart';
 
+import '../../db/sembast_database_helper.dart';
+
 class ExpensesChart extends StatefulWidget {
   final int userId;
 
@@ -16,8 +18,8 @@ class _ExpensesChartState extends State<ExpensesChart> {
   late Future<List<_DailyExpense>> futureGroupedExpenses;
 
   Future<List<_DailyExpense>> _fetchGroupedExpenses() async {
-    final expenses = await DataBaseHelper.instance.getTransactionsOnlyExpanse(widget.userId);
-
+    // final expenses = await DataBaseHelper.instance.getTransactionsOnlyExpanse(widget.userId);
+    final expenses = await SembastDatabaseHelper().getTransactionsOnlyExpanse(widget.userId);
     final Map<String, double> grouped = {};
 
     for (var tx in expenses) {

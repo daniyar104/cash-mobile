@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:untitled1/models/TransactionModel.dart';
 import '../db/database_helper.dart';
+import '../db/sembast_database_helper.dart';
 import 'EditTransactionScreen.dart';
 
 // Icon for category
@@ -40,7 +41,8 @@ class _TransactionsListWidgetState extends State<TransactionsListWidget> {
         title: Text('All Transactions'),
       ),
       body: FutureBuilder<List<TransactionModel>>(
-        future: DataBaseHelper.instance.getTransactionsOnlyExpanse(widget.userID),
+        // future: DataBaseHelper.instance.getTransactionsOnlyExpanse(widget.userID),
+        future: SembastDatabaseHelper().getTransactionsOnlyExpanse(widget.userID),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(child: CircularProgressIndicator());

@@ -6,7 +6,6 @@ void main() async{
   WidgetsFlutterBinding.ensureInitialized();
   final prefs = await SharedPreferences.getInstance();
   final userId = prefs.getInt('userId');
-
   Widget initialRoute = LoginPage();
   if (userId != null) {
     initialRoute = MainScreen();
@@ -26,7 +25,7 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       theme: ThemeData(
         useMaterial3: true,
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.red),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.purple),
       ),
       home: initialRoute
     );
