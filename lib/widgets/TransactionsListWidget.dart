@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:untitled1/models/TransactionModel.dart';
+import '../db/app_database_helper.dart';
+import '../db/database_factory.dart';
 import '../db/database_helper.dart';
 import '../db/sembast_database_helper.dart';
 import 'EditTransactionScreen.dart';
@@ -34,6 +36,8 @@ class TransactionsListWidget extends StatefulWidget {
 }
 
 class _TransactionsListWidgetState extends State<TransactionsListWidget> {
+  final AppDatabaseHelper _dbHelper = getDatabaseHelper();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,7 +46,7 @@ class _TransactionsListWidgetState extends State<TransactionsListWidget> {
       ),
       body: FutureBuilder<List<TransactionModel>>(
         // future: DataBaseHelper.instance.getTransactionsOnlyExpanse(widget.userID),
-        future: SembastDatabaseHelper().getTransactionsOnlyExpanse(widget.userID),
+        future: _dbHelper.getUserExpenses(widget.userID),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(child: CircularProgressIndicator());

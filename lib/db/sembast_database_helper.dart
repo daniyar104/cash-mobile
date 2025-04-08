@@ -91,6 +91,18 @@ class SembastDatabaseHelper implements AppDatabaseHelper {
     }
     return id;
   }
+  @override
+  Future<List<TransactionModel>> getUserExpenses(int userId) async {
+    final db = await database;
+    final finder = Finder(
+      filter: Filter.and([
+        Filter.equals('user_id', userId),
+        Filter.equals('type', 'expense'),
+      ]),
+    );
+    final records = await transactionsStore.find(db, finder: finder);
+    return records.map((e) => TransactionModel.fromMap({...e.value, 'id': e.key})).toList();
+  }
 
   Future<List<TransactionModel>> getTransactions(int userId) async {
     final db = await database;

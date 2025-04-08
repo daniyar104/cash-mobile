@@ -199,4 +199,16 @@ class DataBaseHelper implements AppDatabaseHelper {
   Future<void> init() async {
     await database;
   }
+  @override
+  Future<List<TransactionModel>> getUserExpenses(int userId) async {
+    final db = await database;
+    final List<Map<String, dynamic>> maps = await db.query(
+      'transactions',
+      where: 'user_id = ? AND type = ?',
+      whereArgs: [userId, 'expense'],
+    );
+    return List.generate(maps.length, (i) {
+      return TransactionModel.fromMap(maps[i]);
+    });
+  }
 }
