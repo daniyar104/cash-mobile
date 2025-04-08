@@ -2,8 +2,9 @@ import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import '../models/TransactionModel.dart';
 import '../models/UserModel.dart';
+import 'app_database_helper.dart';
 
-class DataBaseHelper {
+class DataBaseHelper implements AppDatabaseHelper {
   static final DataBaseHelper instance = DataBaseHelper._privateConstructor();
   static Database? _database;
 
@@ -180,5 +181,22 @@ class DataBaseHelper {
       where: 'id = ?',
       whereArgs: [id],
     );
+  }
+
+  @override
+  Future<void> clearTransactions() async {
+    final db = await database;
+    await db.delete('transactions');
+  }
+
+  @override
+  Future<List<TransactionModel>> getUserTransactions(int userId) {
+    // TODO: implement getUserTransactions
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> init() async {
+    await database;
   }
 }

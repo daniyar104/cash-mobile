@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../db/database_factory.dart';
 import '../../db/database_helper.dart';
 import '../../db/sembast_database_helper.dart';
 import '../../models/UserModel.dart';
@@ -15,7 +16,7 @@ class _RegistrationPageState extends State<RegistrationPage>{
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
-  final _dbHelper = SembastDatabaseHelper();
+  final _dbHelper = getDatabaseHelper();
 
   Future<void> _register() async {
     if (_formKey.currentState!.validate()) {

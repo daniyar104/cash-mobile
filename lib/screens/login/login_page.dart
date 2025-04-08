@@ -2,7 +2,9 @@
   import 'package:untitled1/db/database_helper.dart';
   import 'package:shared_preferences/shared_preferences.dart';
   import 'package:untitled1/screens/MainScreen.dart';
-  import '../../db/sembast_database_helper.dart';
+  import '../../db/app_database_helper.dart';
+import '../../db/database_factory.dart';
+import '../../db/sembast_database_helper.dart';
 import '../../models/UserModel.dart';
   import '../register/RegistrationPage.dart';
 
@@ -18,13 +20,12 @@ import '../../models/UserModel.dart';
     final _formKey = GlobalKey<FormState>();
     final _emailController = TextEditingController();
     final _passwordController = TextEditingController();
-    final _dbHelper = SembastDatabaseHelper();
+    final _dbHelper = getDatabaseHelper();
     Future<void> _login() async {
       if(_formKey.currentState!.validate()){
         final email = _emailController.text;
         final password = _passwordController.text;
 
-        // final users = await DataBaseHelper.instance.getUsers();
         final users = await _dbHelper.getUsers();
         final user = users.firstWhere(
               (user) => user.email == email && user.password == password,

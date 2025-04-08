@@ -10,13 +10,15 @@ import 'package:sembast/sembast_memory.dart';
 
 import '../models/UserModel.dart';
 import '../models/TransactionModel.dart';
+import 'app_database_helper.dart';
 
-class SembastDatabaseHelper {
-  static final SembastDatabaseHelper _instance = SembastDatabaseHelper._internal();
+class SembastDatabaseHelper implements AppDatabaseHelper {
+  static final SembastDatabaseHelper instance = SembastDatabaseHelper._internal();
+
   static Database? _db;
 
   factory SembastDatabaseHelper() {
-    return _instance;
+    return instance;
   }
 
   SembastDatabaseHelper._internal();
@@ -138,5 +140,21 @@ class SembastDatabaseHelper {
     final db = await database;
     await transactionsStore.record(id).delete(db);
     return id;
+  }
+
+  @override
+  Future<void> clearTransactions() async {
+    final db = await database;
+    await transactionsStore.delete(db);
+  }
+
+  @override
+  Future<List<TransactionModel>> getUserTransactions(int userId) {
+    return getTransactions(userId); // просто прокси
+  }
+
+  @override
+  Future<void> init() async {
+    await database;
   }
 }
