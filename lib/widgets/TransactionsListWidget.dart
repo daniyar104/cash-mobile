@@ -3,7 +3,6 @@ import 'package:untitled1/models/TransactionModel.dart';
 import '../db/app_database_helper.dart';
 import '../db/database_factory.dart';
 import '../db/database_helper.dart';
-import '../db/sembast_database_helper.dart';
 import 'EditTransactionScreen.dart';
 
 // Icon for category
@@ -45,7 +44,6 @@ class _TransactionsListWidgetState extends State<TransactionsListWidget> {
         title: Text('All Transactions'),
       ),
       body: FutureBuilder<List<TransactionModel>>(
-        // future: DataBaseHelper.instance.getTransactionsOnlyExpanse(widget.userID),
         future: _dbHelper.getUserExpenses(widget.userID),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
@@ -57,7 +55,6 @@ class _TransactionsListWidgetState extends State<TransactionsListWidget> {
 
           final transactions = snapshot.data ?? [];
 
-          // Group by formatted date
           final Map<String, List<TransactionModel>> grouped = {};
           for (var tx in transactions) {
             final formattedDate = _formatDate(tx.date ?? '');

@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
-import 'package:untitled1/db/database_helper.dart';
-
-import '../../db/sembast_database_helper.dart';
-
+import '../../db/app_database_helper.dart';
+import '../../db/database_factory.dart';
 class ExpensesChart extends StatefulWidget {
   final int userId;
 
@@ -16,20 +14,21 @@ class ExpensesChart extends StatefulWidget {
 
 class _ExpensesChartState extends State<ExpensesChart> {
   late Future<List<_DailyExpense>> futureGroupedExpenses;
+  final AppDatabaseHelper _dbHelper = getDatabaseHelper();
 
   Future<List<_DailyExpense>> _fetchGroupedExpenses() async {
-    // final expenses = await DataBaseHelper.instance.getTransactionsOnlyExpanse(widget.userId);
-    final expenses = await SembastDatabaseHelper().getTransactionsOnlyExpanse(widget.userId);
-    final Map<String, double> grouped = {};
+    final expenses = await _dbHelper.getUserExpenses(widget.userId);
+    final Map<DateTime, double> grouped = {};
 
     for (var tx in expenses) {
       final date = DateFormat('dd-MM-yyyy').parse(tx.date);
-      final dateStr = DateFormat('yyyy-MM-dd').format(date);
+      final dateStr = DateTime(date.year, date.month, date.day);
+
       grouped[dateStr] = (grouped[dateStr] ?? 0) + tx.amount;
     }
 
     final List<_DailyExpense> result = grouped.entries
-        .map((e) => _DailyExpense(DateTime.parse(e.key), e.value))
+        .map((e) => _DailyExpense(e.key, e.value))
         .toList();
 
     result.sort((a, b) => a.date.compareTo(b.date));
@@ -69,7 +68,7 @@ class _ExpensesChartState extends State<ExpensesChart> {
                 name: 'Расходы',
                 dataLabelSettings: DataLabelSettings(isVisible: true),
                 color: Theme.of(context).colorScheme.primary,
-              )
+              ),
             ],
           );
         }

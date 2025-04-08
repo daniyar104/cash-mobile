@@ -52,11 +52,13 @@ class DataBaseHelper implements AppDatabaseHelper {
   }
 
   // Методы для работы с UserModel
+  @override
   Future<int> insertUser(UserModel user) async {
     final db = await database;
     return await db.insert('users', user.toMap());
   }
 
+  @override
   Future<List<UserModel>> getUsers() async {
     final db = await database;
     final List<Map<String, dynamic>> maps = await db.query('users');
@@ -64,6 +66,7 @@ class DataBaseHelper implements AppDatabaseHelper {
       return UserModel.fromMap(maps[i]);
     });
   }
+  @override
   Future<UserModel?> getUserById(int id) async {
     final db = await database;
     final List<Map<String, dynamic>> maps = await db.query(
@@ -77,6 +80,7 @@ class DataBaseHelper implements AppDatabaseHelper {
       return null;
     }
   }
+  @override
   Future<int> updateUser(UserModel user) async {
     final db = await database;
     return await db.update(
@@ -86,7 +90,7 @@ class DataBaseHelper implements AppDatabaseHelper {
       whereArgs: [user.id],
     );
   }
-
+  @override
   Future<int> deleteUser(int id) async {
     final db = await database;
     return await db.delete(
@@ -97,14 +101,15 @@ class DataBaseHelper implements AppDatabaseHelper {
   }
 
   // Методы для работы с TransactionModel
+  @override
   Future<int> insertTransaction(TransactionModel transaction) async {
     final db = await database;
     await db.transaction((txn) async {
       await txn.insert('transactions', transaction.toMap());
       final user = await txn.query('users', where: 'id = ?', whereArgs: [transaction.userId]);
-      if (user.isNotEmpty) { // Проверка на пустоту
+      if (user.isNotEmpty) {
         final userAmount = user.first['amount'];
-        double newAmount = userAmount != null ? userAmount as double : 0.0;
+        double newAmount = (userAmount is double) ? userAmount : 0.0;
         if (transaction.type == 'income') {
           newAmount += transaction.amount;
         } else {
@@ -112,12 +117,12 @@ class DataBaseHelper implements AppDatabaseHelper {
         }
         await txn.update('users', {'amount': newAmount}, where: 'id = ?', whereArgs: [transaction.userId]);
       } else {
-        print("Пользователь не найден при insertTransaction");
+        print("User not found while inserting transaction");
       }
     });
     return transaction.id ?? 0;
   }
-
+  @override
   Future<List<TransactionModel>> getTransactions(int userId) async {
     final db = await database;
     final List<Map<String, dynamic>> maps = await db.query(
@@ -129,7 +134,7 @@ class DataBaseHelper implements AppDatabaseHelper {
       return TransactionModel.fromMap(maps[i]);
     });
   }
-
+  @override
   Future<List<TransactionModel>> getTransactionsOnlyExpanse(int userId) async {
     final db = await database;
     final List<Map<String, dynamic>> maps = await db.query(
@@ -141,8 +146,7 @@ class DataBaseHelper implements AppDatabaseHelper {
       return TransactionModel.fromMap(maps[i]);
     });
   }
-
-
+  @override
   Future<List<TransactionModel>> getAllTransactions() async {
     final db = await database;
     final List<Map<String, dynamic>> maps = await db.query(
@@ -152,7 +156,7 @@ class DataBaseHelper implements AppDatabaseHelper {
       return TransactionModel.fromMap(maps[i]);
     });
   }
-
+  @override
   Future<int> updateTransaction(TransactionModel transaction) async {
     final db = await database;
     await db.transaction((txn) async {
@@ -160,7 +164,7 @@ class DataBaseHelper implements AppDatabaseHelper {
       final user = await txn.query('users', where: 'id = ?', whereArgs: [transaction.userId]);
       if (user.isNotEmpty) {
         final userAmount = user.first['amount'];
-        double newAmount = userAmount != null ? userAmount as double : 0.0;
+        double newAmount = (userAmount is double) ? userAmount : 0.0;
         if (transaction.type == 'income') {
           newAmount += transaction.amount;
         } else {
@@ -168,12 +172,12 @@ class DataBaseHelper implements AppDatabaseHelper {
         }
         await txn.update('users', {'amount': newAmount}, where: 'id = ?', whereArgs: [transaction.userId]);
       } else {
-        print("Пользователь не найден при updateTransaction");
+        print("User not found while updating transaction");
       }
     });
     return transaction.id ?? 0;
   }
-
+  @override
   Future<int> deleteTransaction(int id) async {
     final db = await database;
     return await db.delete(
@@ -190,16 +194,6 @@ class DataBaseHelper implements AppDatabaseHelper {
   }
 
   @override
-  Future<List<TransactionModel>> getUserTransactions(int userId) {
-    // TODO: implement getUserTransactions
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<void> init() async {
-    await database;
-  }
-  @override
   Future<List<TransactionModel>> getUserExpenses(int userId) async {
     final db = await database;
     final List<Map<String, dynamic>> maps = await db.query(
@@ -210,5 +204,15 @@ class DataBaseHelper implements AppDatabaseHelper {
     return List.generate(maps.length, (i) {
       return TransactionModel.fromMap(maps[i]);
     });
+  }
+
+  @override
+  Future<List<TransactionModel>> getUserTransactions(int userId) {
+    return getTransactions(userId);
+  }
+
+  @override
+  Future<void> init() async {
+    await database;
   }
 }
