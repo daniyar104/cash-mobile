@@ -22,6 +22,9 @@ abstract class AppDatabaseHelper {
   Future<int> deleteTransaction(int id);
   Future<void> clearTransactions();
   Future<List<TransactionModel>> getUserExpenses(int userId);
+  Future<List<TransactionModel>> getUserIncomes(int userId);
   Future<void> init();
+  Future<double> getUserExpensesTotal(int userId);
+  Future<double> getUserIncomeTotal(int userId);
 }
 

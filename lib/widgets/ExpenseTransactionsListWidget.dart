@@ -25,16 +25,16 @@ IconData getCategoryIcon(String category) {
   }
 }
 
-class TransactionsListWidget extends StatefulWidget {
+class ExpenseTransactionsListWidget extends StatefulWidget {
   final int userID;
 
-  TransactionsListWidget({required this.userID});
+  ExpenseTransactionsListWidget({required this.userID});
 
   @override
-  State<TransactionsListWidget> createState() => _TransactionsListWidgetState();
+  State<ExpenseTransactionsListWidget> createState() => _ExpenseTransactionsListWidget();
 }
 
-class _TransactionsListWidgetState extends State<TransactionsListWidget> {
+class _ExpenseTransactionsListWidget extends State<ExpenseTransactionsListWidget> {
   final AppDatabaseHelper _dbHelper = getDatabaseHelper();
 
   @override

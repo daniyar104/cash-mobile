@@ -10,6 +10,8 @@ class AccountSummaryWidget extends StatefulWidget{
 
 class _AccountSummaryWidgetState extends State<AccountSummaryWidget>{
   double userAmount = 0.0;
+  double totalExpenses = 0.0;
+  double totalIncomes = 0.0;
   int userId = 0;
 
   final AppDatabaseHelper _dbHelper = getDatabaseHelper();
@@ -27,6 +29,9 @@ class _AccountSummaryWidgetState extends State<AccountSummaryWidget>{
 
     final user = users.firstWhere((user) => user.id == userId);
     userAmount = user.amount;
+
+    totalExpenses = await _dbHelper.getUserExpensesTotal(userId);
+    totalIncomes = await _dbHelper.getUserIncomeTotal(userId);
     setState(() {});
   }
 
@@ -57,6 +62,16 @@ class _AccountSummaryWidgetState extends State<AccountSummaryWidget>{
               Text(
                 '₸ ${userAmount.toStringAsFixed(1)}',
                 style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              ),
+              SizedBox(height: 10),
+              Text(
+                'Всего расходов: ₸ ${totalExpenses.toStringAsFixed(1)}',
+                style: TextStyle(fontSize: 18, color: Colors.redAccent),
+              ),
+              SizedBox(height: 10),
+              Text(
+                'Всего доходов: ₸ ${totalIncomes.toStringAsFixed(1)}',
+                style: TextStyle(fontSize: 18, color: Colors.greenAccent),
               ),
             ],
           ),

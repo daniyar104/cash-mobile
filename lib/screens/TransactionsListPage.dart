@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:untitled1/widgets/AccountSummaryWidget.dart';
+import 'package:untitled1/widgets/IncomeTransactionListWidget.dart';
 import 'package:untitled1/widgets/RecentTransactionsWidget.dart';
-import '../widgets/TransactionsListWidget.dart';
+import '../widgets/ExpenseTransactionsListWidget.dart';
 import '../widgets/syncfusion/ColumnChartSample.dart';
 import '../widgets/syncfusion/ExpensesChart.dart';
 
@@ -53,7 +54,8 @@ class _TransactionsListPageState extends State<TransactionsListPage> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => TransactionsListWidget(userID: widget.userID),
+                              // builder: (context) => ExpenseTransactionsListWidget(userID: widget.userID),
+                              builder: (context) => IncomeTransactionListWidget(userID: widget.userID),
                             ),
                           );
                         },

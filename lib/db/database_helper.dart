@@ -109,7 +109,7 @@ class DataBaseHelper implements AppDatabaseHelper {
       final user = await txn.query('users', where: 'id = ?', whereArgs: [transaction.userId]);
       if (user.isNotEmpty) {
         final userAmount = user.first['amount'];
-        double newAmount = (userAmount is double) ? userAmount : 0.0;
+        double newAmount = userAmount != null ? userAmount as double : 0.0;
         if (transaction.type == 'income') {
           newAmount += transaction.amount;
         } else {
@@ -117,7 +117,7 @@ class DataBaseHelper implements AppDatabaseHelper {
         }
         await txn.update('users', {'amount': newAmount}, where: 'id = ?', whereArgs: [transaction.userId]);
       } else {
-        print("User not found while inserting transaction");
+        print("Пользователь не найден при insertTransaction");
       }
     });
     return transaction.id ?? 0;
@@ -205,8 +205,31 @@ class DataBaseHelper implements AppDatabaseHelper {
       return TransactionModel.fromMap(maps[i]);
     });
   }
+  @override
+  Future<double> getUserExpensesTotal(int userId) async {
+    final expenses = await getUserExpenses(userId);
+    double total = expenses.fold(0.0, (sum, tx) => sum + tx.amount);
+    return total;
+  }
+  @override
+  Future<double> getUserIncomeTotal(int userId) async {
+    final incomes = await getUserIncomes(userId);
+    double total = incomes.fold(0.0, (sum, tx) => sum + tx.amount);
+    return total;
+  }
 
   @override
+  Future<List<TransactionModel>> getUserIncomes(int userId) async {
+    final db = await database;
+    final List<Map<String, dynamic>> maps = await db.query(
+      'transactions',
+      where: 'user_id = ? AND type = ?',
+      whereArgs: [userId, 'income'],
+    );
+    return List.generate(maps.length, (i) => TransactionModel.fromMap(maps[i]));
+  }
+
+    @override
   Future<List<TransactionModel>> getUserTransactions(int userId) {
     return getTransactions(userId);
   }

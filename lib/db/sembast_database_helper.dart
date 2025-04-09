@@ -122,6 +122,26 @@ class SembastDatabaseHelper implements AppDatabaseHelper {
     final records = await transactionsStore.find(db, finder: finder);
     return records.map((e) => TransactionModel.fromMap({...e.value, 'id': e.key})).toList();
   }
+  @override
+  Future<List<TransactionModel>> getUserIncomes(int userId) async {
+    final db = await database;
+    final finder = Finder(
+      filter: Filter.and([
+        Filter.equals('userId', userId),
+        Filter.equals('type', 'income'),
+      ]),
+    );
+
+
+    final recordSnapshots = await transactionsStore.find(db, finder: finder);
+
+    return recordSnapshots.map((snapshot) {
+      final transaction = TransactionModel.fromMap({...snapshot.value, 'id': snapshot.key});
+      return transaction;
+    }).toList();
+  }
+
+
 
   Future<List<TransactionModel>> getAllTransactions() async {
     final db = await database;
@@ -162,11 +182,39 @@ class SembastDatabaseHelper implements AppDatabaseHelper {
 
   @override
   Future<List<TransactionModel>> getUserTransactions(int userId) {
-    return getTransactions(userId); // просто прокси
+    return getTransactions(userId);
   }
 
   @override
   Future<void> init() async {
     await database;
   }
+
+  @override
+  Future<double> getUserExpensesTotal(int userId) async {
+    final expenses = await getUserExpenses(userId);
+    double total = expenses.fold(0.0, (sum, tx) => sum + tx.amount);
+    return total;
+  }
+  @override
+  Future<double> getUserIncomeTotal(int userId) async {
+    final db = await database;
+    final finder = Finder(
+      filter: Filter.and([
+        Filter.equals('user_id', userId),
+        Filter.equals('type', 'income'),
+      ]),
+    );
+
+    final records = await transactionsStore.find(db, finder: finder);
+    double total = records.fold(0.0, (sum, record) {
+      final map = record.value;
+      final amount = (map['amount'] as num?)?.toDouble() ?? 0.0;
+      return sum + amount;
+    });
+
+    return total;
+  }
+
+
 }
