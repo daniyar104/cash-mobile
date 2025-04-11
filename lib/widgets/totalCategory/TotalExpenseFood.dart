@@ -15,7 +15,7 @@ class _TotalExpenseFoodState extends State<TotalExpenseFood> {
   final AppDatabaseHelper _dbHelper = getDatabaseHelper();
 
   Future<double> _getFoodExpense() async {
-    return await _dbHelper.getTotalSpentOnFood(widget.userId);
+    return await _dbHelper.getTotalSpentOnFoodForCurrentMonth(widget.userId);
   }
   @override
   Widget build(BuildContext context) {
@@ -25,15 +25,15 @@ class _TotalExpenseFoodState extends State<TotalExpenseFood> {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Center(child: CircularProgressIndicator());
         } else if (snapshot.hasError) {
-          return Center(child: Text("Ошибка: ${snapshot.error}"));
+          return Center(child: Text("Error: ${snapshot.error}"));
         } else if (!snapshot.hasData || snapshot.data == 0.0) {
           return Center(
             child: Text(
-              "",
+              'No data to display',
               style: TextStyle(fontSize: 16, color: Colors.grey),
             ),
           );
-        }else {
+        } else {
           return Container(
             padding: const EdgeInsets.all(16),
             margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
@@ -61,7 +61,7 @@ class _TotalExpenseFoodState extends State<TotalExpenseFood> {
                   ),
                 ),
               ],
-            )
+            ),
           );
         }
       },

@@ -40,4 +40,24 @@ class TransactionModel {
       type: map['type'],
     );
   }
+  TransactionModel copyWith({
+    int? id,
+    double? amount,
+    String? date,
+    String? category,
+    String? type,
+    String? title,
+    int? userId,
+  }) {
+    return TransactionModel(
+      id: id ?? this.id,
+      amount: amount ?? this.amount,
+      date: date ?? this.date,
+      category: category ?? this.category,
+      type: type ?? this.type,
+      title: title ?? this.title,
+      userId: userId ?? this.userId,
+    );
+  }
+
 }

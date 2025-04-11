@@ -20,11 +20,18 @@ class _ExpensesChartState extends State<ExpensesChart> {
     final expenses = await _dbHelper.getUserExpenses(widget.userId);
     final Map<DateTime, double> grouped = {};
 
-    for (var tx in expenses) {
-      final date = DateFormat('dd-MM-yyyy').parse(tx.date);
-      final dateStr = DateTime(date.year, date.month, date.day);
+    final now = DateTime.now();
+    final currentMonthStart = DateTime(now.year, now.month, 1);
+    final nextMonthStart = DateTime(now.year, now.month + 1, 1);
 
-      grouped[dateStr] = (grouped[dateStr] ?? 0) + tx.amount;
+    for (var tx in expenses) {
+      final date = DateFormat('yyyy-MM-dd').parse(tx.date);
+      if (date.isBefore(currentMonthStart) || date.isAfter(nextMonthStart.subtract(Duration(days: 1)))) {
+        continue;
+      }
+
+      final dateKey = DateTime(date.year, date.month, date.day);
+      grouped[dateKey] = (grouped[dateKey] ?? 0) + tx.amount;
     }
 
     final List<_DailyExpense> result = grouped.entries
@@ -34,6 +41,7 @@ class _ExpensesChartState extends State<ExpensesChart> {
     result.sort((a, b) => a.date.compareTo(b.date));
     return result;
   }
+
 
   @override
   Widget build(BuildContext context) {

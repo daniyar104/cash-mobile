@@ -243,6 +243,30 @@ class SembastDatabaseHelper implements AppDatabaseHelper {
     return total;
   }
 
+  Future<double> getTotalSpentOnFoodForCurrentMonth(int userId) async {
+    final db = await database;
 
+    DateTime now = DateTime.now();
+    int currentYear = now.year;
+    int currentMonth = now.month;
+
+    final finder = Finder(
+      filter: Filter.and([
+        Filter.equals('user_id', userId),
+        Filter.equals('type', 'expense'),
+        Filter.greaterThanOrEquals('date', DateTime(currentYear, currentMonth, 1).millisecondsSinceEpoch),
+        Filter.lessThanOrEquals('date', DateTime(currentYear, currentMonth + 1, 0, 23, 59, 59).millisecondsSinceEpoch),
+      ]),
+    );
+
+    final records = await transactionsStore.find(db, finder: finder);
+    double total = records.fold(0.0, (sum, record) {
+      final map = record.value;
+      final amount = (map['amount'] as num?)?.toDouble() ?? 0.0;
+      return sum + amount;
+    });
+
+    return total;
+  }
 
 }

@@ -28,5 +28,6 @@ abstract class AppDatabaseHelper {
   Future<double> getUserIncomeTotal(int userId);
 
   Future<double> getTotalSpentOnFood(int userId);
+  Future<double> getTotalSpentOnFoodForCurrentMonth(int userId);
 }
 

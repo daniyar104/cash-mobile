@@ -46,7 +46,7 @@ class _ExpenseInputScreenState extends State<ExpenseInputScreen> {
       print("Amount cannot be zero");
       return;
     }
-    String formattedDate = DateFormat('dd-MM-yyyy').format(selectedDate);
+    String formattedDate = DateFormat('yyyy-MM-dd').format(selectedDate);
 
     TransactionModel transaction = TransactionModel(
       amount: amountValue,

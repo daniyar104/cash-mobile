@@ -1,3 +1,4 @@
+import 'package:intl/intl.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import '../models/TransactionModel.dart';
@@ -249,6 +250,25 @@ class DataBaseHelper implements AppDatabaseHelper {
     final total = result.first['total'];
     return (total != null) ? (total as num).toDouble() : 0.0;
   }
+
+  @override
+  Future<double> getTotalSpentOnFoodForCurrentMonth(int userId) async {
+    final db = await database;
+    final result = await db.rawQuery(
+      '''
+      SELECT SUM(amount) as total
+      FROM transactions
+      WHERE user_id = ? AND type = 'expense' AND category = 'Food' AND date BETWEEN ? AND ?
+      ''',
+      [userId, '2025-04-01', '2025-04-31'],
+    );
+
+    final total = result.first['total'];
+    return total != null ? (total as num).toDouble() : 0.0;
+  }
+
+
+
 
 
   @override
