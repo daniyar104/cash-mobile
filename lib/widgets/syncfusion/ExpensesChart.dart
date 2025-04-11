@@ -46,7 +46,7 @@ class _ExpensesChartState extends State<ExpensesChart> {
           return Center(child: Text("Ошибка: ${snapshot.error}"));
         } else if (snapshot.connectionState == ConnectionState.done &&
             (snapshot.hasData == false || snapshot.data!.isEmpty)) {
-          return Center(child: Text("Нет данных для отображения"));
+          return Center(child: Text(""));
         } else {
           final data = snapshot.data!;
 

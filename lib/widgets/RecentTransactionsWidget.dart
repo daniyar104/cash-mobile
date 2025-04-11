@@ -3,8 +3,8 @@ import 'package:untitled1/models/TransactionModel.dart';
 
 import '../db/app_database_helper.dart';
 import '../db/database_factory.dart';
-import '../db/database_helper.dart';
-import '../db/sembast_database_helper.dart';
+import 'ExpenseTransactionsListWidget.dart';
+
 IconData getCategoryIcon(String category) {
   switch (category.toLowerCase()) {
     case 'food':
@@ -47,6 +47,14 @@ class _RecentTransactionsWidgetState extends State<RecentTransactionsWidget> {
         if (snapshot.hasError) {
           return Center(child: Text('Error: ${snapshot.error}'));
         }
+        else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+          return Center(
+            child: Text(
+              'Нет данных для отображения',
+              style: TextStyle(fontSize: 16, color: Colors.grey),
+            ),
+          );
+        }
 
         final allItems = snapshot.data ?? [];
         final items = (allItems.length > 3
@@ -54,65 +62,102 @@ class _RecentTransactionsWidgetState extends State<RecentTransactionsWidget> {
             : allItems).reversed.toList();
 
         return Column(
-          children: items.map((transaction) {
-            return Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                color: Theme.of(context).colorScheme.primaryContainer,
+          children: [
+            Text(
+              "Transactions",
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: Theme.of(context).colorScheme.primary,
               ),
-              padding: const EdgeInsets.all(8),
-              margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
+            ),
+            Column(
+              children: items.map((transaction) {
+                return Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: Theme.of(context).colorScheme.primaryContainer,
+                  ),
+                  padding: const EdgeInsets.all(8),
+                  margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Container(
-                        padding: const EdgeInsets.all(8),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: Theme.of(context).colorScheme.primary.withOpacity(0.1),
-                        ),
-                        child: Icon(
-                          getCategoryIcon(transaction.category ?? ''),
-                          color: Theme.of(context).colorScheme.primary,
-                        ),
-                      ),
-                      const SizedBox(width: 12),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                      Row(
                         children: [
-                          Text(
-                            transaction.category ?? '',
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                              color: Theme.of(context).primaryColor,
+                          Container(
+                            padding: const EdgeInsets.all(8),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: Theme.of(context).colorScheme.primary.withOpacity(0.1),
+                            ),
+                            child: Icon(
+                              getCategoryIcon(transaction.category ?? ''),
+                              color: Theme.of(context).colorScheme.primary,
                             ),
                           ),
-                          Text(
-                            transaction.date,
-                            style: TextStyle(
-                              fontSize: 14,
-                              color: Theme.of(context).textTheme.bodyMedium?.color,
-                              fontWeight: FontWeight.bold
-                            ),
+                          const SizedBox(width: 12),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                transaction.category ?? '',
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                  color: Theme.of(context).primaryColor,
+                                ),
+                              ),
+                              Text(
+                                transaction.date,
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  color: Theme.of(context).textTheme.bodyMedium?.color,
+                                  fontWeight: FontWeight.bold
+                                ),
+                              ),
+                            ],
                           ),
                         ],
                       ),
+                      Text(
+                        '-${transaction.amount}',
+                        style: const TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      )
                     ],
                   ),
-                  Text(
-                    '-${transaction.amount}',
-                    style: const TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
+                );
+              }).toList(),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ExpenseTransactionsListWidget(userID: widget.userID),
+                      // builder: (context) => IncomeTransactionListWidget(userID: widget.userID),
                     ),
-                  )
-                ],
+                  );
+                },
+                style: ElevatedButton.styleFrom(
+                  minimumSize: Size(double.infinity, 50),
+                  backgroundColor: Theme.of(context).colorScheme.primary,
+                ),
+                child: Text(
+                  'Show all',
+                  style: TextStyle(
+                    fontSize: 18,
+                    color: Theme.of(context).colorScheme.onPrimary,
+                  ),
+                ),
               ),
-            );
-          }).toList(),
+            ),
+          ],
         );
       },
     );

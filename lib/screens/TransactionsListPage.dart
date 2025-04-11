@@ -28,7 +28,6 @@ class _TransactionsListPageState extends State<TransactionsListPage> {
             children: [
               AccountSummaryWidget(),
               SizedBox(height: 20),
-              // Вставь график, если нужно:
               ExpensesChart(userId: widget.userID),
               Container(
                 decoration: BoxDecoration(
@@ -38,40 +37,33 @@ class _TransactionsListPageState extends State<TransactionsListPage> {
                 padding: const EdgeInsets.only(top: 10),
                 child: Column(
                   children: [
-                    Text(
-                      "Transactions",
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        color: Theme.of(context).colorScheme.primary,
-                      ),
-                    ),
+
                     RecentTransactionsWidget(userID: widget.userID),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: ElevatedButton(
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              // builder: (context) => ExpenseTransactionsListWidget(userID: widget.userID),
-                              builder: (context) => IncomeTransactionListWidget(userID: widget.userID),
-                            ),
-                          );
-                        },
-                        child: Text(
-                          'Show all',
-                          style: TextStyle(
-                            fontSize: 18,
-                            color: Theme.of(context).colorScheme.onPrimary,
-                          ),
-                        ),
-                        style: ElevatedButton.styleFrom(
-                          minimumSize: Size(double.infinity, 50),
-                          backgroundColor: Theme.of(context).colorScheme.primary,
-                        ),
-                      ),
-                    ),
+                    // Padding(
+                    //   padding: const EdgeInsets.all(8.0),
+                    //   child: ElevatedButton(
+                    //     onPressed: () {
+                    //       Navigator.push(
+                    //         context,
+                    //         MaterialPageRoute(
+                    //           builder: (context) => ExpenseTransactionsListWidget(userID: widget.userID),
+                    //           // builder: (context) => IncomeTransactionListWidget(userID: widget.userID),
+                    //         ),
+                    //       );
+                    //     },
+                    //     style: ElevatedButton.styleFrom(
+                    //       minimumSize: Size(double.infinity, 50),
+                    //       backgroundColor: Theme.of(context).colorScheme.primary,
+                    //     ),
+                    //     child: Text(
+                    //       'Show all',
+                    //       style: TextStyle(
+                    //         fontSize: 18,
+                    //         color: Theme.of(context).colorScheme.onPrimary,
+                    //       ),
+                    //     ),
+                    //   ),
+                    // ),
                   ],
                 ),
               ),

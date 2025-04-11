@@ -61,7 +61,7 @@ class _AccountSummaryWidgetState extends State<AccountSummaryWidget>{
                 '₸ ${userAmount.toStringAsFixed(1)}',
                 style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
               ),
-              SizedBox(height: 10),
+              SizedBox(height: 20),
               TotalTransactionBalans(),
             ],
           ),

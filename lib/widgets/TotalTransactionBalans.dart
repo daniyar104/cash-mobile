@@ -34,7 +34,14 @@ class _TotalTransactionBalansState extends State<TotalTransactionBalans> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
-        Icon(Icons.trending_down, color: Colors.redAccent),
+        Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            color: Colors.red[200],
+          ),
+          padding: EdgeInsets.all(10),
+          child: Icon(Icons.trending_down, color: Colors.red),
+        ),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -46,17 +53,25 @@ class _TotalTransactionBalansState extends State<TotalTransactionBalans> {
           ],
         ),
         SizedBox(height: 10),
-        Icon(Icons.trending_up, color: Colors.greenAccent),
+        Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            color: Colors.green[200],
+          ),
+          padding: EdgeInsets.all(10),
+          child: Icon(Icons.trending_up, color: Colors.green),
+        ),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text("Income",),
             Text(
               '₸ ${totalIncomes.toStringAsFixed(1)}',
-              style: TextStyle(fontSize: 18, color: Colors.greenAccent),
+              style: TextStyle(fontSize: 18, color: Colors.green),
             ),
           ],
         ),
+        SizedBox(height: 10),
       ],
     );
   }
