@@ -235,6 +235,23 @@ class DataBaseHelper implements AppDatabaseHelper {
   }
 
   @override
+  Future<double> getTotalSpentOnFood(int userId) async {
+    final db = await database;
+    final result = await db.rawQuery(
+      '''
+    SELECT SUM(amount) as total 
+    FROM transactions 
+    WHERE user_id = ? AND type = 'expense' AND category = 'Food'
+    ''',
+      [userId],
+    );
+
+    final total = result.first['total'];
+    return (total != null) ? (total as num).toDouble() : 0.0;
+  }
+
+
+  @override
   Future<void> init() async {
     await database;
   }

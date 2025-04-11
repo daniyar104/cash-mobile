@@ -44,29 +44,31 @@ class SembastDatabaseHelper implements AppDatabaseHelper {
   }
 
   // ========== User methods ==========
+  @override
   Future<int> insertUser(UserModel user) async {
     final db = await database;
     return await usersStore.add(db, user.toMap());
   }
-
+  @override
   Future<List<UserModel>> getUsers() async {
     final db = await database;
     final snapshots = await usersStore.find(db);
     return snapshots.map((e) => UserModel.fromMap({...e.value, 'id': e.key})).toList();
   }
-
+  @override
   Future<UserModel?> getUserById(int id) async {
     final db = await database;
     final record = await usersStore.record(id).get(db);
     return record != null ? UserModel.fromMap({...record, 'id': id}) : null;
   }
-
+  @override
   Future<int> updateUser(UserModel user) async {
     final db = await database;
     await usersStore.record(user.id!).put(db, user.toMap());
     return user.id!;
   }
 
+  @override
   Future<int> deleteUser(int id) async {
     final db = await database;
     await usersStore.record(id).delete(db);
@@ -74,6 +76,7 @@ class SembastDatabaseHelper implements AppDatabaseHelper {
   }
 
   // ========== Transaction methods ==========
+  @override
   Future<int> insertTransaction(TransactionModel transaction) async {
     final db = await database;
 
@@ -141,14 +144,14 @@ class SembastDatabaseHelper implements AppDatabaseHelper {
     }).toList();
   }
 
-
-
+  @override
   Future<List<TransactionModel>> getAllTransactions() async {
     final db = await database;
     final records = await transactionsStore.find(db);
     return records.map((e) => TransactionModel.fromMap({...e.value, 'id': e.key})).toList();
   }
 
+  @override
   Future<int> updateTransaction(TransactionModel transaction) async {
     final db = await database;
 
@@ -168,6 +171,7 @@ class SembastDatabaseHelper implements AppDatabaseHelper {
     return transaction.id!;
   }
 
+  @override
   Future<int> deleteTransaction(int id) async {
     final db = await database;
     await transactionsStore.record(id).delete(db);
@@ -215,6 +219,30 @@ class SembastDatabaseHelper implements AppDatabaseHelper {
 
     return total;
   }
+
+  @override
+  Future<double> getTotalSpentOnFood(int userId) async {
+    final db = await database;
+
+    final finder = Finder(
+      filter: Filter.and([
+        Filter.equals('user_id', userId),
+        Filter.equals('type', 'expense'),
+        Filter.equals('category', 'food'),
+      ]),
+    );
+
+    final records = await transactionsStore.find(db, finder: finder);
+
+    double total = records.fold(0.0, (sum, record) {
+      final map = record.value;
+      final amount = (map['amount'] as num?)?.toDouble() ?? 0.0;
+      return sum + amount;
+    });
+
+    return total;
+  }
+
 
 
 }

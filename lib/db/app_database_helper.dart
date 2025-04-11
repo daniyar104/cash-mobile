@@ -26,5 +26,7 @@ abstract class AppDatabaseHelper {
   Future<void> init();
   Future<double> getUserExpensesTotal(int userId);
   Future<double> getUserIncomeTotal(int userId);
+
+  Future<double> getTotalSpentOnFood(int userId);
 }
 
