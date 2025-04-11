@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:untitled1/models/TransactionModel.dart';
 import '../db/app_database_helper.dart';
 import '../db/database_factory.dart';
 import '../db/database_helper.dart';
 import 'EditTransactionScreen.dart';
 
-// Icon for category
 IconData getCategoryIcon(String category) {
   switch (category.toLowerCase()) {
     case 'food':
@@ -28,7 +28,7 @@ IconData getCategoryIcon(String category) {
 class ExpenseTransactionsListWidget extends StatefulWidget {
   final int userID;
 
-  ExpenseTransactionsListWidget({required this.userID});
+  const ExpenseTransactionsListWidget({super.key, required this.userID});
 
   @override
   State<ExpenseTransactionsListWidget> createState() => _ExpenseTransactionsListWidget();
@@ -124,7 +124,7 @@ class _ExpenseTransactionsListWidget extends State<ExpenseTransactionsListWidget
           );
 
           if (confirm == true) {
-            await DataBaseHelper.instance.deleteTransaction(tx.id!);
+            await DataBaseHelper.instance.deleteTransactionAndRestoreBalance(tx.id!, widget.userID);
             setState(() {});
           }
 
@@ -175,7 +175,7 @@ class _ExpenseTransactionsListWidget extends State<ExpenseTransactionsListWidget
                       ),
                     ),
                     Text(
-                      tx.date ?? 'Unknown',
+                      _formatDate(tx.date) ?? 'Unknown',
                       style: TextStyle(
                         fontSize: 16,
                         color: Theme.of(context).textTheme.bodyMedium?.color,
@@ -199,24 +199,19 @@ class _ExpenseTransactionsListWidget extends State<ExpenseTransactionsListWidget
     );
   }
 
+
+
   String _formatDate(String rawDate) {
     try {
-      final parts = rawDate.split('-');
-      if (parts.length != 3) return 'Unknown';
-
-      final day = int.parse(parts[0]);
-      final month = int.parse(parts[1]);
-
-      final months = [
-        '', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-        'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
-      ];
-
-      return '$day ${months[month]}';
+      final date = DateFormat('yyyy-MM-dd').parse(rawDate);
+      return DateFormat('d MMM').format(date);
     } catch (e) {
       return 'Unknown';
     }
   }
+
+
+
 
   int _compareDates(String a, String b) {
     final months = {

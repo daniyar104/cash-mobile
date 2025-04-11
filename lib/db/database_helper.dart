@@ -268,7 +268,47 @@ class DataBaseHelper implements AppDatabaseHelper {
   }
 
 
+  @override
+  Future<void> deleteTransactionAndRestoreBalance(int transactionId, int userId) async {
+    final db = await database;
 
+    final result = await db.query(
+      'transactions',
+      columns: ['amount'],
+      where: 'id = ?',
+      whereArgs: [transactionId],
+    );
+
+    if (result.isNotEmpty) {
+      final amountToRestore = result.first['amount'] as double;
+
+      final balanceResult = await db.query(
+        'users',
+        columns: ['amount'],
+        where: 'id = ?',
+        whereArgs: [userId],
+      );
+
+      if (balanceResult.isNotEmpty) {
+        double currentBalance = balanceResult.first['amount'] as double;
+
+        double newBalance = currentBalance + amountToRestore;
+
+        await db.update(
+          'users',
+          {'amount': newBalance},
+          where: 'id = ?',
+          whereArgs: [userId],
+        );
+
+        await db.delete(
+          'transactions',
+          where: 'id = ?',
+          whereArgs: [transactionId],
+        );
+      }
+    }
+  }
 
 
   @override

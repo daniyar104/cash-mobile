@@ -269,4 +269,9 @@ class SembastDatabaseHelper implements AppDatabaseHelper {
     return total;
   }
 
+  @override
+  Future<void> deleteTransactionAndRestoreBalance(int transactionId, int userId) async {
+    final db = await database;
+
+  }
 }

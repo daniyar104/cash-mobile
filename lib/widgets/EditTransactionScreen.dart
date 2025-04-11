@@ -51,7 +51,7 @@ class _EditTransactionScreenState extends State<EditTransactionScreen> {
       final updatedTransaction = widget.transaction.copyWith(
         amount: double.tryParse(_amountController.text) ?? 0.0,
         category: _selectedCategory,
-        date: DateFormat('dd-MM-yyyy').format(_selectedDate),
+        date: DateFormat('yyyy-MM-dd').format(_selectedDate),
       );
 
       await _dbHelper.updateTransaction(updatedTransaction);
