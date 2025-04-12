@@ -1,6 +1,8 @@
   import 'package:flutter/material.dart';
+import 'package:flutter_localization/flutter_localization.dart';
   import 'package:untitled1/db/database_helper.dart';
   import 'package:shared_preferences/shared_preferences.dart';
+import 'package:untitled1/localization/locales.dart';
   import 'package:untitled1/screens/MainScreen.dart';
   import '../../db/app_database_helper.dart';
 import '../../db/database_factory.dart';
@@ -61,14 +63,14 @@ import '../../models/UserModel.dart';
               mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
                 Text(
-                  'Sign in',
+                  LocalData.welcomeBack.getString(context),
                   style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                 ),
                 SizedBox(height: 20),
                 TextFormField(
                   controller: _emailController,
                   decoration: InputDecoration(
-                    labelText: 'Email',
+                    labelText: LocalData.email.getString(context),
                     border: OutlineInputBorder(),
                   ),
                   validator: (value) {
@@ -82,7 +84,7 @@ import '../../models/UserModel.dart';
                 TextFormField(
                   controller: _passwordController,
                   decoration: InputDecoration(
-                    labelText: 'Password',
+                    labelText: LocalData.password.getString(context),
                     border: OutlineInputBorder(),
                   ),
                   obscureText: true,
@@ -96,13 +98,13 @@ import '../../models/UserModel.dart';
                 SizedBox(height: 20),
                 ElevatedButton(
                   onPressed: _login,
-                  child: Text('Sign In',
-                    style: TextStyle(fontSize: 18, color: Theme.of(context).colorScheme.onPrimary),
-                  ),
                   style: ElevatedButton.styleFrom(
                     // primary: Colors.blue,
                     minimumSize: Size(double.infinity, 50),
                     backgroundColor: Theme.of(context).colorScheme.primary,
+                  ),
+                  child: Text(LocalData.login.getString(context),
+                    style: TextStyle(fontSize: 18, color: Theme.of(context).colorScheme.onPrimary),
                   ),
                 ),
                 SizedBox(height: 10),
