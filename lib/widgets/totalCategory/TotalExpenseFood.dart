@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localization/flutter_localization.dart';
 
 import '../../db/app_database_helper.dart';
 import '../../db/database_factory.dart';
+import '../../localization/locales.dart';
 
 class TotalExpenseFood extends StatefulWidget {
   final int userId;
@@ -46,7 +48,7 @@ class _TotalExpenseFoodState extends State<TotalExpenseFood> {
                 Icon(Icons.fastfood, color: Theme.of(context).colorScheme.onPrimary),
                 SizedBox(width: 10),
                 Text(
-                  "Food",
+                  LocalData.food.getString(context),
                   style: TextStyle(
                     fontSize: 20,
                     color: Theme.of(context).colorScheme.onPrimary,

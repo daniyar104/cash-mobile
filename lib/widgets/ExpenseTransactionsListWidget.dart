@@ -4,6 +4,7 @@ import 'package:untitled1/models/TransactionModel.dart';
 import '../db/app_database_helper.dart';
 import '../db/database_factory.dart';
 import '../db/database_helper.dart';
+import '../localization/locales.dart';
 import 'EditTransactionScreen.dart';
 
 IconData getCategoryIcon(String category) {
@@ -167,7 +168,7 @@ class _ExpenseTransactionsListWidget extends State<ExpenseTransactionsListWidget
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      tx.category!,
+                    LocalData.getTranslatedCategory(context, tx.category),
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localization/flutter_localization.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:untitled1/screens/accountPage/settings/SettingsPage.dart';
 
 import '../../localization/locales.dart';
+import '../../widgets/ui/SettingsTile.dart';
 import '../login/login_page.dart';
 
 class MainAcountPage extends StatefulWidget {
@@ -33,31 +35,75 @@ class _MainAccountPageState extends State<MainAcountPage> {
   }
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return Scaffold(
-      appBar: AppBar(title: Text('Main Account')),
-      body: Center(
+      appBar: AppBar(
+        title: Text(LocalData.account.getString(context)),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.logout),
+            onPressed: _logout,
+          ),
+        ],
+      ),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(LocalData.body.getString(context)),
-            SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: _logout,
-              child: Text(LocalData.logout.getString(context)),
+            SettingsTile(
+                leadingIcon: Icons.settings,
+                localizationKey: LocalData.settings.getString(context),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => SettingsPage(),
+                    ),
+                  );
+                }
             ),
-            Center(
-              child: DropdownButton(
-                value: _selectedLanguage,
-                items: const [
-                  DropdownMenuItem(value: "en", child: Text("English")),
-                  DropdownMenuItem(value: "ru", child: Text("Russian")),
-                ],
-                onChanged: (value) {
-                  _setLocal(value);
-                },
-              ),
-            )
+            SizedBox(height: 10),
+            SettingsTile(
+                leadingIcon: Icons.style,
+                localizationKey: LocalData.stylesSetting.getString(context),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => SettingsPage(),
+                    ),
+                  );
+                }
+            ),
+            SizedBox(height: 10),
+            SettingsTile(
+                leadingIcon: Icons.class_outlined,
+                localizationKey: LocalData.templateSetting.getString(context),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => SettingsPage(),
+                    ),
+                  );
+                }
+            ),
+            // SizedBox(height: 20),
+            // ElevatedButton(
+            //   onPressed: _logout,
+            //   child: Text(LocalData.logout.getString(context)),
+            // ),
+            // Center(
+            //   child: DropdownButton(
+            //     value: _selectedLanguage,
+            //     items: const [
+            //       DropdownMenuItem(value: "en", child: Text("English")),
+            //       DropdownMenuItem(value: "ru", child: Text("Russian")),
+            //     ],
+            //     onChanged: (value) {
+            //       _setLocal(value);
+            //     },
+            //   ),
+            // )
           ],
         ),
       ),

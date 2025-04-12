@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localization/flutter_localization.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:untitled1/localization/locales.dart';
 import 'package:untitled1/screens/ExpenseInputScreen.dart';
 import 'package:untitled1/screens/accountPage/MainAccountPage.dart';
 import 'TransactionsListPage.dart';
@@ -61,11 +63,11 @@ class _MainScreenState extends State<MainScreen>{
         items: [
           BottomNavigationBarItem(
             icon: Icon(Icons.list),
-            label: 'Transactions',
+            label: LocalData.transactions.getString(context),
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person),
-            label: 'Account',
+            label: LocalData.account.getString(context),
           ),
         ],
 

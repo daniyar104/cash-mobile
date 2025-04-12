@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_localization/flutter_localization.dart';
 
 const List<MapLocale> LOCALES = [
@@ -14,6 +15,20 @@ mixin LocalData {
   static const String email = 'email';
   static const String username = 'username';
   static const String logout = 'logout';
+  static const String account = "account";
+  static const String transactions = "transactions";
+  static const String expenses = "expenses";
+  static const String income = "income";
+  static const String showAll = "showAll";
+  static const String settings = "settings";
+  static const String language = "language";
+  static const String pushNotifications = "pushNotifications";
+  static const String stylesSetting = "stylesSetting";
+  static const String templateSetting = "templateSetting";
+
+  // Categories
+  static const String food = "Food";
+
 
   static const Map<String, dynamic> EN = {
       title: 'Localiztion',
@@ -24,6 +39,17 @@ mixin LocalData {
       email: 'Email',
       username: 'Username',
       logout: 'Logout',
+      account: 'Account',
+      transactions: 'Transactions',
+      expenses: 'Expenses',
+      income: 'Income',
+      food: 'Food',
+      showAll: 'Show all',
+      settings: 'Settings',
+      language: 'Language',
+      pushNotifications: 'Notifications',
+      stylesSetting: 'Styles',
+      templateSetting: 'Template',
   };
 
   static const Map<String, dynamic> RU = {
@@ -35,5 +61,21 @@ mixin LocalData {
     email: "Электронная почта",
     username: "Имя пользователя",
     logout: "Выйти",
+    account: "Аккаунт",
+    transactions: "Транзакции",
+    expenses: "Расходы",
+    income: "Доход",
+    food: "Еда",
+    showAll: "Показать все",
+    settings: "Настройки",
+    language: "Язык",
+    pushNotifications: "Уведомления",
+    stylesSetting: "Стиль",
+    templateSetting: "Шаблон",
   };
+
+  static String getTranslatedCategory(BuildContext context, String? key) {
+    if (key == null) return '';
+    return key.getString(context);
+  }
 }

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localization/flutter_localization.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:untitled1/localization/locales.dart';
 
 import '../db/app_database_helper.dart';
 import '../db/database_factory.dart';
@@ -16,6 +18,7 @@ class _TotalTransactionBalansState extends State<TotalTransactionBalans> {
   double totalIncomes = 0.0;
   int userId = 0;
   final AppDatabaseHelper _dbHelper = getDatabaseHelper();
+  @override
   initState() {
     super.initState();
     _loadTotalExpenses();
@@ -45,9 +48,9 @@ class _TotalTransactionBalansState extends State<TotalTransactionBalans> {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text("Expense",),
+            Text(LocalData.expenses.getString(context)),
             Text(
-              '₸ ${totalExpenses.toStringAsFixed(1)}',
+              '₸ ${totalExpenses.toStringAsFixed(0)}',
               style: TextStyle(fontSize: 18, color: Colors.redAccent),
             ),
           ],
@@ -64,9 +67,9 @@ class _TotalTransactionBalansState extends State<TotalTransactionBalans> {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text("Income",),
+            Text(LocalData.income.getString(context)),
             Text(
-              '₸ ${totalIncomes.toStringAsFixed(1)}',
+              '₸ ${totalIncomes.toStringAsFixed(0)}',
               style: TextStyle(fontSize: 18, color: Colors.green),
             ),
           ],

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localization/flutter_localization.dart';
 import 'package:untitled1/models/TransactionModel.dart';
 
 import '../db/app_database_helper.dart';
 import '../db/database_factory.dart';
+import '../localization/locales.dart';
 import 'ExpenseTransactionsListWidget.dart';
 
 IconData getCategoryIcon(String category) {
@@ -101,7 +103,7 @@ class _RecentTransactionsWidgetState extends State<RecentTransactionsWidget> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                transaction.category ?? '',
+                                LocalData.getTranslatedCategory(context, transaction.category),
                                 style: TextStyle(
                                   fontSize: 18,
                                   fontWeight: FontWeight.bold,
@@ -149,7 +151,7 @@ class _RecentTransactionsWidgetState extends State<RecentTransactionsWidget> {
                   backgroundColor: Theme.of(context).colorScheme.primary,
                 ),
                 child: Text(
-                  'Show all',
+                  LocalData.showAll.getString(context),
                   style: TextStyle(
                     fontSize: 18,
                     color: Theme.of(context).colorScheme.onPrimary,
