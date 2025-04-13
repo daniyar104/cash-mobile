@@ -37,57 +37,52 @@ class _IncomeTransactionListWidget extends State<IncomeTransactionListWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('All Transactions'),
-      ),
-      body: FutureBuilder<List<TransactionModel>>(
-        future: _dbHelper.getUserIncomes(widget.userID),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
+    return FutureBuilder<List<TransactionModel>>(
+      future: _dbHelper.getUserIncomes(widget.userID),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Center(child: CircularProgressIndicator());
+        }
+        if (snapshot.hasError) {
+          return Center(child: Text('Error: ${snapshot.error}'));
+        }
+
+        final transactions = snapshot.data ?? [];
+
+        final Map<String, List<TransactionModel>> grouped = {};
+        for (var tx in transactions) {
+          final formattedDate = _formatDate(tx.date ?? '');
+          if (!grouped.containsKey(formattedDate)) {
+            grouped[formattedDate] = [];
           }
-          if (snapshot.hasError) {
-            return Center(child: Text('Error: ${snapshot.error}'));
-          }
+          grouped[formattedDate]!.add(tx);
+        }
 
-          final transactions = snapshot.data ?? [];
+        final sortedDates = grouped.keys.toList()
+          ..sort((a, b) => _compareDates(b, a));
 
-          final Map<String, List<TransactionModel>> grouped = {};
-          for (var tx in transactions) {
-            final formattedDate = _formatDate(tx.date ?? '');
-            if (!grouped.containsKey(formattedDate)) {
-              grouped[formattedDate] = [];
-            }
-            grouped[formattedDate]!.add(tx);
-          }
+        return ListView.builder(
+          itemCount: sortedDates.length,
+          itemBuilder: (context, index) {
+            final date = sortedDates[index];
+            final items = grouped[date]!;
 
-          final sortedDates = grouped.keys.toList()
-            ..sort((a, b) => _compareDates(b, a));
-
-          return ListView.builder(
-            itemCount: sortedDates.length,
-            itemBuilder: (context, index) {
-              final date = sortedDates[index];
-              final items = grouped[date]!;
-
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                    child: Text(
-                      date,
-                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                    ),
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  child: Text(
+                    date,
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   ),
-                  ...items.map((tx) => _buildTransactionItem(tx)).toList(),
-                ],
-              );
-            },
-          );
-        },
-      ),
+                ),
+                ...items.map((tx) => _buildTransactionItem(tx)).toList(),
+              ],
+            );
+          },
+        );
+      },
     );
   }
 

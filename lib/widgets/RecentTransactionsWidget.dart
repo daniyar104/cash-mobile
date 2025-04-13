@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localization/flutter_localization.dart';
 import 'package:untitled1/models/TransactionModel.dart';
+import 'package:untitled1/widgets/AllTransactionPageWithTypes.dart';
 
 import '../db/app_database_helper.dart';
 import '../db/database_factory.dart';
@@ -141,7 +142,8 @@ class _RecentTransactionsWidgetState extends State<RecentTransactionsWidget> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => ExpenseTransactionsListWidget(userID: widget.userID),
+                      builder: (context) => const AllTransactionPageWithTypes(),
+                      // builder: (context) => ExpenseTransactionsListWidget(userID: widget.userID),
                       // builder: (context) => IncomeTransactionListWidget(userID: widget.userID),
                     ),
                   );

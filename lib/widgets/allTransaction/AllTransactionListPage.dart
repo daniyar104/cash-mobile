@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:untitled1/models/TransactionModel.dart';
-import '../db/app_database_helper.dart';
-import '../db/database_factory.dart';
-import '../db/database_helper.dart';
-import '../localization/locales.dart';
-import 'EditTransactionScreen.dart';
+
+import '../../db/app_database_helper.dart';
+import '../../db/database_factory.dart';
+import '../../db/database_helper.dart';
+import '../../localization/locales.dart';
+import '../../models/TransactionModel.dart';
+import '../EditTransactionScreen.dart';
+
 
 IconData getCategoryIcon(String category) {
   switch (category.toLowerCase()) {
@@ -25,23 +27,21 @@ IconData getCategoryIcon(String category) {
       return Icons.category;
   }
 }
-
-class ExpenseTransactionsListWidget extends StatefulWidget {
+class AllTransactionListPage extends StatefulWidget {
   final int userID;
-
-  const ExpenseTransactionsListWidget({super.key, required this.userID});
+  const AllTransactionListPage({super.key, required this.userID});
 
   @override
-  State<ExpenseTransactionsListWidget> createState() => _ExpenseTransactionsListWidget();
+  State<AllTransactionListPage> createState() => _AllTransactionListPageState();
 }
 
-class _ExpenseTransactionsListWidget extends State<ExpenseTransactionsListWidget> {
+class _AllTransactionListPageState extends State<AllTransactionListPage> {
   final AppDatabaseHelper _dbHelper = getDatabaseHelper();
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<TransactionModel>>(
-      future: _dbHelper.getUserExpenses(widget.userID),
+      future: _dbHelper.getTransactions(widget.userID),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Center(child: CircularProgressIndicator());
@@ -163,7 +163,7 @@ class _ExpenseTransactionsListWidget extends State<ExpenseTransactionsListWidget
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                    LocalData.getTranslatedCategory(context, tx.category),
+                      LocalData.getTranslatedCategory(context, tx.category),
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
@@ -183,7 +183,7 @@ class _ExpenseTransactionsListWidget extends State<ExpenseTransactionsListWidget
               ],
             ),
             Text(
-              '-${tx.amount}',
+              '${tx.amount}',
               style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,

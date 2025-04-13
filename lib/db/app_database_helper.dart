@@ -17,6 +17,7 @@ abstract class AppDatabaseHelper {
 
   // Transaction methods
   Future<List<TransactionModel>> getAllTransactions();
+  Future<List<TransactionModel>> getTransactions(int userId);
   Future<List<TransactionModel>> getUserTransactions(int userId);
   Future<int> insertTransaction(TransactionModel transaction);
   Future<int> updateTransaction(TransactionModel transaction);
