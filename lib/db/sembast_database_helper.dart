@@ -270,6 +270,13 @@ class SembastDatabaseHelper implements AppDatabaseHelper {
   }
 
   @override
+  Future<String> getUserNameById(int id) async {
+    final db = await database;
+    final record = await usersStore.record(id).get(db);
+    return record != null ? record['username'] : '';
+  }
+
+  @override
   Future<void> deleteTransactionAndRestoreBalance(int transactionId, int userId) async {
     final db = await database;
 

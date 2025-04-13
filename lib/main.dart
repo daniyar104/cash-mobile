@@ -4,7 +4,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:untitled1/localization/locales.dart';
 import 'package:untitled1/screens/MainScreen.dart';
 import 'package:untitled1/screens/login/login_page.dart';
-import 'package:untitled1/testPage.dart';
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
   final prefs = await SharedPreferences.getInstance();

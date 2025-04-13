@@ -67,6 +67,22 @@ class DataBaseHelper implements AppDatabaseHelper {
       return UserModel.fromMap(maps[i]);
     });
   }
+
+  @override
+  Future<String> getUserNameById(int id) async {
+    final db = await database;
+    final List<Map<String, dynamic>> maps = await db.query(
+      'users',
+      where: 'id = ?',
+      whereArgs: [id],
+    );
+    if (maps.isNotEmpty) {
+      return maps.first['username'] as String;
+    } else {
+      return '';
+    }
+  }
+
   @override
   Future<UserModel?> getUserById(int id) async {
     final db = await database;

@@ -1,30 +1,43 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localization/flutter_localization.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:untitled1/db/app_database_helper.dart';
 import 'package:untitled1/screens/accountPage/settings/SettingsPage.dart';
+import 'package:untitled1/screens/accountPage/settings/styles/SelectStylePage.dart';
+import 'package:untitled1/screens/accountPage/settings/template/TemplatePage.dart';
 
+import '../../db/database_factory.dart';
 import '../../localization/locales.dart';
 import '../../widgets/ui/SettingsTile.dart';
 import '../login/login_page.dart';
 
 class MainAcountPage extends StatefulWidget {
+  const MainAcountPage({super.key});
+
   @override
-  State<MainAcountPage> createState() => _MainAccountPageState();
+  State<MainAcountPage> createState() => _MainAcountPageState();
 }
 
-class _MainAccountPageState extends State<MainAcountPage> {
-  late FlutterLocalization _flutterLocalization;
-  late String _selectedLanguage;
-
+class _MainAcountPageState extends State<MainAcountPage> {
+  final AppDatabaseHelper _dbHelper = getDatabaseHelper();
+  late String name = "";
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    _flutterLocalization = FlutterLocalization.instance;
-    _selectedLanguage = _flutterLocalization.currentLocale!.languageCode;
-    print(_selectedLanguage);
+    _loadUserName();
   }
 
+  Future<String?> _loadUserName() async {
+    final prefs = await SharedPreferences.getInstance();
+    final userId = prefs.getInt('userId');
+    if (userId != null) {
+      final users = await _dbHelper.getUsers();
+      final user = users.firstWhere((user) => user.id == userId);
+      name = user.username!;
+      setState(() {});
+    }
+    return name;
+  }
   Future<void> _logout() async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.remove('userId');
@@ -49,6 +62,20 @@ class _MainAccountPageState extends State<MainAcountPage> {
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
         child: Column(
           children: [
+            Container(
+              height: 100,
+              width: 100,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: Colors.grey[300],
+                // image: DecorationImage(
+                //   image: AssetImage('assets/images/user.png'),
+                //   fit: BoxFit.cover,
+                // ),
+              ),
+            ),
+            Text(name!, style: TextStyle(fontSize: 20)),
+            SizedBox(height: 20),
             SettingsTile(
                 leadingIcon: Icons.settings,
                 localizationKey: LocalData.settings.getString(context),
@@ -69,7 +96,7 @@ class _MainAccountPageState extends State<MainAcountPage> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => SettingsPage(),
+                      builder: (context) => SelectStylePage(),
                     ),
                   );
                 }
@@ -82,7 +109,7 @@ class _MainAccountPageState extends State<MainAcountPage> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => SettingsPage(),
+                      builder: (context) => TemplatePage(),
                     ),
                   );
                 }
@@ -108,17 +135,5 @@ class _MainAccountPageState extends State<MainAcountPage> {
         ),
       ),
     );
-  }
-  void _setLocal(String? value) {
-    if (value == null) return;
-    if (value == "en") {
-      _flutterLocalization.translate("en");
-    } else if (value == "ru") {
-      _flutterLocalization.translate("ru");
-    }
-
-    setState(() {
-      _selectedLanguage = value!;
-    });
   }
 }

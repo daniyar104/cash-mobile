@@ -10,6 +10,7 @@ abstract class AppDatabaseHelper {
   // User methods
   Future<List<UserModel>> getUsers();
   Future<UserModel?> getUserById(int id);
+  Future<String> getUserNameById(int id);
   Future<int> insertUser(UserModel user);
   Future<int> updateUser(UserModel user);
   Future<int> deleteUser(int id);

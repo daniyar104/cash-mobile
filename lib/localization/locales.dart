@@ -7,6 +7,7 @@ const List<MapLocale> LOCALES = [
 ];
 
 mixin LocalData {
+  static const String welcome = 'welcome';
   static const String title = 'title';
   static const String body = 'body';
   static const String welcomeBack = 'welcomeBack';
@@ -34,6 +35,7 @@ mixin LocalData {
       title: 'Localiztion',
       body: 'Welcome to the localization example app. This is a simple app to demonstrate localization in Flutter. You can change the language from the settings screen.',
       welcomeBack: 'Welcome back',
+      welcome: 'Welcome',
       login: 'Login',
       password: 'Password',
       email: 'Email',
@@ -56,6 +58,7 @@ mixin LocalData {
     title: 'Локализация',
     body: 'Добро пожаловать в пример локализации приложения. Это простое приложение для демонстрации локализации в Flutter. Вы можете изменить язык на экране настроек.',
     welcomeBack: "Добро пожаловать",
+    welcome: "Добро пожаловать,",
     login: "Войти",
     password: "Пароль",
     email: "Электронная почта",
