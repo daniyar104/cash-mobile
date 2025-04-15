@@ -27,15 +27,17 @@ mixin LocalData {
   static const String stylesSetting = "stylesSetting";
   static const String templateSetting = "templateSetting";
 
+
   // Categories
   static const String food = "Food";
+  static const String shopping = "Shopping";
 
 
   static const Map<String, dynamic> EN = {
       title: 'Localiztion',
       body: 'Welcome to the localization example app. This is a simple app to demonstrate localization in Flutter. You can change the language from the settings screen.',
       welcomeBack: 'Welcome back',
-      welcome: 'Welcome',
+      welcome: 'Welcome,',
       login: 'Login',
       password: 'Password',
       email: 'Email',
@@ -45,13 +47,17 @@ mixin LocalData {
       transactions: 'Transactions',
       expenses: 'Expenses',
       income: 'Income',
-      food: 'Food',
       showAll: 'Show all',
       settings: 'Settings',
       language: 'Language',
       pushNotifications: 'Notifications',
       stylesSetting: 'Styles',
       templateSetting: 'Template',
+
+
+    // Categories
+    food: 'Food',
+    shopping: 'Shopping',
   };
 
   static const Map<String, dynamic> RU = {
@@ -66,15 +72,18 @@ mixin LocalData {
     logout: "Выйти",
     account: "Аккаунт",
     transactions: "Транзакции",
-    expenses: "Расходы",
+    expenses: "Расход",
     income: "Доход",
-    food: "Еда",
     showAll: "Показать все",
     settings: "Настройки",
     language: "Язык",
     pushNotifications: "Уведомления",
     stylesSetting: "Стиль",
     templateSetting: "Шаблон",
+
+    // Categories
+    food: "Еда",
+    shopping: "Покупки",
   };
 
   static String getTranslatedCategory(BuildContext context, String? key) {

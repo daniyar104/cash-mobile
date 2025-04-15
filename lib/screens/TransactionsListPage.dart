@@ -7,6 +7,7 @@ import '../db/app_database_helper.dart';
 import '../db/database_factory.dart';
 import '../localization/locales.dart';
 import '../widgets/syncfusion/ExpensesChart.dart';
+import '../widgets/totalCategory/TotalExpenseShoping.dart';
 
 class TransactionsListPage extends StatefulWidget {
   final int userID;
@@ -38,9 +39,25 @@ class _TransactionsListPageState extends State<TransactionsListPage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      '${LocalData.welcome.getString(context)} ${"${snapshot.data?.username}!"}',
-                      style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    Row(
+                      children: [
+                        Text(
+                          '${LocalData.welcome.getString(context)} ${"${snapshot.data?.username}!"}',
+                          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                        ),
+                        Spacer(),
+                        Container(
+                          margin: const EdgeInsets.only(left: 10),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(50),
+                          ),
+                          child: Icon(
+                            Icons.circle,
+                            size: 50,
+                            color: Colors.grey[200],
+                          ),
+                        )
+                      ],
                     ),
                     SizedBox(height: 10),
                     AccountSummaryWidget(),
@@ -55,6 +72,7 @@ class _TransactionsListPageState extends State<TransactionsListPage> {
                       child: Column(
                         children: [
                           TotalExpenseFood(userId: widget.userID),
+                          TotalExpenseShopping(userId: widget.userID),
                           RecentTransactionsWidget(userID: widget.userID),
                         ],
                       ),

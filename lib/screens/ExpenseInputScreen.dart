@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localization/flutter_localization.dart';
 import 'package:intl/intl.dart';
 import 'package:untitled1/db/database_factory.dart';
-
-import '../db/database_helper.dart';
-import '../db/sembast_database_helper.dart';
+import '../localization/locales.dart';
 import '../models/TransactionModel.dart';
 
 class ExpenseInputScreen extends StatefulWidget {
@@ -110,9 +109,9 @@ class _ExpenseInputScreenState extends State<ExpenseInputScreen> {
                 ToggleButtons(
                   borderRadius: BorderRadius.circular(30),
                   isSelected: [selectedTypeIndex == 0, selectedTypeIndex == 1],
-                  children: const [
-                    Padding(padding: EdgeInsets.symmetric(horizontal: 20), child: Text('Expense')),
-                    Padding(padding: EdgeInsets.symmetric(horizontal: 20), child: Text('Income')),
+                  children: [
+                    Padding(padding: EdgeInsets.symmetric(horizontal: 20), child: Text('${LocalData.expenses.getString(context)}')),
+                    Padding(padding: EdgeInsets.symmetric(horizontal: 20), child: Text('${LocalData.income.getString(context)}')),
                   ],
                   onPressed: (index) {
                     setState(() {

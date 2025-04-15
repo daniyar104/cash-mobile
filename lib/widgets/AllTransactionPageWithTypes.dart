@@ -15,7 +15,7 @@ class AllTransactionPageWithTypes extends StatefulWidget {
 class _AllTransactionPageWithTypesState extends State<AllTransactionPageWithTypes> {
   int userID = 0;
   final List<String> filters = ["All", "Expense", "Income", "Transfer"];
-  String selectedFilter = "Expense";
+  String selectedFilter = "All";
   @override
   void initState() {
     super.initState();
@@ -48,7 +48,7 @@ class _AllTransactionPageWithTypesState extends State<AllTransactionPageWithType
       body: Column(
         children: [
           Container(
-            margin: EdgeInsets.only(left: 50),
+            padding: EdgeInsets.only(left: 50),
             height: 40,
             child: ListView.builder(
                 scrollDirection: Axis.horizontal,
@@ -66,7 +66,7 @@ class _AllTransactionPageWithTypesState extends State<AllTransactionPageWithType
                     margin: EdgeInsets.symmetric(horizontal: 8),
                     padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                     decoration: BoxDecoration(
-                      color: isSelected ? Colors.blueAccent : Colors.grey[300],
+                      color: isSelected ? Theme.of(context).colorScheme.primary : Colors.grey[300],
                       borderRadius: BorderRadius.circular(20),
                     ),
                     child: Center(
@@ -75,6 +75,7 @@ class _AllTransactionPageWithTypesState extends State<AllTransactionPageWithType
                         style: TextStyle(
                           color: isSelected ? Colors.white : Colors.black,
                           fontWeight: FontWeight.bold,
+                          fontSize: 16,
                         ),
                       ),
                     ),

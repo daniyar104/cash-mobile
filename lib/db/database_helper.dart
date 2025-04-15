@@ -283,6 +283,22 @@ class DataBaseHelper implements AppDatabaseHelper {
     return total != null ? (total as num).toDouble() : 0.0;
   }
 
+  @override
+  Future<double> getTotalSpentOnShoppingForCurrentMonth(int userId) async {
+    final db = await database;
+    final result = await db.rawQuery(
+      '''
+      SELECT SUM(amount) as total
+      FROM transactions
+      WHERE user_id = ? AND type = 'expense' AND category = 'Shopping' AND date BETWEEN ? AND ?
+      ''',
+      [userId, '2025-04-01', '2025-04-31'],
+    );
+
+    final total = result.first['total'];
+    return total != null ? (total as num).toDouble() : 0.0;
+  }
+
 
   @override
   Future<void> deleteTransactionAndRestoreBalance(int transactionId, int userId) async {

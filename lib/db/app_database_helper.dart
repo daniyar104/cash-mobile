@@ -31,6 +31,7 @@ abstract class AppDatabaseHelper {
 
   Future<double> getTotalSpentOnFood(int userId);
   Future<double> getTotalSpentOnFoodForCurrentMonth(int userId);
+  Future<double> getTotalSpentOnShoppingForCurrentMonth(int userId);
   Future<void> deleteTransactionAndRestoreBalance(int transactionId, int userId);
 }
 

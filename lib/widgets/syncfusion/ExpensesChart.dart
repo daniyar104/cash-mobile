@@ -66,7 +66,6 @@ class _ExpensesChartState extends State<ExpensesChart> {
             primaryYAxis: NumericAxis(
               labelFormat: '{value} ₸',
             ),
-            title: ChartTitle(text: 'Expenses by day'),
             tooltipBehavior: TooltipBehavior(enable: true),
             series: <CartesianSeries>[
               ColumnSeries<_DailyExpense, DateTime>(
