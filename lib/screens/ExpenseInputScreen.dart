@@ -5,6 +5,7 @@ import 'package:untitled1/db/database_factory.dart';
 import 'package:untitled1/screens/TranscationInput/top_bar_switcher.dart';
 import '../localization/locales.dart';
 import '../models/TransactionModel.dart';
+import '../utils/categories.dart';
 import 'TranscationInput/amount_display.dart';
 import 'TranscationInput/date_time_category_row.dart';
 import 'TranscationInput/keypad.dart';
@@ -21,10 +22,17 @@ class _ExpenseInputScreenState extends State<ExpenseInputScreen> {
   String amount = '';
   DateTime selectedDate = DateTime.now();
   TimeOfDay selectedTime = TimeOfDay.now();
-  String selectedCategory = 'Food';
+  String selectedCategory = '';
   int selectedTypeIndex = 0;
-  final List<String> categories = ['Food', 'Transportation', 'Entertainment', 'Shopping', 'Other'];
+  late List<String> categories;
 
+  @override
+  void didChangeDependencies() {
+    // TODO: implement initState
+    super.didChangeDependencies();
+    categories = categoriesList;
+    selectedCategory = categories[0];
+  }
   final _dbHelper = getDatabaseHelper();
   void _deleteLast() {
     setState(() {
@@ -46,14 +54,14 @@ class _ExpenseInputScreenState extends State<ExpenseInputScreen> {
   void _saveTransaction() async {
     double amountValue = double.tryParse(amount) ?? 0.0;
     if (amountValue == 0.0) {
-      print("Amount cannot be zero");
       return;
     }
     String formattedDate = DateFormat('yyyy-MM-dd').format(selectedDate);
-
+    String formattedTime = selectedTime.format(context);
     TransactionModel transaction = TransactionModel(
       amount: amountValue,
       date: formattedDate,
+      time:formattedTime,
       category: selectedCategory,
       userId: widget.userId,
       type: selectedTypeIndex == 0 ? 'expense' : 'income',
@@ -110,7 +118,7 @@ class _ExpenseInputScreenState extends State<ExpenseInputScreen> {
               const Spacer(),
               DateTimeCategoryRow(
                 date: formattedDate,
-                time: selectedTime,
+                time: selectedTime.format(context),
                 selectedCategory: selectedCategory,
                 categories: categories,
                 onSelectDate: _selectDate,

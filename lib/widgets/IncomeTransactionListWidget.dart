@@ -4,25 +4,9 @@ import '../db/app_database_helper.dart';
 import '../db/database_factory.dart';
 import '../db/database_helper.dart';
 import '../models/TransactionModel.dart';
+import '../utils/category_icon.dart';
 import 'EditTransactionScreen.dart';
-IconData getCategoryIcon(String category) {
-  switch (category.toLowerCase()) {
-    case 'food':
-      return Icons.fastfood;
-    case 'transport':
-      return Icons.directions_bus;
-    case 'shopping':
-      return Icons.shopping_cart;
-    case 'entertainment':
-      return Icons.movie;
-    case 'health':
-      return Icons.health_and_safety;
-    case 'taxi':
-      return Icons.local_taxi;
-    default:
-      return Icons.category;
-  }
-}
+
 class IncomeTransactionListWidget extends StatefulWidget {
   final int userID;
 
@@ -179,14 +163,25 @@ class _IncomeTransactionListWidget extends State<IncomeTransactionListWidget> {
                 ),
               ],
             ),
-            Text(
-              '${tx.amount}',
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-                color: Colors.green
-              ),
-            ),
+            Column(
+              children: [
+                Text(
+                  '${tx.amount}',
+                  style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.green
+                  ),
+                ),
+                Text("${tx.time}",
+                  style: TextStyle(
+                      fontSize: 16,
+                      color: Theme.of(context).textTheme.bodyMedium?.color,
+                      fontWeight: FontWeight.bold
+                  ),
+                ),
+              ],
+            )
           ],
         ),
       ),

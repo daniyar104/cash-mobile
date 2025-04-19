@@ -6,27 +6,10 @@ import '../../db/database_factory.dart';
 import '../../db/database_helper.dart';
 import '../../localization/locales.dart';
 import '../../models/TransactionModel.dart';
+import '../../utils/category_icon.dart';
 import '../EditTransactionScreen.dart';
 
 
-IconData getCategoryIcon(String category) {
-  switch (category.toLowerCase()) {
-    case 'food':
-      return Icons.fastfood;
-    case 'transport':
-      return Icons.directions_bus;
-    case 'shopping':
-      return Icons.shopping_cart;
-    case 'entertainment':
-      return Icons.movie;
-    case 'health':
-      return Icons.health_and_safety;
-    case 'taxi':
-      return Icons.local_taxi;
-    default:
-      return Icons.category;
-  }
-}
 class AllTransactionListPage extends StatefulWidget {
   final int userID;
   const AllTransactionListPage({super.key, required this.userID});
@@ -182,13 +165,18 @@ class _AllTransactionListPageState extends State<AllTransactionListPage> {
                 ),
               ],
             ),
-            Text(
-              '${tx.amount}',
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
+            Column(
+              children: [
+                Text(
+                  '${tx.amount}',
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                Text(tx.time),
+              ],
+            )
           ],
         ),
       ),

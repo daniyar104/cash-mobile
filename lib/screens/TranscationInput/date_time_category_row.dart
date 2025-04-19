@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class DateTimeCategoryRow extends StatelessWidget {
   final String date;
-  final TimeOfDay time;
+  final String time;
   final List<String> categories;
   final String selectedCategory;
   final VoidCallback onSelectDate;
@@ -10,11 +10,7 @@ class DateTimeCategoryRow extends StatelessWidget {
   final Function(String?) onCategoryChanged;
 
   const DateTimeCategoryRow({super.key, required this.date, required this.time, required this.categories, required this.selectedCategory, required this.onSelectDate, required this.onSelectTime, required this.onCategoryChanged});
-  String formatTimeOfDay(TimeOfDay time) {
-    final hour = time.hour.toString().padLeft(2, '0');
-    final minute = time.minute.toString().padLeft(2, '0');
-    return '$hour:$minute';
-  }
+
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -46,7 +42,7 @@ class DateTimeCategoryRow extends StatelessWidget {
               color: Colors.grey[200],
               borderRadius: BorderRadius.circular(10),
             ),
-            child: Text(formatTimeOfDay(time)),
+            child: Text(time),
           ),
         ),
         const SizedBox(width: 12),

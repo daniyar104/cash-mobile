@@ -5,26 +5,9 @@ import '../db/app_database_helper.dart';
 import '../db/database_factory.dart';
 import '../db/database_helper.dart';
 import '../localization/locales.dart';
+import '../utils/category_icon.dart';
 import 'EditTransactionScreen.dart';
 
-IconData getCategoryIcon(String category) {
-  switch (category.toLowerCase()) {
-    case 'food':
-      return Icons.fastfood;
-    case 'transport':
-      return Icons.directions_bus;
-    case 'shopping':
-      return Icons.shopping_cart;
-    case 'entertainment':
-      return Icons.movie;
-    case 'health':
-      return Icons.health_and_safety;
-    case 'taxi':
-      return Icons.local_taxi;
-    default:
-      return Icons.category;
-  }
-}
 
 class ExpenseTransactionsListWidget extends StatefulWidget {
   final int userID;
@@ -162,8 +145,7 @@ class _ExpenseTransactionsListWidget extends State<ExpenseTransactionsListWidget
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                    LocalData.getTranslatedCategory(context, tx.category),
+                    Text(LocalData.getTranslatedCategory(context, tx.category),
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
@@ -182,12 +164,19 @@ class _ExpenseTransactionsListWidget extends State<ExpenseTransactionsListWidget
                 ),
               ],
             ),
-            Text(
-              '-${tx.amount}',
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),
+            Column(
+              children: [
+                Text(
+                  '-${tx.amount.toInt()}',
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                Text(
+                  '${tx.time}'
+                )
+              ],
             ),
           ],
         ),

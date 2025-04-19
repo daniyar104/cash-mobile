@@ -6,26 +6,7 @@ import 'package:untitled1/widgets/AllTransactionPageWithTypes.dart';
 import '../db/app_database_helper.dart';
 import '../db/database_factory.dart';
 import '../localization/locales.dart';
-import 'ExpenseTransactionsListWidget.dart';
-
-IconData getCategoryIcon(String category) {
-  switch (category.toLowerCase()) {
-    case 'food':
-      return Icons.fastfood;
-    case 'transport':
-      return Icons.directions_bus;
-    case 'shopping':
-      return Icons.shopping_cart;
-    case 'entertainment':
-      return Icons.movie;
-    case 'health':
-      return Icons.health_and_safety;
-    case "taxi":
-      return Icons.local_taxi;
-    default:
-      return Icons.category;
-  }
-}
+import '../utils/category_icon.dart';
 class RecentTransactionsWidget extends StatefulWidget {
   final int userID;
 
@@ -123,12 +104,17 @@ class _RecentTransactionsWidgetState extends State<RecentTransactionsWidget> {
                           ),
                         ],
                       ),
-                      Text(
-                        '-${transaction.amount}',
-                        style: const TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
+                      Column(
+                        children: [
+                          Text(
+                            '-${transaction.amount}',
+                            style: const TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          Text(transaction.time),
+                        ],
                       )
                     ],
                   ),

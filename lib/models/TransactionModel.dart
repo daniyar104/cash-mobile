@@ -3,6 +3,7 @@ class TransactionModel {
   final String title;
   final double amount;
   final String date;
+  final String time;
   final String? category;
   final int userId;
   final String type;
@@ -12,6 +13,7 @@ class TransactionModel {
     required this.title,
     required this.amount,
     required this.date,
+    required this.time,
     required this.category,
     required this.userId,
     required this.type,
@@ -23,6 +25,7 @@ class TransactionModel {
       'title': title,
       'amount': amount,
       'date': date,
+      'time': time,
       'category': category,
       'user_id': userId,
       'type': type,
@@ -35,6 +38,7 @@ class TransactionModel {
       title: map['title'],
       amount: map['amount'],
       date: map['date'],
+      time: map['time'],
       category: map['category'],
       userId: map['user_id'],
       type: map['type'],
@@ -44,6 +48,7 @@ class TransactionModel {
     int? id,
     double? amount,
     String? date,
+    String? time,
     String? category,
     String? type,
     String? title,
@@ -53,6 +58,7 @@ class TransactionModel {
       id: id ?? this.id,
       amount: amount ?? this.amount,
       date: date ?? this.date,
+      time: time ?? this.time,
       category: category ?? this.category,
       type: type ?? this.type,
       title: title ?? this.title,

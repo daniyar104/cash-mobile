@@ -44,6 +44,7 @@ class DataBaseHelper implements AppDatabaseHelper {
         title TEXT,
         amount REAL,
         date TEXT,
+        time TEXT,
         category TEXT,
         user_id INTEGER,
         type TEXT,
