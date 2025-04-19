@@ -3,6 +3,7 @@ import 'package:flutter_localization/flutter_localization.dart';
 import 'package:untitled1/widgets/AccountSummaryWidget.dart';
 import 'package:untitled1/widgets/RecentTransactionsWidget.dart';
 import 'package:untitled1/widgets/totalCategory/TotalExpenseFood.dart';
+import 'package:untitled1/widgets/welcomeWidget/WelcomeWidget.dart';
 import '../db/app_database_helper.dart';
 import '../db/database_factory.dart';
 import '../localization/locales.dart';
@@ -41,9 +42,15 @@ class _TransactionsListPageState extends State<TransactionsListPage> {
                   children: [
                     Row(
                       children: [
-                        Text(
-                          '${LocalData.welcome.getString(context)} ${"${snapshot.data?.username}!"}',
-                          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                        Row(
+                          children: [
+                            WelcomeWidget(),
+                            Text("${snapshot.data?.username}",
+                                style: TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black)),
+                          ],
                         ),
                         Spacer(),
                         Container(

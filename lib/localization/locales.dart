@@ -26,6 +26,14 @@ mixin LocalData {
   static const String pushNotifications = "pushNotifications";
   static const String stylesSetting = "stylesSetting";
   static const String templateSetting = "templateSetting";
+  static const String categories = "categories";
+  static const String summary = "summary";
+
+  //Time Greeting
+  static const String morning = "morning";
+  static const String afternoon = "afternoon";
+  static const String evening = "evening";
+  static const String night = "night";
 
 
   // Categories
@@ -53,7 +61,15 @@ mixin LocalData {
       pushNotifications: 'Notifications',
       stylesSetting: 'Styles',
       templateSetting: 'Template',
+      categories: 'Categories',
+      summary: 'Total Balance',
 
+
+    //Time greeting
+    morning: 'Good morning',
+    afternoon: 'Good afternoon',
+    evening: 'Good evening',
+    night: 'Good night',
 
     // Categories
     food: 'Food',
@@ -80,6 +96,15 @@ mixin LocalData {
     pushNotifications: "Уведомления",
     stylesSetting: "Стиль",
     templateSetting: "Шаблон",
+    categories: "Категории",
+    summary: "Общий баланс",
+
+    //Time greeting
+    morning: "Доброе утро",
+    afternoon: "Добрый день",
+    evening: "Добрый вечер",
+    night: "Доброй ночи",
+
 
     // Categories
     food: "Еда",

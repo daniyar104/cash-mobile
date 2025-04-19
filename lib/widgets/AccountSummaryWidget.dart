@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localization/flutter_localization.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:untitled1/db/app_database_helper.dart';
 import 'package:untitled1/db/database_factory.dart';
 
+import '../localization/locales.dart';
 import 'TotalTransactionBalans.dart';
 
 class AccountSummaryWidget extends StatefulWidget{
@@ -47,11 +49,7 @@ class _AccountSummaryWidgetState extends State<AccountSummaryWidget>{
             children: [
               Row(
                 children: [
-                  Icon(
-                    Icons.account_balance_wallet,
-                    size: 30,
-                  ),
-                  Text("Account Summary",
+                  Text(LocalData.summary.getString(context),
                     style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   ),
                 ],

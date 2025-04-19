@@ -2,8 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localization/flutter_localization.dart';
 import 'package:intl/intl.dart';
 import 'package:untitled1/db/database_factory.dart';
+import 'package:untitled1/screens/TranscationInput/top_bar_switcher.dart';
 import '../localization/locales.dart';
 import '../models/TransactionModel.dart';
+import 'TranscationInput/amount_display.dart';
+import 'TranscationInput/date_time_category_row.dart';
+import 'TranscationInput/keypad.dart';
 
 class ExpenseInputScreen extends StatefulWidget {
   final int userId;
@@ -88,161 +92,39 @@ class _ExpenseInputScreenState extends State<ExpenseInputScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final dateString = DateFormat('d MMM').format(selectedDate);
-    final timeString = selectedTime.format(context);
+    String formattedDate = DateFormat('dd MM').format(selectedDate);
     return Scaffold(
-      backgroundColor: Colors.white,
       body: SafeArea(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Row(
-              children: [
-                Align(
-                  alignment: Alignment.centerRight,
-                  child: TextButton(
-                    onPressed: () => Navigator.pop(context),
-                    child: Icon(Icons.close),
-                  ),
-                ),
-                const SizedBox(width: 60),
-                ToggleButtons(
-                  borderRadius: BorderRadius.circular(30),
-                  isSelected: [selectedTypeIndex == 0, selectedTypeIndex == 1],
-                  children: [
-                    Padding(padding: EdgeInsets.symmetric(horizontal: 20), child: Text('${LocalData.expenses.getString(context)}')),
-                    Padding(padding: EdgeInsets.symmetric(horizontal: 20), child: Text('${LocalData.income.getString(context)}')),
-                  ],
-                  onPressed: (index) {
-                    setState(() {
-                      selectedTypeIndex = index;
-                    });
-                  },
-                ),
-              ],
-            ),
-            const SizedBox(height: 32),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Spacer(),
-                Padding(
-                    padding: EdgeInsets.only(left: 35),
-                    child: Text(
-                    '₸ ${amount.isEmpty ? '0.00' : amount}',
-                      style: const TextStyle(fontSize: 48, fontWeight: FontWeight.bold),
-                    ),
-                ),
-                Spacer(),
-                Align(
-                  alignment: Alignment.topRight,
-                  child: IconButton(
-                    icon: const Icon(Icons.backspace_outlined),
-                    onPressed: _deleteLast,
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 16),
-            Spacer(),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                GestureDetector(
-                  onTap: _selectDate,
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 8),
-                    decoration: BoxDecoration(
-                      color: Colors.grey[200],
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: Row(
-                      children: [
-                        const Icon(Icons.calendar_today, size: 16),
-                        const SizedBox(width: 4),
-                        Text('Today, $dateString'),
-                      ],
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 12),
-                GestureDetector(
-                  onTap: _selectTime,
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                    decoration: BoxDecoration(
-                      color: Colors.grey[200],
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: Text(timeString),
-                  ),
-                ),
-                const SizedBox(width: 12),
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.primaryContainer,
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: DropdownButton<String>(
-                    value: selectedCategory,
-                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                      color: Theme.of(context).textTheme.bodyMedium!.color,
-                      fontSize: 14,
-                    ),
-                    onChanged: (String? newValue) {
-                      setState(() {
-                        selectedCategory = newValue!;
-                      });
-                    },
-                    items: categories.map<DropdownMenuItem<String>>((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Text(value),
-                      );
-                    }).toList(),
-                    underline: SizedBox(),
-                    isDense: true,
-                  ),
-                ),
-              ],
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: GridView.builder(
-                shrinkWrap: true,
-                itemCount: 12,
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 3,
-                  childAspectRatio: 2,
-                  crossAxisSpacing: 8,
-                  mainAxisSpacing: 8,
-                ),
-                itemBuilder: (context, index) {
-                  final buttons = ['1','2','3','4','5','6','7','8','9','.','0','✔'];
-                  final value = buttons[index];
-                  return ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: value == '✔' ? Theme.of(context).colorScheme.primary : Colors.grey[200],
-                      foregroundColor: value == '✔' ? Colors.white : Colors.black,
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                    ),
-                    onPressed: () {
-                      if (value == '✔') {
-                        _saveTransaction();
-                      } else {
-                        _addDigit(value);
-                      }
-                    },
-                    child: Text(value, style: const TextStyle(fontSize: 20)),
-                  );
-                },
+          child: Column(
+            children: [
+              TopBarSwitcher(
+                  onToggle: (index) => setState(() => selectedTypeIndex = index),
+                  selectedIndex: selectedTypeIndex
               ),
-            )
-          ],
-        ),
+              const SizedBox(height: 32),
+              AmountDisplay(
+                amount: amount,
+                onBackspace: _deleteLast,
+              ),
+              const SizedBox(height: 16),
+              const Spacer(),
+              DateTimeCategoryRow(
+                date: formattedDate,
+                time: selectedTime,
+                selectedCategory: selectedCategory,
+                categories: categories,
+                onSelectDate: _selectDate,
+                onSelectTime: _selectTime,
+                onCategoryChanged: (value) => setState(() => selectedCategory = value!),
+              ),
+              SizedBox(height: 16),
+              Keypad(
+                onDigitPressed: _addDigit,
+                onSubmit: _saveTransaction,
+              )
+            ],
+          ),
       ),
     );
   }
-
 }
