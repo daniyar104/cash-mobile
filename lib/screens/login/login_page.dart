@@ -1,14 +1,14 @@
-  import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_localization/flutter_localization.dart';
-  import 'package:untitled1/db/database_helper.dart';
-  import 'package:shared_preferences/shared_preferences.dart';
+import 'package:untitled1/db/database_helper.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:untitled1/localization/locales.dart';
-  import 'package:untitled1/screens/MainScreen.dart';
-  import '../../db/app_database_helper.dart';
+import 'package:untitled1/screens/MainScreen.dart';
+import '../../db/app_database_helper.dart';
 import '../../db/database_factory.dart';
 import '../../db/sembast_database_helper.dart';
 import '../../models/UserModel.dart';
-  import '../register/RegistrationPage.dart';
+import '../register/RegistrationPage.dart';
 
   class LoginPage extends StatefulWidget {
     const LoginPage({super.key});
@@ -45,7 +45,10 @@ import '../../models/UserModel.dart';
           );
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Invalid email or password')),
+            SnackBar(content: Text(
+                LocalData.unCurrect.getString(context)
+              )
+            ),
           );
         }
       }
@@ -60,7 +63,7 @@ import '../../models/UserModel.dart';
           child: Form(
             key: _formKey,
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.end,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Text(
                   LocalData.welcomeBack.getString(context),
@@ -70,12 +73,30 @@ import '../../models/UserModel.dart';
                 TextFormField(
                   controller: _emailController,
                   decoration: InputDecoration(
+                    filled: true,
+                    fillColor: Colors.white.withOpacity(0.9),
+                    prefixIcon: const Icon(
+                      Icons.person,
+                      color: Colors.grey,
+                    ),
                     labelText: LocalData.email.getString(context),
-                    border: OutlineInputBorder(),
+                    labelStyle: const TextStyle(color: Colors.grey),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(15.0),
+                      borderSide: const BorderSide(color: Colors.grey, width: 1.0),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(15.0),
+                      borderSide: const BorderSide(color: Colors.grey, width: 1.0),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(15.0),
+                      borderSide: const BorderSide(color: Colors.grey, width: 1.0),
+                    ),
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Please enter your email';
+                      return LocalData.enterEmail.getString(context);
                     }
                     return null;
                   },
@@ -84,13 +105,31 @@ import '../../models/UserModel.dart';
                 TextFormField(
                   controller: _passwordController,
                   decoration: InputDecoration(
+                    prefixIcon: const Icon(
+                      Icons.lock,
+                      color: Colors.grey,
+                    ),
                     labelText: LocalData.password.getString(context),
-                    border: OutlineInputBorder(),
+                    labelStyle: const TextStyle(color: Colors.grey),
+                    filled: true,
+                    fillColor: Colors.white.withOpacity(0.9),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(15.0),
+                      borderSide: const BorderSide(color: Colors.grey, width: 1.0),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(15.0),
+                      borderSide: const BorderSide(color: Colors.grey, width: 1.0),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(15.0),
+                      borderSide: const BorderSide(color: Colors.grey, width: 1.0),
+                    ),
                   ),
                   obscureText: true,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Please enter your password';
+                      return LocalData.enterPassword.getString(context);
                     }
                     return null;
                   },
@@ -110,12 +149,41 @@ import '../../models/UserModel.dart';
                 SizedBox(height: 10),
                 TextButton(
                   onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => RegistrationPage()),
-                    );
+                    // Handle forgot password
                   },
-                  child: Text('You dont have account? Create account'),
+                  child: Text(
+                    LocalData.fogotPassword.getString(context),
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.primary,
+                      fontSize: 16,
+                    ),
+                  ),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      LocalData.dontHaveAccount.getString(context),
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.primary,
+                        fontSize: 16,
+                      ),
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => RegistrationPage()),
+                        );
+                      },
+                      child: Text(LocalData.createAccount.getString(context),
+                        style: TextStyle(
+                          color: Theme.of(context).colorScheme.primary,
+                          fontSize: 16,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),

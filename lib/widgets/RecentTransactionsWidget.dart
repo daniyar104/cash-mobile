@@ -48,7 +48,7 @@ class _RecentTransactionsWidgetState extends State<RecentTransactionsWidget> {
         return Column(
           children: [
             Text(
-              "Transactions",
+              LocalData.transactions.getString(context),
               style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,

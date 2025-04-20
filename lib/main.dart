@@ -41,7 +41,7 @@ class _MyAppState extends State<MyApp> {
       title: 'Flutter Demo',
       theme: ThemeData(
         useMaterial3: true,
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.purple),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
       ),
       supportedLocales: localization.supportedLocales,
       localizationsDelegates: localization.localizationsDelegates,

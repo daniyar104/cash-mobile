@@ -3,7 +3,7 @@ import 'package:flutter_localization/flutter_localization.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:untitled1/db/app_database_helper.dart';
 import 'package:untitled1/screens/accountPage/settings/SettingsPage.dart';
-import 'package:untitled1/screens/accountPage/settings/categoryes/CategoryListPage.dart';
+import 'package:untitled1/screens/accountPage/settings/categories/CategoryListPage.dart';
 import 'package:untitled1/screens/accountPage/settings/styles/SelectStylePage.dart';
 import 'package:untitled1/screens/accountPage/settings/template/TemplatePage.dart';
 
