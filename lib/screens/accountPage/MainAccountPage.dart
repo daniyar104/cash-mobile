@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_localization/flutter_localization.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:untitled1/db/app_database_helper.dart';
 import 'package:untitled1/screens/accountPage/settings/SettingsPage.dart';
@@ -11,6 +14,7 @@ import '../../db/database_factory.dart';
 import '../../localization/locales.dart';
 import '../../widgets/ui/SettingsTile.dart';
 import '../login/login_page.dart';
+import 'AccountSettings/accountSettings.dart';
 
 class MainAcountPage extends StatefulWidget {
   const MainAcountPage({super.key});
@@ -21,13 +25,28 @@ class MainAcountPage extends StatefulWidget {
 
 class _MainAcountPageState extends State<MainAcountPage> {
   final AppDatabaseHelper _dbHelper = getDatabaseHelper();
+
+  File? _avatarImage;
+  final ImagePicker _picker = ImagePicker();
+  String? _avatarPath;
+
   late String name = "";
   @override
   void initState() {
     super.initState();
     _loadUserName();
+    _loadAvatar();
   }
 
+  Future<void> _loadAvatar() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _avatarPath = prefs.getString('avatar_path');
+      if (_avatarPath != null) {
+        _avatarImage = File(_avatarPath!);
+      }
+    });
+  }
   Future<String?> _loadUserName() async {
     final prefs = await SharedPreferences.getInstance();
     final userId = prefs.getInt('userId');
@@ -42,6 +61,7 @@ class _MainAcountPageState extends State<MainAcountPage> {
   Future<void> _logout() async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.remove('userId');
+    await prefs.remove('avatar_path');
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(builder: (context) => LoginPage()),
@@ -54,8 +74,15 @@ class _MainAcountPageState extends State<MainAcountPage> {
         title: Text(LocalData.account.getString(context)),
         actions: [
           IconButton(
-            icon: Icon(Icons.logout),
-            onPressed: _logout,
+            icon: Icon(Icons.settings),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => AccountSettings(),
+                ),
+              );
+            },
           ),
         ],
       ),
@@ -63,17 +90,11 @@ class _MainAcountPageState extends State<MainAcountPage> {
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
         child: Column(
           children: [
-            Container(
-              height: 100,
-              width: 100,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: Colors.grey[300],
-                // image: DecorationImage(
-                //   image: AssetImage('assets/images/user.png'),
-                //   fit: BoxFit.cover,
-                // ),
-              ),
+            CircleAvatar(
+              radius: 50,
+              backgroundImage: _avatarImage != null
+                  ? FileImage(_avatarImage!)
+                  : null,
             ),
             Text(name!, style: TextStyle(fontSize: 20)),
             SizedBox(height: 20),
@@ -128,6 +149,10 @@ class _MainAcountPageState extends State<MainAcountPage> {
                   );
                 }
             ),
+            Spacer(),
+            ElevatedButton(
+                onPressed: _logout,
+                child: Text("Logout"))
             // SizedBox(height: 20),
             // ElevatedButton(
             //   onPressed: _logout,

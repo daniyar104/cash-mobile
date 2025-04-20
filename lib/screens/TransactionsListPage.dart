@@ -1,14 +1,13 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:flutter_localization/flutter_localization.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:untitled1/widgets/AccountSummaryWidget.dart';
 import 'package:untitled1/widgets/RecentTransactionsWidget.dart';
-import 'package:untitled1/widgets/totalCategory/TotalExpenseFood.dart';
 import 'package:untitled1/widgets/welcomeWidget/WelcomeWidget.dart';
 import '../db/app_database_helper.dart';
 import '../db/database_factory.dart';
-import '../localization/locales.dart';
 import '../widgets/syncfusion/ExpensesChart.dart';
-import '../widgets/totalCategory/TotalExpenseShoping.dart';
 
 class TransactionsListPage extends StatefulWidget {
   final int userID;
@@ -21,6 +20,27 @@ class TransactionsListPage extends StatefulWidget {
 
 class _TransactionsListPageState extends State<TransactionsListPage> {
   final AppDatabaseHelper _dbHelper = getDatabaseHelper();
+  File? _avatarImage;
+  final ImagePicker _picker = ImagePicker();
+  String? _avatarPath;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _loadAvatar();
+  }
+
+  Future<void> _loadAvatar() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _avatarPath = prefs.getString('avatar_path');
+      if (_avatarPath != null) {
+        _avatarImage = File(_avatarPath!);
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -53,17 +73,12 @@ class _TransactionsListPageState extends State<TransactionsListPage> {
                           ],
                         ),
                         Spacer(),
-                        Container(
-                          margin: const EdgeInsets.only(left: 10),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(50),
-                          ),
-                          child: Icon(
-                            Icons.circle,
-                            size: 50,
-                            color: Colors.grey[200],
-                          ),
-                        )
+                        CircleAvatar(
+                          radius: 20,
+                          backgroundImage: _avatarImage != null
+                              ? FileImage(_avatarImage!)
+                              : null,
+                        ),
                       ],
                     ),
                     SizedBox(height: 10),
