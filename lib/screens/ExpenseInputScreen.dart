@@ -102,7 +102,7 @@ class _ExpenseInputScreenState extends State<ExpenseInputScreen> {
   }
 
 
-  /// Вернуить так чтобы время можно было стравть на перед
+  /// Вернуить так чтобы время можно было стравить на перед
   /// ну или так и оставить чтобы выводить сообщения на разных языках
   void _selectTime() async {
     TimeOfDay? picked = await showTimePicker(

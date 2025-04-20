@@ -4,6 +4,7 @@ import 'package:flutter_localization/flutter_localization.dart';
 const List<MapLocale> LOCALES = [
   MapLocale("en", LocalData.EN),
   MapLocale("ru", LocalData.RU),
+  MapLocale("kk", LocalData.KK),
 ];
 
 mixin LocalData {
@@ -257,6 +258,86 @@ mixin LocalData {
     friday: "ПТ",
     saturday: "СБ",
     sunday: "ВСК",
+  };
+
+  static const Map<String, dynamic> KK = {
+    title: 'Локализация',
+    body: 'Локализация үлгісі қолданбасына қош келдіңіз. Бұл Flutter-де локализацияны көрсету үшін қарапайым қолданба. Сіз тілді параметрлер экранынан өзгерте аласыз.',
+    welcomeBack: "Қайта оралуыңызбен",
+    welcome: "Қош келдіңіз,",
+    login: "Кіру",
+    password: "Құпиясөз",
+    email: "Электрондық пошта",
+    username: "Пайдаланушы аты",
+    logout: "Шығу",
+    account: "Есеп",
+    transactions: "Транзакциялар",
+    expenses: "Шығындар",
+    income: "Кіріс",
+    showAll: "Барлығын көрсету",
+    settings: "Параметрлер",
+    language: "Тіл",
+    pushNotifications: "Хабарламалар",
+    stylesSetting: "Стиль",
+    templateSetting: "Үлгі",
+    categories: "Санаттар",
+    summary: "Жалпы баланс",
+
+    // Login Page
+    unCurrect: "Электрондық пошта немесе құпиясөз қате",
+    enterEmail: "Электрондық поштаны енгізіңіз",
+    enterPassword: "Құпиясөзді енгізіңіз",
+    fogotPassword: "Құпиясөзді ұмыттыңыз ба?",
+    dontHaveAccount: "Есеп жоқ па?",
+    createAccount: "Есеп жасау",
+
+    // Register
+    register: "Тіркелу",
+    createNewAccount: "Жаңа есеп жасау",
+
+    // List
+    allType: "Барлығы",
+    incomeType: "Кіріс",
+    expenseType: "Шығын",
+    transfer: "Аудару",
+
+    //Time greeting
+    morning: "Қайырлы таң",
+    afternoon: "Қайырлы күн",
+    evening: "Қайырлы кеш",
+    night: "Қайырлы түн",
+
+    // Categories
+    food: "Тамақ",
+    transportation: "Көлік",
+    entertainment: "Ойын-сауық",
+    shopping: "Сауда",
+    health: "Денсаулық",
+    bills: "Төлемдер",
+    utilities: "Коммуналдық қызметтер",
+    salary: "Жалақы",
+    investment: "Инвестиция",
+    education: "Білім",
+    travel: "Саяхат",
+    groceries: "Азық-түлік",
+    housing: "Тұрғын үй",
+    leisure: "Демалыс",
+    gifts: "Сыйлықтар",
+    donations: "Қайырымдылық",
+    subscriptions: "Жазылымдар",
+    pets: "Үй жануарлары",
+    insurance: "Сақтандыру",
+    other: "Басқа",
+
+    // Days
+    today: "Бүгін",
+    monday: "ДСН",
+    tuesday: "ССБ",
+    wednesday: "СРБ",
+    thursday: "БСН",
+    friday: "ЖМБ",
+    saturday: "СНБ",
+    sunday: "ЖЕК",
   };
 
   static String getTranslatedCategory(BuildContext context, String? key) {

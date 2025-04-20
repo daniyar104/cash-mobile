@@ -81,6 +81,7 @@ import 'package:untitled1/localization/locales.dart';
             children: [
               _buildLanguageTile('en', 'English'),
               _buildLanguageTile('ru', 'Russian'),
+              _buildLanguageTile('kk', 'Kazakh'),
             ],
           ),
         ),
