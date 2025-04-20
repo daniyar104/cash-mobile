@@ -30,8 +30,23 @@ class _ExpenseInputScreenState extends State<ExpenseInputScreen> {
   void didChangeDependencies() {
     // TODO: implement initState
     super.didChangeDependencies();
-    categories = categoriesList;
-    selectedCategory = categories[0];
+    _filterCategories();
+  }
+
+  void _filterCategories() {
+    if (selectedTypeIndex == 0) {
+      // Expense
+      categories = categoriesList;
+    } else {
+      // Income
+      categories = categoriesList;
+    }
+    if (categories.isNotEmpty) {
+      selectedCategory = categories[0];
+    } else {
+      selectedCategory = '';
+    }
+    setState(() {});
   }
   final _dbHelper = getDatabaseHelper();
   void _deleteLast() {
@@ -77,7 +92,7 @@ class _ExpenseInputScreenState extends State<ExpenseInputScreen> {
       context: context,
       initialDate: selectedDate,
       firstDate: DateTime(2020),
-      lastDate: DateTime(2100),
+      lastDate: DateTime.now(),
     );
     if (picked != null) {
       setState(() {
@@ -86,12 +101,33 @@ class _ExpenseInputScreenState extends State<ExpenseInputScreen> {
     }
   }
 
+
+  /// Вернуить так чтобы время можно было стравть на перед
+  /// ну или так и оставить чтобы выводить сообщения на разных языках
   void _selectTime() async {
     TimeOfDay? picked = await showTimePicker(
       context: context,
       initialTime: selectedTime,
     );
     if (picked != null) {
+      // Если выбрана сегодняшняя дата, ограничиваем время
+      final now = DateTime.now();
+      final isToday = selectedDate.year == now.year &&
+          selectedDate.month == now.month &&
+          selectedDate.day == now.day;
+      if (isToday) {
+        final currentTime = TimeOfDay.fromDateTime(now);
+        final pickedMinutes = picked.hour * 60 + picked.minute;
+        final currentMinutes = currentTime.hour * 60 + currentTime.minute;
+        if (pickedMinutes > currentMinutes) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Cannot select a future time for today'),
+            ),
+          );
+          return;
+        }
+      }
       setState(() {
         selectedTime = picked;
       });
@@ -106,7 +142,12 @@ class _ExpenseInputScreenState extends State<ExpenseInputScreen> {
           child: Column(
             children: [
               TopBarSwitcher(
-                  onToggle: (index) => setState(() => selectedTypeIndex = index),
+                  onToggle: (index) {
+                    setState(() {
+                      selectedTypeIndex = index;
+                      _filterCategories();
+                    });
+                  },
                   selectedIndex: selectedTypeIndex
               ),
               const SizedBox(height: 32),
@@ -117,6 +158,7 @@ class _ExpenseInputScreenState extends State<ExpenseInputScreen> {
               const SizedBox(height: 16),
               const Spacer(),
               DateTimeCategoryRow(
+                selectedDate: selectedDate,
                 date: formattedDate,
                 time: selectedTime.format(context),
                 selectedCategory: selectedCategory,

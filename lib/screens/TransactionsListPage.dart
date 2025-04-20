@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:untitled1/widgets/AccountSummaryWidget.dart';
 import 'package:untitled1/widgets/RecentTransactionsWidget.dart';
@@ -21,7 +20,6 @@ class TransactionsListPage extends StatefulWidget {
 class _TransactionsListPageState extends State<TransactionsListPage> {
   final AppDatabaseHelper _dbHelper = getDatabaseHelper();
   File? _avatarImage;
-  final ImagePicker _picker = ImagePicker();
   String? _avatarPath;
 
   @override

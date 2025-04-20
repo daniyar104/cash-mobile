@@ -52,6 +52,16 @@ mixin LocalData {
   static const String evening = "evening";
   static const String night = "night";
 
+  //Days
+  static const String today = "Today";
+  static const String monday = "Monday";
+  static const String tuesday = "Tuesday";
+  static const String wednesday = "Wednesday";
+  static const String thursday = "Thursday";
+  static const String friday = "Friday";
+  static const String saturday = "Saturday";
+  static const String sunday = "Sunday";
+
 
   // Categories
   static const String food = "Food";
@@ -146,6 +156,17 @@ mixin LocalData {
       insurance: 'Insurance',
       other: 'Other',
 
+      // Days
+      today: "Today",
+      monday: 'Monday',
+      tuesday: 'Tuesday',
+      wednesday: 'Wednesday',
+      thursday: 'Thursday',
+      friday: 'Friday',
+      saturday: 'Saturday',
+      sunday: 'Sunday',
+
+
   };
 
   static const Map<String, dynamic> RU = {
@@ -218,6 +239,24 @@ mixin LocalData {
     pets: "Животные",
     insurance: "Страхование",
     other: "Другое",
+
+    // Days
+    today: "Сегодня",
+    // monday: "Понедельник",
+    // tuesday: "Вторник",
+    // wednesday: "Среда",
+    // thursday: "Четверг",
+    // friday: "Пятница",
+    // saturday: "Суббота",
+    // sunday: "Воскресенье",
+
+    monday: "ПН",
+    tuesday: "ВТ",
+    wednesday: "СР",
+    thursday: "ЧТ",
+    friday: "ПТ",
+    saturday: "СБ",
+    sunday: "ВСК",
   };
 
   static String getTranslatedCategory(BuildContext context, String? key) {

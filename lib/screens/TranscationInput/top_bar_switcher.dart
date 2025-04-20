@@ -15,7 +15,7 @@ class TopBarSwitcher extends StatelessWidget {
           alignment: Alignment.centerRight,
           child: TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Icon(Icons.close),
+            child: const Icon(Icons.close, size: 30),
           ),
         ),
         const SizedBox(width: 60),
