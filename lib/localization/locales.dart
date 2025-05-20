@@ -33,6 +33,7 @@ mixin LocalData {
 
   //Login
   static const String unCurrect = "unCurrect";
+  static const String error = "error";
   static const String enterEmail = "enterEmail";
   static const String enterPassword = "enterPassword";
   static const String fogotPassword = "fogotPassword";
@@ -42,6 +43,12 @@ mixin LocalData {
   // Register
   static const String register = "register";
   static const String createNewAccount = "createNewAccount";
+  static const String usernameRequired = "usernameRequired";
+  static const String emailRequired = "emailRequired";
+  static const String invalidEmail = "invalidEmail";
+  static const String passwordRequired = "passwordRequired";
+  static const String passwordTooShort = "passwordTooShort";
+
   // List
   static const String allType = "All";
   static const String incomeType = "Income";
@@ -136,10 +143,16 @@ mixin LocalData {
       fogotPassword: 'Forgot password?',
       dontHaveAccount: 'Don\'t have an account?',
       createAccount: 'Create account',
+      error: "Ops, something went wrong.",
 
       // Register
       register: 'Registration',
       createNewAccount: 'Create new account',
+      usernameRequired: 'Username is required',
+      emailRequired: 'Email is required',
+      invalidEmail: 'Invalid email',
+      passwordRequired: 'Password is required',
+      passwordTooShort: 'Password must be at least 6 characters long',
 
       // List
       allType: 'All',
@@ -235,10 +248,15 @@ mixin LocalData {
     fogotPassword: "Забыли пароль?",
     dontHaveAccount: "Нет аккаунта?",
     createAccount: "Создать аккаунт",
-
+    error: "Упс, что-то пошло не так.",
     // Register
     register: "Регистрация",
     createNewAccount: "Создать аккаунт",
+    usernameRequired: "Имя пользователя обязательно",
+    emailRequired: "Электронная почта обязательна",
+    invalidEmail: "Недействительная электронная почта",
+    passwordRequired: "Пароль обязателен",
+    passwordTooShort: "Пароль должен содержать не менее 6 символов",
 
     // List
     allType: "Все",
@@ -339,10 +357,16 @@ mixin LocalData {
     fogotPassword: "Құпиясөзді ұмыттыңыз ба?",
     dontHaveAccount: "Есеп жоқ па?",
     createAccount: "Есеп жасау",
+    error: "Упс, бір нәрсе дұрыс емес.",
 
     // Register
     register: "Тіркелу",
     createNewAccount: "Жаңа есеп жасау",
+    usernameRequired: "Пайдаланушы аты қажет",
+    emailRequired: "Электрондық пошта қажет",
+    invalidEmail: "Электрондық пошта жарамсыз",
+    passwordRequired: "Құпиясөз қажет",
+    passwordTooShort: "Құпиясөз кемінде 6 таңбадан тұруы керек",
 
     // List
     allType: "Барлығы",

@@ -73,7 +73,14 @@ class _RegistrationPageState extends State<RegistrationPage>{
                         borderRadius: BorderRadius.circular(15.0),
                         borderSide: const BorderSide(color: Colors.grey, width: 1.0),
                       ),
-                  )
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return LocalData.usernameRequired.getString(context);
+                    }
+                    return null;
+                  },
+
               ),
               SizedBox(height: 20),
               TextFormField(
@@ -100,7 +107,15 @@ class _RegistrationPageState extends State<RegistrationPage>{
                         borderRadius: BorderRadius.circular(15.0),
                         borderSide: const BorderSide(color: Colors.grey, width: 1.0),
                       ),
-                  )
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return LocalData.emailRequired.getString(context); // Добавь перевод
+                    } else if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(value)) {
+                      return LocalData.invalidEmail.getString(context); // Добавь перевод
+                    }
+                    return null;
+                  },
               ),
               SizedBox(height: 20),
               TextFormField(
@@ -128,7 +143,16 @@ class _RegistrationPageState extends State<RegistrationPage>{
                         borderSide: const BorderSide(color: Colors.grey, width: 1.0),
                       ),
                   ),
-                  obscureText: true),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return LocalData.passwordRequired.getString(context); // Добавь перевод
+                    } else if (value.length < 6) {
+                      return LocalData.passwordTooShort.getString(context); // Добавь перевод
+                    }
+                    return null;
+                  },
+                  obscureText: true
+              ),
               SizedBox(height: 30),
               ElevatedButton(
                   onPressed: _register,
