@@ -29,6 +29,8 @@ mixin LocalData {
   static const String templateSetting = "templateSetting";
   static const String categories = "categories";
   static const String summary = "summary";
+  static const String analytics = "analytics";
+  static const String planning = "planning";
 
 
   //Login
@@ -135,6 +137,8 @@ mixin LocalData {
       templateSetting: 'Template',
       categories: 'Categories',
       summary: 'Total Balance',
+      analytics: 'Analytics',
+      planning: 'Planning',
 
       // Login Page
       unCurrect: "Incorrect email or password",
@@ -239,6 +243,8 @@ mixin LocalData {
     templateSetting: "Шаблон",
     categories: "Категории",
     summary: "Общий баланс",
+    analytics: "Аналитика",
+    planning: "Планирование",
 
 
     // Login Page
@@ -349,6 +355,8 @@ mixin LocalData {
     templateSetting: "Үлгі",
     categories: "Санаттар",
     summary: "Жалпы баланс",
+    analytics: "Аналитика",
+    planning: "Жоспарлау",
 
     // Login Page
     unCurrect: "Электрондық пошта немесе құпиясөз қате",
