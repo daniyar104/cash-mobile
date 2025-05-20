@@ -88,6 +88,24 @@ mixin LocalData {
 
 
 
+
+  // Onboarding components
+  static const String onboardingNextButton = 'onboardingNextButton';
+  static const String onboardingSkipButton = 'onboardingSkipButton';
+  static const String onboardingDoneButton = 'onboardingDoneButton';
+  // Onboarding Page 1
+  static const String onboardingTitle01 = 'onboardingTitle01';
+  static const String onboardingBodyText01 = 'onboardingBodyText01';
+
+  // Onboarding Page 2
+  static const String onboardingTitle02 = 'onboardingTitle02';
+  static const String onboardingBodyText02 = 'onboardingBodyText02';
+
+  // Onboarding Page 3
+  static const String onboardingTitle03 = 'onboardingTitle03';
+  static const String onboardingBodyText03 = 'onboardingBodyText03';
+
+
   static const Map<String, dynamic> EN = {
       title: 'Localiztion',
       body: 'Welcome to the localization example app. This is a simple app to demonstrate localization in Flutter. You can change the language from the settings screen.',
@@ -167,6 +185,22 @@ mixin LocalData {
       saturday: 'Saturday',
       sunday: 'Sunday',
 
+      // Onboarding components
+      onboardingNextButton: 'Next',
+      onboardingSkipButton: 'Skip',
+      onboardingDoneButton: 'Done',
+
+      // Onboarding Page 1
+      onboardingTitle01: 'Welcome to the App',
+      onboardingBodyText01: 'Using the app to control your finances is a pleasure.',
+
+      // Onboarding Page 2
+      onboardingTitle02: 'Comfortable.',
+      onboardingBodyText02: 'Simply and quickly add expenses, income, debts, and transfers.',
+
+      // Onboarding Page 3
+      onboardingTitle03: 'Visual analytics',
+      onboardingBodyText03: 'Find unnecessary expenses and reduce them.',
 
   };
 
@@ -258,6 +292,21 @@ mixin LocalData {
     friday: "ПТ",
     saturday: "СБ",
     sunday: "ВСК",
+
+    // Onboarding components
+    onboardingNextButton: 'Далее',
+    onboardingSkipButton: 'Пропустить',
+    onboardingDoneButton: 'Готово',
+
+    // Onboarding Page 1
+    onboardingTitle01: 'Добро пожаловать в приложение',
+    onboardingBodyText01: 'Использовать приложение для контроля ваших финансов - это удовольствие.',
+    // Onboarding Page 2
+    onboardingTitle02: 'Удобно',
+    onboardingBodyText02: 'Просто и быстро добавляйте расходы, доходы, долги, переводы..',
+    // Onboarding Page 3
+    onboardingTitle03: 'Наглядная аналитика',
+    onboardingBodyText03: 'Находите лишние расходы и сокращайте их.',
   };
 
   static const Map<String, dynamic> KK = {
@@ -338,6 +387,22 @@ mixin LocalData {
     friday: "ЖМБ",
     saturday: "СНБ",
     sunday: "ЖЕК",
+
+
+    // Onboarding components
+    onboardingNextButton: 'Келесі',
+    onboardingSkipButton: 'Откызу',
+    onboardingDoneButton: 'Бастау',
+
+    // Onboarding Page 1
+    onboardingTitle01: 'Қолданбаға қош келдіңіз',
+    onboardingBodyText01: 'Сіздің қаржыларыңызды бақылау үшін қолданбаны пайдалану - бұл ләззат.',
+    // Onboarding Page 2
+    onboardingTitle02: 'Ыңғайлы.',
+    onboardingBodyText02: 'Шығындарды, кірістерді, қарыздарды және аударымдарды оңай және жылдам қосыңыз.',
+    // Onboarding Page 3
+    onboardingTitle03: 'Көрнекі аналитика',
+    onboardingBodyText03: "Қосымша шығындарды табыңыз және оларды қысқартыңыз."
   };
 
   static String getTranslatedCategory(BuildContext context, String? key) {

@@ -3,13 +3,22 @@ import 'package:flutter_localization/flutter_localization.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:untitled1/localization/locales.dart';
 import 'package:untitled1/screens/MainScreen.dart';
+import 'package:untitled1/screens/OnboardingPage/onboarding_screen.dart';
 import 'package:untitled1/screens/login/login_page.dart';
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
   final prefs = await SharedPreferences.getInstance();
   final userId = prefs.getInt('userId');
-  Widget initialRoute = LoginPage();
+  final onboardingSeen = prefs.getBool('onboarding_seen') ?? false;
+  Widget initialRoute;
 
+  if (!onboardingSeen) {
+    initialRoute = const OnboardingScreen();
+  } else if (userId != null) {
+    initialRoute = const MainScreen();
+  } else {
+    initialRoute = const LoginPage();
+  }
   if (userId != null) {
     initialRoute = MainScreen();
   }
@@ -50,7 +59,7 @@ class _MyAppState extends State<MyApp> {
   }
 
   void configurateLocalization() {
-    localization.init(mapLocales: LOCALES, initLanguageCode: "en");
+    localization.init(mapLocales: LOCALES, initLanguageCode: "ru");
     localization.onTranslatedLanguage = onTranslatedLanguage;
   }
 

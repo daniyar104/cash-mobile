@@ -7,6 +7,8 @@ import 'package:untitled1/widgets/welcomeWidget/WelcomeWidget.dart';
 import '../db/app_database_helper.dart';
 import '../db/database_factory.dart';
 import '../widgets/syncfusion/ExpensesChart.dart';
+import '../widgets/totalCategory/TotalExpenseFood.dart';
+import '../widgets/totalCategory/TotalExpenseShoping.dart';
 
 class TransactionsListPage extends StatefulWidget {
   final int userID;
@@ -91,8 +93,8 @@ class _TransactionsListPageState extends State<TransactionsListPage> {
                       padding: const EdgeInsets.only(top: 10),
                       child: Column(
                         children: [
-                          // TotalExpenseFood(userId: widget.userID),
-                          // TotalExpenseShopping(userId: widget.userID),
+                          TotalExpenseFood(userId: widget.userID),
+                          TotalExpenseShopping(userId: widget.userID),
                           RecentTransactionsWidget(userID: widget.userID),
                         ],
                       ),
