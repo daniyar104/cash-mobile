@@ -7,6 +7,7 @@ import 'package:untitled1/screens/Plannings/page/PlanningsPage.dart';
 import 'package:untitled1/screens/accountPage/MainAccountPage.dart';
 import 'Analitics/AnalyticsPage.dart';
 import 'TransactionsListPage.dart';
+import 'futureMainAccount/AccountPage.dart';
 
 class MainScreen extends StatefulWidget{
   const MainScreen({super.key});
@@ -27,7 +28,8 @@ class _MainScreenState extends State<MainScreen>{
       TransactionsListPage(userID: _userId),
       AnalyticsPage(),
       PlanningsPage(),
-      MainAcountPage(),
+      // MainAcountPage(),
+      AccountPage(),
     ];
     _loadUserId();
   }
