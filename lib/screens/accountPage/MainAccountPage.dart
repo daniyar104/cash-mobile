@@ -7,7 +7,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:untitled1/db/app_database_helper.dart';
 import 'package:untitled1/screens/accountPage/settings/SettingsPage.dart';
 import 'package:untitled1/screens/accountPage/settings/categories/CategoryListPage.dart';
-import 'package:untitled1/screens/accountPage/settings/styles/SelectStylePage.dart';
 import 'package:untitled1/screens/accountPage/settings/template/TemplatePage.dart';
 
 import '../../db/database_factory.dart';
@@ -111,18 +110,18 @@ class _MainAcountPageState extends State<MainAcountPage> {
                 }
             ),
             SizedBox(height: 10),
-            SettingsTile(
-                leadingIcon: Icons.style,
-                localizationKey: LocalData.stylesSetting.getString(context),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => SelectStylePage(),
-                    ),
-                  );
-                }
-            ),
+            // SettingsTile(
+            //     leadingIcon: Icons.style,
+            //     localizationKey: LocalData.stylesSetting.getString(context),
+            //     onTap: () {
+            //       Navigator.push(
+            //         context,
+            //         MaterialPageRoute(
+            //           builder: (context) => ThemeSettingsPage(currentThemeMode: currentThemeMode, onToggleTheme: onToggleTheme),
+            //         ),
+            //       );
+            //     }
+            // ),
             SizedBox(height: 10),
             SettingsTile(
                 leadingIcon: Icons.class_outlined,

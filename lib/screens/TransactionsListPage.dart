@@ -93,8 +93,8 @@ class _TransactionsListPageState extends State<TransactionsListPage> {
                       padding: const EdgeInsets.only(top: 10),
                       child: Column(
                         children: [
-                          TotalExpenseFood(userId: widget.userID),
-                          TotalExpenseShopping(userId: widget.userID),
+                          // TotalExpenseFood(userId: widget.userID),
+                          // TotalExpenseShopping(userId: widget.userID),
                           RecentTransactionsWidget(userID: widget.userID),
                         ],
                       ),

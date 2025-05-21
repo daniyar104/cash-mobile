@@ -9,12 +9,13 @@ import 'package:untitled1/db/app_database_helper.dart';
 import 'package:untitled1/screens/accountPage/settings/SettingsPage.dart';
 import 'package:untitled1/screens/accountPage/settings/categories/CategoryListPage.dart';
 import 'package:untitled1/screens/accountPage/settings/language/ChangeLanguagePage.dart';
-import 'package:untitled1/screens/accountPage/settings/styles/SelectStylePage.dart';
 import 'package:untitled1/screens/accountPage/settings/template/TemplatePage.dart';
 
 import '../../db/database_factory.dart';
 import '../../localization/locales.dart';
 import '../../widgets/ui/SettingsTile.dart';
+import '../NotificationPage/NotificationTestPage.dart';
+import '../accountPage/settings/styles/ThemeSettingsPage.dart';
 import '../login/login_page.dart';
 
 class AccountPage extends StatefulWidget {
@@ -74,7 +75,7 @@ class _AccountPageState extends State<AccountPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Account"),
+        title: Text(LocalData.account.getString(context)),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -84,7 +85,7 @@ class _AccountPageState extends State<AccountPage> {
               children: [
                 Padding(
                   padding: const EdgeInsets.only(bottom: 8.0),
-                  child: Text("Profile",
+                  child: Text(LocalData.profile.getString(context),
                     style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
@@ -103,7 +104,7 @@ class _AccountPageState extends State<AccountPage> {
                 ),
                 Padding(
                   padding: const EdgeInsets.only(bottom: 8.0, top: 16.0),
-                  child: Text("Operations",
+                  child: Text(LocalData.operations.getString(context),
                     style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
@@ -112,18 +113,7 @@ class _AccountPageState extends State<AccountPage> {
                 ),
                 SettingsTile(
                   leadingIcon: Icons.category,
-                  localizationKey: "Categories",
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => CategoryListPage()),
-                    );
-                  },
-                ),
-                SizedBox(height: 5),
-                SettingsTile(
-                  leadingIcon: Icons.new_label_outlined,
-                  localizationKey: "Tags",
+                  localizationKey: LocalData.categories.getString(context),
                   onTap: () {
                     Navigator.push(
                       context,
@@ -134,7 +124,7 @@ class _AccountPageState extends State<AccountPage> {
                 SizedBox(height: 5),
                 SettingsTile(
                   leadingIcon: Icons.currency_exchange,
-                  localizationKey: "Currency",
+                  localizationKey: LocalData.currency.getString(context),
                   onTap: () {
                     Navigator.push(
                       context,
@@ -145,7 +135,7 @@ class _AccountPageState extends State<AccountPage> {
                 SizedBox(height: 5),
                 SettingsTile(
                   leadingIcon: Icons.language,
-                  localizationKey: "Language",
+                  localizationKey: LocalData.language.getString(context),
                   onTap: () {
                     Navigator.push(
                       context,
@@ -153,9 +143,17 @@ class _AccountPageState extends State<AccountPage> {
                     );
                   },
                 ),
+                SizedBox(height: 5),
+                SettingsTile(
+                  leadingIcon: Icons.motion_photos_on_rounded,
+                  localizationKey: LocalData.stylesSetting.getString(context),
+                  onTap: () {
+                    Navigator.pushNamed(context, '/themeSettings');
+                  },
+                ),
                 Padding(
                   padding: const EdgeInsets.only(bottom: 8.0, top: 16.0),
-                  child: Text("Notifications",
+                  child: Text(LocalData.pushNotifications.getString(context),
                     style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
@@ -164,14 +162,17 @@ class _AccountPageState extends State<AccountPage> {
                 ),
                 SettingsTile(
                   leadingIcon: Icons.notifications,
-                  localizationKey: "Notifications",
+                  localizationKey: LocalData.pushNotifications.getString(context),
                   onTap: () {
-                    // Navigate to notifications settings
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => NotificationTestPage()),
+                    );
                   },
                 ),
                 Padding(
                   padding: const EdgeInsets.only(bottom: 8.0, top: 16.0),
-                  child: Text("Security",
+                  child: Text(LocalData.security.getString(context),
                     style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
@@ -180,7 +181,7 @@ class _AccountPageState extends State<AccountPage> {
                 ),
                 SettingsTile(
                   leadingIcon: Icons.vpn_key,
-                  localizationKey: "Key",
+                  localizationKey: LocalData.key.getString(context),
                   onTap: () {
                     // Navigate to change password
                   },
@@ -188,9 +189,26 @@ class _AccountPageState extends State<AccountPage> {
                 SizedBox(height: 5),
                 SettingsTile(
                   leadingIcon: Icons.lock,
-                  localizationKey: "Password",
+                  localizationKey: LocalData.password.getString(context),
                   onTap: () {
                     // Navigate to change password
+                  },
+                ),
+                SizedBox(height: 50),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 8.0, top: 16.0),
+                  child: Text(LocalData.logoutButton.getString(context),
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                SettingsTile(
+                  leadingIcon: Icons.logout,
+                  localizationKey: LocalData.logoutButton.getString(context),
+                  onTap: () {
+                    _logout();
                   },
                 ),
               ]

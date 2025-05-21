@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+
+import '../../main.dart';
 
 class AnalyticsPage extends StatefulWidget {
   const AnalyticsPage({super.key});
@@ -8,6 +11,27 @@ class AnalyticsPage extends StatefulWidget {
 }
 
 class _AnalyticsPageState extends State<AnalyticsPage> {
+  void showNotification() async {
+    const AndroidNotificationDetails androidDetails =
+    AndroidNotificationDetails(
+      'channel_id',
+      'Основной канал',
+      channelDescription: 'Описание канала',
+      importance: Importance.max,
+      priority: Priority.high,
+    );
+
+    const NotificationDetails platformDetails =
+    NotificationDetails(android: androidDetails);
+
+    await flutterLocalNotificationsPlugin.show(
+      0, // ID уведомления
+      'Привет!', // Заголовок
+      'Это локальное уведомление', // Сообщение
+      platformDetails,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(

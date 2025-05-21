@@ -31,7 +31,12 @@ mixin LocalData {
   static const String summary = "summary";
   static const String analytics = "analytics";
   static const String planning = "planning";
-
+  static const String profile = "profile";
+  static const String operations = "operations";
+  static const String currency = "currency";
+  static const String security = "security";
+  static const String key = "key";
+  static const String logoutButton = "logoutButton";
 
   //Login
   static const String unCurrect = "unCurrect";
@@ -139,6 +144,13 @@ mixin LocalData {
       summary: 'Total Balance',
       analytics: 'Analytics',
       planning: 'Planning',
+      profile: 'Profile',
+      operations: 'Operations',
+      currency: 'Currency',
+      security: 'Security',
+      key: 'Key',
+      logoutButton: 'Logout',
+
 
       // Login Page
       unCurrect: "Incorrect email or password",
@@ -245,6 +257,12 @@ mixin LocalData {
     summary: "Общий баланс",
     analytics: "Аналитика",
     planning: "Планирование",
+    profile: "Профиль",
+    operations: "Операции",
+    currency: "Валюта",
+    security: "Безопасность",
+    key: "Ключ",
+    logoutButton: "Выйти",
 
 
     // Login Page
@@ -357,6 +375,13 @@ mixin LocalData {
     summary: "Жалпы баланс",
     analytics: "Аналитика",
     planning: "Жоспарлау",
+    profile: "Профиль",
+    operations: "Операциялар",
+    currency: "Валюта",
+    security: "Қауіпсіздік",
+    key: "Кілт",
+    logoutButton: "Шығу",
+
 
     // Login Page
     unCurrect: "Электрондық пошта немесе құпиясөз қате",
