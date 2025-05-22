@@ -5,7 +5,7 @@ import 'package:untitled1/localization/locales.dart';
 import 'package:untitled1/screens/ExpenseInputScreen.dart';
 import 'package:untitled1/screens/Plannings/page/ScheduledPaymentsPage.dart';
 import 'package:untitled1/screens/accountPage/MainAccountPage.dart';
-import 'Analitics/ExpensesAnalysisPage.dart';
+import 'Analitics/AnalyticsPage.dart';
 import 'TransactionsListPage.dart';
 import 'futureMainAccount/AccountPage.dart';
 
@@ -26,7 +26,7 @@ class _MainScreenState extends State<MainScreen>{
     super.initState();
     _pages = [
       TransactionsListPage(userID: _userId),
-      ExpensesAnalysisPage(),
+      StatisticsPage(),
       ScheduledPaymentsPage(userId: _userId),
       // MainAcountPage(),
       AccountPage(),
