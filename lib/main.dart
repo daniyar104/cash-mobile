@@ -1,15 +1,41 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_localization/flutter_localization.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:untitled1/localization/locales.dart';
 import 'package:untitled1/screens/MainScreen.dart';
+import 'package:untitled1/screens/OnboardingPage/onboarding_screen.dart';
+import 'package:untitled1/screens/accountPage/settings/styles/ThemeSettingsPage.dart';
 import 'package:untitled1/screens/login/login_page.dart';
+
+enum AppTheme { light, dark }
+final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+FlutterLocalNotificationsPlugin();
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
   final prefs = await SharedPreferences.getInstance();
   final userId = prefs.getInt('userId');
-  Widget initialRoute = LoginPage();
+  final onboardingSeen = prefs.getBool('onboarding_seen') ?? false;
+  Widget initialRoute;
 
+  const AndroidInitializationSettings initializationSettingsAndroid =
+  AndroidInitializationSettings('@mipmap/ic_launcher');
+
+  const InitializationSettings initializationSettings = InitializationSettings(
+    android: initializationSettingsAndroid,
+  );
+
+  await flutterLocalNotificationsPlugin.initialize(initializationSettings);
+  if (!onboardingSeen) {
+    initialRoute = const OnboardingScreen();
+  } else if (userId != null) {
+    initialRoute = const MainScreen();
+  } else {
+    initialRoute = const LoginPage();
+  }
   if (userId != null) {
     initialRoute = MainScreen();
   }
@@ -27,12 +53,51 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   final FlutterLocalization localization = FlutterLocalization.instance;
-
+  ThemeMode _themeMode = ThemeMode.system;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     configurateLocalization();
+    requestNotificationPermission();
+    loadSavedTheme();
+  }
+  Future<void> requestNotificationPermission() async {
+    if (Platform.isAndroid) {
+      var status = await Permission.notification.status;
+      if (!status.isGranted) {
+        var result = await Permission.notification.request();
+        print('Notification permission status after request: $result');
+      } else {
+        print('Notification permission already granted');
+      }
+    }
+  }
+
+  Future<void> saveThemeToPrefs(AppTheme theme) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('theme_mode', theme.name);
+  }
+  Future<AppTheme?> loadThemeFromPrefs() async {
+    final prefs = await SharedPreferences.getInstance();
+    final themeString = prefs.getString('theme_mode');
+    if (themeString == null) return null;
+    return AppTheme.values.firstWhere((e) => e.name == themeString, orElse: () => AppTheme.light);
+  }
+  void loadSavedTheme() async {
+    final savedTheme = await loadThemeFromPrefs();
+    setState(() {
+      _themeMode = savedTheme == AppTheme.dark ? ThemeMode.dark : ThemeMode.light;
+    });
+  }
+  void toggleTheme() {
+    setState(() {
+      if (_themeMode == ThemeMode.dark) {
+        _themeMode = ThemeMode.light;
+      } else {
+        _themeMode = ThemeMode.dark;
+      }
+    });
   }
   @override
   Widget build(BuildContext context) {
@@ -43,14 +108,26 @@ class _MyAppState extends State<MyApp> {
         useMaterial3: true,
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
       ),
+      darkTheme: ThemeData(
+        useMaterial3: true,
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue, brightness: Brightness.dark),
+        brightness: Brightness.dark,
+      ),
+      themeMode: _themeMode,
       supportedLocales: localization.supportedLocales,
       localizationsDelegates: localization.localizationsDelegates,
-      home: widget.initialRoute
+      home: widget.initialRoute,
+      routes: {
+        '/themeSettings': (context) => ThemeSettingsPage(
+          currentThemeMode: _themeMode,
+          onToggleTheme: toggleTheme,
+        ),
+      },
     );
   }
 
   void configurateLocalization() {
-    localization.init(mapLocales: LOCALES, initLanguageCode: "en");
+    localization.init(mapLocales: LOCALES, initLanguageCode: "ru");
     localization.onTranslatedLanguage = onTranslatedLanguage;
   }
 

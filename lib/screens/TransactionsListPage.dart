@@ -7,6 +7,8 @@ import 'package:untitled1/widgets/welcomeWidget/WelcomeWidget.dart';
 import '../db/app_database_helper.dart';
 import '../db/database_factory.dart';
 import '../widgets/syncfusion/ExpensesChart.dart';
+import '../widgets/totalCategory/TotalExpenseFood.dart';
+import '../widgets/totalCategory/TotalExpenseShoping.dart';
 
 class TransactionsListPage extends StatefulWidget {
   final int userID;

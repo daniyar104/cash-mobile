@@ -8,12 +8,14 @@ import 'package:sembast/sembast.dart';
 import 'package:sembast/sembast_io.dart';
 import 'package:sembast/sembast_memory.dart';
 
+import '../models/ScheduledPayment.dart';
 import '../models/UserModel.dart';
 import '../models/TransactionModel.dart';
 import 'app_database_helper.dart';
 
 class SembastDatabaseHelper implements AppDatabaseHelper {
   static final SembastDatabaseHelper instance = SembastDatabaseHelper._internal();
+  final StoreRef<int, Map<String, dynamic>> scheduledPaymentsStore = intMapStoreFactory.store('scheduled_payments');
 
   static Database? _db;
 
@@ -309,5 +311,66 @@ class SembastDatabaseHelper implements AppDatabaseHelper {
   Future<void> deleteTransactionAndRestoreBalance(int transactionId, int userId) async {
     final db = await database;
 
+    // Получаем транзакцию по id
+    final transactionRecord = await transactionsStore.record(transactionId).get(db);
+
+    if (transactionRecord == null) {
+      // Если транзакция не найдена, просто выходим
+      return;
+    }
+
+    // Извлекаем данные транзакции
+    final transaction = TransactionModel.fromMap({...transactionRecord, 'id': transactionId});
+
+    // Получаем текущие данные пользователя
+    final userRecord = await usersStore.record(userId).get(db);
+    if (userRecord == null) {
+      // Если пользователь не найден, ничего не делаем
+      return;
+    }
+
+    double userAmount = userRecord['amount'] ?? 0.0;
+
+    // Восстанавливаем баланс пользователя, противоположно операции транзакции
+    if (transaction.type == 'income') {
+      userAmount -= transaction.amount; // Уменьшаем сумму, так как удаляем доход
+    } else if (transaction.type == 'expense') {
+      userAmount += transaction.amount; // Увеличиваем сумму, так как удаляем расход
+    }
+
+    // Обновляем баланс пользователя в базе
+    await usersStore.record(userId).update(db, {'amount': userAmount});
+
+    // Удаляем транзакцию из базы
+    await transactionsStore.record(transactionId).delete(db);
   }
+
+  // Вставка ScheduledPayment
+  Future<int> insertScheduledPayment(ScheduledPayment payment) async {
+    final db = await database;
+    return await scheduledPaymentsStore.add(db, payment.toMap());
+  }
+
+// Получение всех ScheduledPayment для пользователя
+  Future<List<ScheduledPayment>> getScheduledPayments(int userId) async {
+    final db = await database;
+    final finder = Finder(filter: Filter.equals('user_id', userId));
+    final records = await scheduledPaymentsStore.find(db, finder: finder);
+    return records.map((e) => ScheduledPayment.fromMap({...e.value, 'id': e.key})).toList();
+  }
+
+// Обновление ScheduledPayment
+  Future<int> updateScheduledPayment(ScheduledPayment payment) async {
+    final db = await database;
+    await scheduledPaymentsStore.record(payment.id!).put(db, payment.toMap());
+    return payment.id!;
+  }
+
+// Удаление ScheduledPayment по id
+  Future<int> deleteScheduledPayment(int id) async {
+    final db = await database;
+    await scheduledPaymentsStore.record(id).delete(db);
+    return id;
+  }
+
 }

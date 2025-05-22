@@ -1,6 +1,7 @@
 import 'package:intl/intl.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
+import '../models/ScheduledPayment.dart';
 import '../models/TransactionModel.dart';
 import '../models/UserModel.dart';
 import 'app_database_helper.dart';
@@ -51,6 +52,20 @@ class DataBaseHelper implements AppDatabaseHelper {
         FOREIGN KEY (user_id) REFERENCES users(id)
       )
     ''');
+
+    await db.execute('''
+      CREATE TABLE scheduled_payments(
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        title TEXT,
+        amount REAL,
+        date TEXT,
+        category TEXT,
+        user_id INTEGER,
+        type TEXT,
+        FOREIGN KEY (user_id) REFERENCES users(id)
+      )
+    ''');
+
   }
 
   // Методы для работы с UserModel
@@ -348,4 +363,46 @@ class DataBaseHelper implements AppDatabaseHelper {
   Future<void> init() async {
     await database;
   }
+
+
+
+  // Методы для работы с ScheduledPayment
+  @override
+  Future<int> insertScheduledPayment(ScheduledPayment payment) async {
+    final db = await database;
+    return await db.insert('scheduled_payments', payment.toMap());
+  }
+
+  @override
+  Future<List<ScheduledPayment>> getScheduledPayments(int userId) async {
+    final db = await database;
+    final List<Map<String, dynamic>> maps = await db.query(
+      'scheduled_payments',
+      where: 'user_id = ?',
+      whereArgs: [userId],
+    );
+    return List.generate(maps.length, (i) => ScheduledPayment.fromMap(maps[i]));
+  }
+
+  @override
+  Future<int> updateScheduledPayment(ScheduledPayment payment) async {
+    final db = await database;
+    return await db.update(
+      'scheduled_payments',
+      payment.toMap(),
+      where: 'id = ?',
+      whereArgs: [payment.id],
+    );
+  }
+
+  @override
+  Future<int> deleteScheduledPayment(int id) async {
+    final db = await database;
+    return await db.delete(
+      'scheduled_payments',
+      where: 'id = ?',
+      whereArgs: [id],
+    );
+  }
+
 }

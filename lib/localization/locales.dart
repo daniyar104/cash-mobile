@@ -29,10 +29,18 @@ mixin LocalData {
   static const String templateSetting = "templateSetting";
   static const String categories = "categories";
   static const String summary = "summary";
-
+  static const String analytics = "analytics";
+  static const String planning = "planning";
+  static const String profile = "profile";
+  static const String operations = "operations";
+  static const String currency = "currency";
+  static const String security = "security";
+  static const String key = "key";
+  static const String logoutButton = "logoutButton";
 
   //Login
   static const String unCurrect = "unCurrect";
+  static const String error = "error";
   static const String enterEmail = "enterEmail";
   static const String enterPassword = "enterPassword";
   static const String fogotPassword = "fogotPassword";
@@ -42,6 +50,12 @@ mixin LocalData {
   // Register
   static const String register = "register";
   static const String createNewAccount = "createNewAccount";
+  static const String usernameRequired = "usernameRequired";
+  static const String emailRequired = "emailRequired";
+  static const String invalidEmail = "invalidEmail";
+  static const String passwordRequired = "passwordRequired";
+  static const String passwordTooShort = "passwordTooShort";
+
   // List
   static const String allType = "All";
   static const String incomeType = "Income";
@@ -88,6 +102,24 @@ mixin LocalData {
 
 
 
+
+  // Onboarding components
+  static const String onboardingNextButton = 'onboardingNextButton';
+  static const String onboardingSkipButton = 'onboardingSkipButton';
+  static const String onboardingDoneButton = 'onboardingDoneButton';
+  // Onboarding Page 1
+  static const String onboardingTitle01 = 'onboardingTitle01';
+  static const String onboardingBodyText01 = 'onboardingBodyText01';
+
+  // Onboarding Page 2
+  static const String onboardingTitle02 = 'onboardingTitle02';
+  static const String onboardingBodyText02 = 'onboardingBodyText02';
+
+  // Onboarding Page 3
+  static const String onboardingTitle03 = 'onboardingTitle03';
+  static const String onboardingBodyText03 = 'onboardingBodyText03';
+
+
   static const Map<String, dynamic> EN = {
       title: 'Localiztion',
       body: 'Welcome to the localization example app. This is a simple app to demonstrate localization in Flutter. You can change the language from the settings screen.',
@@ -110,6 +142,15 @@ mixin LocalData {
       templateSetting: 'Template',
       categories: 'Categories',
       summary: 'Total Balance',
+      analytics: 'Analytics',
+      planning: 'Planning',
+      profile: 'Profile',
+      operations: 'Operations',
+      currency: 'Currency',
+      security: 'Security',
+      key: 'Key',
+      logoutButton: 'Logout',
+
 
       // Login Page
       unCurrect: "Incorrect email or password",
@@ -118,10 +159,16 @@ mixin LocalData {
       fogotPassword: 'Forgot password?',
       dontHaveAccount: 'Don\'t have an account?',
       createAccount: 'Create account',
+      error: "Ops, something went wrong.",
 
       // Register
       register: 'Registration',
       createNewAccount: 'Create new account',
+      usernameRequired: 'Username is required',
+      emailRequired: 'Email is required',
+      invalidEmail: 'Invalid email',
+      passwordRequired: 'Password is required',
+      passwordTooShort: 'Password must be at least 6 characters long',
 
       // List
       allType: 'All',
@@ -167,6 +214,22 @@ mixin LocalData {
       saturday: 'Saturday',
       sunday: 'Sunday',
 
+      // Onboarding components
+      onboardingNextButton: 'Next',
+      onboardingSkipButton: 'Skip',
+      onboardingDoneButton: 'Done',
+
+      // Onboarding Page 1
+      onboardingTitle01: 'Welcome to the App',
+      onboardingBodyText01: 'Using the app to control your finances is a pleasure.',
+
+      // Onboarding Page 2
+      onboardingTitle02: 'Comfortable.',
+      onboardingBodyText02: 'Simply and quickly add expenses, income, debts, and transfers.',
+
+      // Onboarding Page 3
+      onboardingTitle03: 'Visual analytics',
+      onboardingBodyText03: 'Find unnecessary expenses and reduce them.',
 
   };
 
@@ -192,6 +255,14 @@ mixin LocalData {
     templateSetting: "Шаблон",
     categories: "Категории",
     summary: "Общий баланс",
+    analytics: "Аналитика",
+    planning: "Планирование",
+    profile: "Профиль",
+    operations: "Операции",
+    currency: "Валюта",
+    security: "Безопасность",
+    key: "Ключ",
+    logoutButton: "Выйти",
 
 
     // Login Page
@@ -201,10 +272,15 @@ mixin LocalData {
     fogotPassword: "Забыли пароль?",
     dontHaveAccount: "Нет аккаунта?",
     createAccount: "Создать аккаунт",
-
+    error: "Упс, что-то пошло не так.",
     // Register
     register: "Регистрация",
     createNewAccount: "Создать аккаунт",
+    usernameRequired: "Имя пользователя обязательно",
+    emailRequired: "Электронная почта обязательна",
+    invalidEmail: "Недействительная электронная почта",
+    passwordRequired: "Пароль обязателен",
+    passwordTooShort: "Пароль должен содержать не менее 6 символов",
 
     // List
     allType: "Все",
@@ -258,6 +334,21 @@ mixin LocalData {
     friday: "ПТ",
     saturday: "СБ",
     sunday: "ВСК",
+
+    // Onboarding components
+    onboardingNextButton: 'Далее',
+    onboardingSkipButton: 'Пропустить',
+    onboardingDoneButton: 'Готово',
+
+    // Onboarding Page 1
+    onboardingTitle01: 'Добро пожаловать в приложение',
+    onboardingBodyText01: 'Использовать приложение для контроля ваших финансов - это удовольствие.',
+    // Onboarding Page 2
+    onboardingTitle02: 'Удобно',
+    onboardingBodyText02: 'Просто и быстро добавляйте расходы, доходы, долги, переводы..',
+    // Onboarding Page 3
+    onboardingTitle03: 'Наглядная аналитика',
+    onboardingBodyText03: 'Находите лишние расходы и сокращайте их.',
   };
 
   static const Map<String, dynamic> KK = {
@@ -282,6 +373,15 @@ mixin LocalData {
     templateSetting: "Үлгі",
     categories: "Санаттар",
     summary: "Жалпы баланс",
+    analytics: "Аналитика",
+    planning: "Жоспарлау",
+    profile: "Профиль",
+    operations: "Операциялар",
+    currency: "Валюта",
+    security: "Қауіпсіздік",
+    key: "Кілт",
+    logoutButton: "Шығу",
+
 
     // Login Page
     unCurrect: "Электрондық пошта немесе құпиясөз қате",
@@ -290,10 +390,16 @@ mixin LocalData {
     fogotPassword: "Құпиясөзді ұмыттыңыз ба?",
     dontHaveAccount: "Есеп жоқ па?",
     createAccount: "Есеп жасау",
+    error: "Упс, бір нәрсе дұрыс емес.",
 
     // Register
     register: "Тіркелу",
     createNewAccount: "Жаңа есеп жасау",
+    usernameRequired: "Пайдаланушы аты қажет",
+    emailRequired: "Электрондық пошта қажет",
+    invalidEmail: "Электрондық пошта жарамсыз",
+    passwordRequired: "Құпиясөз қажет",
+    passwordTooShort: "Құпиясөз кемінде 6 таңбадан тұруы керек",
 
     // List
     allType: "Барлығы",
@@ -338,6 +444,22 @@ mixin LocalData {
     friday: "ЖМБ",
     saturday: "СНБ",
     sunday: "ЖЕК",
+
+
+    // Onboarding components
+    onboardingNextButton: 'Келесі',
+    onboardingSkipButton: 'Откызу',
+    onboardingDoneButton: 'Бастау',
+
+    // Onboarding Page 1
+    onboardingTitle01: 'Қолданбаға қош келдіңіз',
+    onboardingBodyText01: 'Сіздің қаржыларыңызды бақылау үшін қолданбаны пайдалану - бұл ләззат.',
+    // Onboarding Page 2
+    onboardingTitle02: 'Ыңғайлы.',
+    onboardingBodyText02: 'Шығындарды, кірістерді, қарыздарды және аударымдарды оңай және жылдам қосыңыз.',
+    // Onboarding Page 3
+    onboardingTitle03: 'Көрнекі аналитика',
+    onboardingBodyText03: "Қосымша шығындарды табыңыз және оларды қысқартыңыз."
   };
 
   static String getTranslatedCategory(BuildContext context, String? key) {

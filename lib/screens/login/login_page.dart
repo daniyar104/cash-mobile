@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localization/flutter_localization.dart';
-import 'package:untitled1/db/database_helper.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:untitled1/localization/locales.dart';
 import 'package:untitled1/screens/MainScreen.dart';
-import '../../db/app_database_helper.dart';
 import '../../db/database_factory.dart';
-import '../../db/sembast_database_helper.dart';
 import '../../models/UserModel.dart';
 import '../register/RegistrationPage.dart';
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 
   class LoginPage extends StatefulWidget {
     const LoginPage({super.key});
@@ -44,12 +42,18 @@ import '../register/RegistrationPage.dart';
             ),(route) => false,
           );
         } else {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(
-                LocalData.unCurrect.getString(context)
-              )
+          final snackBar = SnackBar(
+            elevation: 0,
+            behavior: SnackBarBehavior.floating,
+            backgroundColor: Colors.transparent,
+            content: AwesomeSnackbarContent(
+              title: LocalData.error.getString(context),
+              message: LocalData.unCurrect.getString(context),
+              contentType: ContentType.failure,
             ),
           );
+
+          ScaffoldMessenger.of(context).showSnackBar(snackBar);
         }
       }
     }

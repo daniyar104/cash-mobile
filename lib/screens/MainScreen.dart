@@ -3,8 +3,11 @@ import 'package:flutter_localization/flutter_localization.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:untitled1/localization/locales.dart';
 import 'package:untitled1/screens/ExpenseInputScreen.dart';
+import 'package:untitled1/screens/Plannings/page/ScheduledPaymentsPage.dart';
 import 'package:untitled1/screens/accountPage/MainAccountPage.dart';
+import 'Analitics/AnalyticsPage.dart';
 import 'TransactionsListPage.dart';
+import 'futureMainAccount/AccountPage.dart';
 
 class MainScreen extends StatefulWidget{
   const MainScreen({super.key});
@@ -23,7 +26,10 @@ class _MainScreenState extends State<MainScreen>{
     super.initState();
     _pages = [
       TransactionsListPage(userID: _userId),
-      MainAcountPage(),
+      StatisticsPage(),
+      ScheduledPaymentsPage(userId: _userId),
+      // MainAcountPage(),
+      AccountPage(),
     ];
     _loadUserId();
   }
@@ -52,32 +58,57 @@ class _MainScreenState extends State<MainScreen>{
   }
   @override
   Widget build(BuildContext context) {
-    if (_userId == null) {
-      return Scaffold(
+    if (_pages == null) {
+      return const Scaffold(
         body: Center(child: CircularProgressIndicator()),
       );
     }
+
     return Scaffold(
       body: _pages[_currentIndex],
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _currentIndex,
-        onTap: (index) {
-          setState(() {
-            _currentIndex = index;
-          });
-        },
-        items: [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.list),
-            label: LocalData.transactions.getString(context),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: LocalData.account.getString(context),
-          ),
-        ],
-
+      bottomNavigationBar: BottomAppBar(
+        shape: const CircularNotchedRectangle(),
+        notchMargin: 8.0,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            IconButton(
+              icon: Icon(
+                Icons.home_filled,
+                color: _currentIndex == 0 ? Colors.blue : Colors.grey,
+                size: _currentIndex == 0 ? 32 : 24,
+              ),
+              onPressed: () => setState(() => _currentIndex = 0),
+            ),
+            IconButton(
+              icon: Icon(
+                Icons.analytics_outlined,
+                color: _currentIndex == 1 ? Colors.blue : Colors.grey,
+                size: _currentIndex == 1 ? 32 : 24,
+              ),
+              onPressed: () => setState(() => _currentIndex = 1),
+            ),
+            SizedBox(width: 48),
+            IconButton(
+              icon: Icon(
+                Icons.calendar_today,
+                color: _currentIndex == 2 ? Colors.blue : Colors.grey,
+                size: _currentIndex == 2 ? 32 : 24,
+              ),
+              onPressed: () => setState(() => _currentIndex = 2),
+            ),
+            IconButton(
+              icon: Icon(
+                Icons.person,
+                color: _currentIndex == 3 ? Colors.blue : Colors.grey,
+                size: _currentIndex == 3 ? 32 : 24,
+              ),
+              onPressed: () => setState(() => _currentIndex = 3),
+            ),
+          ],
+        ),
       ),
+
       floatingActionButton: FloatingActionButton(
         onPressed: _showAddTransactionForm,
         child: Icon(Icons.add),
@@ -85,4 +116,7 @@ class _MainScreenState extends State<MainScreen>{
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
   }
+
 }
+
+

@@ -14,7 +14,7 @@ class SettingsTile extends StatelessWidget {
         width: double.infinity,
         padding: EdgeInsets.symmetric(vertical: 15, horizontal: 10),
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
+          borderRadius: BorderRadius.circular(15),
           color: Theme.of(context).colorScheme.secondaryContainer
         ),
         child: Row(
@@ -24,12 +24,12 @@ class SettingsTile extends StatelessWidget {
               Text(
                 localizationKey,
                 style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
+                  fontSize: 18,
+                  fontWeight: FontWeight.normal,
                 ),
               ),
               Spacer(),
-              Icon(Icons.arrow_right, size: 30,),
+              Icon(Icons.chevron_right_outlined, size: 30,),
             ]
         ),
       )
