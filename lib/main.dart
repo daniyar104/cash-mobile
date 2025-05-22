@@ -10,6 +10,8 @@ import 'package:untitled1/screens/MainScreen.dart';
 import 'package:untitled1/screens/OnboardingPage/onboarding_screen.dart';
 import 'package:untitled1/screens/accountPage/settings/styles/ThemeSettingsPage.dart';
 import 'package:untitled1/screens/login/login_page.dart';
+
+enum AppTheme { light, dark }
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
 FlutterLocalNotificationsPlugin();
 void main() async{
@@ -58,6 +60,7 @@ class _MyAppState extends State<MyApp> {
     super.initState();
     configurateLocalization();
     requestNotificationPermission();
+    loadSavedTheme();
   }
   Future<void> requestNotificationPermission() async {
     if (Platform.isAndroid) {
@@ -71,6 +74,22 @@ class _MyAppState extends State<MyApp> {
     }
   }
 
+  Future<void> saveThemeToPrefs(AppTheme theme) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('theme_mode', theme.name);
+  }
+  Future<AppTheme?> loadThemeFromPrefs() async {
+    final prefs = await SharedPreferences.getInstance();
+    final themeString = prefs.getString('theme_mode');
+    if (themeString == null) return null;
+    return AppTheme.values.firstWhere((e) => e.name == themeString, orElse: () => AppTheme.light);
+  }
+  void loadSavedTheme() async {
+    final savedTheme = await loadThemeFromPrefs();
+    setState(() {
+      _themeMode = savedTheme == AppTheme.dark ? ThemeMode.dark : ThemeMode.light;
+    });
+  }
   void toggleTheme() {
     setState(() {
       if (_themeMode == ThemeMode.dark) {

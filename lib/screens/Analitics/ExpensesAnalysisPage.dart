@@ -1,13 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
-class PlanningsPage extends StatefulWidget {
-  const PlanningsPage({super.key});
+import '../../main.dart';
+
+class ExpensesAnalysisPage extends StatefulWidget {
+  const ExpensesAnalysisPage({super.key});
 
   @override
-  State<PlanningsPage> createState() => _PlanningsPageState();
+  State<ExpensesAnalysisPage> createState() => _ExpensesAnalysisPageState();
 }
 
-class _PlanningsPageState extends State<PlanningsPage> {
+class _ExpensesAnalysisPageState extends State<ExpensesAnalysisPage> {
+
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -18,7 +23,7 @@ class _PlanningsPageState extends State<PlanningsPage> {
           color: Colors.blue,
           child: const Center(
             child: Text(
-              'Plannings',
+              'Analytics',
               style: TextStyle(
                 fontSize: 24,
                 color: Colors.white,

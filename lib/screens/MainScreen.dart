@@ -3,9 +3,9 @@ import 'package:flutter_localization/flutter_localization.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:untitled1/localization/locales.dart';
 import 'package:untitled1/screens/ExpenseInputScreen.dart';
-import 'package:untitled1/screens/Plannings/page/PlanningsPage.dart';
+import 'package:untitled1/screens/Plannings/page/ScheduledPaymentsPage.dart';
 import 'package:untitled1/screens/accountPage/MainAccountPage.dart';
-import 'Analitics/AnalyticsPage.dart';
+import 'Analitics/ExpensesAnalysisPage.dart';
 import 'TransactionsListPage.dart';
 import 'futureMainAccount/AccountPage.dart';
 
@@ -26,8 +26,8 @@ class _MainScreenState extends State<MainScreen>{
     super.initState();
     _pages = [
       TransactionsListPage(userID: _userId),
-      AnalyticsPage(),
-      PlanningsPage(),
+      ExpensesAnalysisPage(),
+      ScheduledPaymentsPage(userId: _userId),
       // MainAcountPage(),
       AccountPage(),
     ];

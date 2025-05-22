@@ -3,6 +3,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:untitled1/db/sembast_database_helper.dart';
 
+import '../models/ScheduledPayment.dart';
 import '../models/UserModel.dart';
 import '../models/TransactionModel.dart';
 
@@ -33,5 +34,11 @@ abstract class AppDatabaseHelper {
   Future<double> getTotalSpentOnFoodForCurrentMonth(int userId);
   Future<double> getTotalSpentOnShoppingForCurrentMonth(int userId);
   Future<void> deleteTransactionAndRestoreBalance(int transactionId, int userId);
+
+  // Schedule methods
+  Future<int> insertScheduledPayment(ScheduledPayment payment);
+  Future<List<ScheduledPayment>> getScheduledPayments(int userId);
+  Future<int> updateScheduledPayment(ScheduledPayment payment);
+  Future<int> deleteScheduledPayment(int id);
 }
 

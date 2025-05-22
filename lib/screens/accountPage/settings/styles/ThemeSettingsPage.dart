@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class ThemeSettingsPage extends StatelessWidget {
+class ThemeSettingsPage extends StatefulWidget {
   final ThemeMode currentThemeMode;
   final VoidCallback onToggleTheme;
 
@@ -11,9 +11,20 @@ class ThemeSettingsPage extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
-    bool isDark = currentThemeMode == ThemeMode.dark;
+  State<ThemeSettingsPage> createState() => _ThemeSettingsPageState();
+}
 
+class _ThemeSettingsPageState extends State<ThemeSettingsPage> {
+  late bool isDark;
+
+  @override
+  void initState() {
+    super.initState();
+    isDark = widget.currentThemeMode == ThemeMode.dark;
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Настройки темы')),
       body: Center(
@@ -21,7 +32,10 @@ class ThemeSettingsPage extends StatelessWidget {
           title: const Text('Тёмная тема'),
           value: isDark,
           onChanged: (val) {
-            onToggleTheme();
+            setState(() {
+              isDark = val;
+            });
+            widget.onToggleTheme();
           },
         ),
       ),
