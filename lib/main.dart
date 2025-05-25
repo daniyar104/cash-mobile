@@ -10,6 +10,10 @@ import 'package:untitled1/screens/MainScreen.dart';
 import 'package:untitled1/screens/OnboardingPage/onboarding_screen.dart';
 import 'package:untitled1/screens/accountPage/settings/styles/ThemeSettingsPage.dart';
 import 'package:untitled1/screens/login/login_page.dart';
+import 'package:untitled1/screens/pinCode/PinLoginScreen.dart';
+import 'package:untitled1/screens/pinCode/PinSetupScreen.dart';
+
+import 'models/PinService.dart';
 
 enum AppTheme { light, dark }
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
@@ -18,6 +22,7 @@ void main() async{
   WidgetsFlutterBinding.ensureInitialized();
   final prefs = await SharedPreferences.getInstance();
   final userId = prefs.getInt('userId');
+  final pin = prefs.getString('user_pin');
   final onboardingSeen = prefs.getBool('onboarding_seen') ?? false;
   Widget initialRoute;
 
@@ -29,16 +34,20 @@ void main() async{
   );
 
   await flutterLocalNotificationsPlugin.initialize(initializationSettings);
+  final pinService = PinService();
+  final isPinSet = await pinService.isPinSet();
+
   if (!onboardingSeen) {
     initialRoute = const OnboardingScreen();
-  } else if (userId != null) {
-    initialRoute = const MainScreen();
-  } else {
+  } else if (userId == null) {
     initialRoute = const LoginPage();
+  } else if (pin == null || pin.isEmpty) {
+    initialRoute = PinSetupScreen();
+  } else {
+    initialRoute = PinLoginScreen();
   }
-  if (userId != null) {
-    initialRoute = MainScreen();
-  }
+
+
   await FlutterLocalization.instance.ensureInitialized();
   runApp(MyApp(initialRoute: initialRoute));
 }
@@ -51,7 +60,7 @@ class MyApp extends StatefulWidget {
   State<MyApp> createState() => _MyAppState();
 }
 
-class _MyAppState extends State<MyApp> {
+class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   final FlutterLocalization localization = FlutterLocalization.instance;
   ThemeMode _themeMode = ThemeMode.system;
   @override
@@ -61,6 +70,28 @@ class _MyAppState extends State<MyApp> {
     configurateLocalization();
     requestNotificationPermission();
     loadSavedTheme();
+  }
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) async {
+    if (state == AppLifecycleState.resumed) {
+      final prefs = await SharedPreferences.getInstance();
+      final userId = prefs.getInt('userId');
+      final pin = prefs.getString('user_pin');
+      if (userId != null && pin != null) {
+        // Показываем PIN-экран при возврате
+        Future.delayed(Duration.zero, () {
+          Navigator.of(context).push(
+            MaterialPageRoute(builder: (_) =>  PinLoginScreen()),
+          );
+        });
+      }
+    }
   }
   Future<void> requestNotificationPermission() async {
     if (Platform.isAndroid) {
@@ -118,10 +149,14 @@ class _MyAppState extends State<MyApp> {
       localizationsDelegates: localization.localizationsDelegates,
       home: widget.initialRoute,
       routes: {
+        '/home': (_) => const MainScreen(),
         '/themeSettings': (context) => ThemeSettingsPage(
           currentThemeMode: _themeMode,
           onToggleTheme: toggleTheme,
         ),
+        '/setupPin': (_) =>  PinSetupScreen(),
+        '/loginPin': (_) =>  PinLoginScreen(),
+        '/login': (_) => const LoginPage(),
       },
     );
   }

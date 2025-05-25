@@ -100,6 +100,34 @@ mixin LocalData {
   static const String insurance = "Insurance";
   static const String other = "Other";
 
+  // Schedule
+  static const String schedule = "Schedule";
+  static const String errorSchedule = "errorSchedule";
+  static const String noScheduledPayments = "noScheduledPayments";
+  static const String selectScheduleIcon = "selectScheduleIcon";
+  static const String addScheduledPayment = "addScheduledPayment";
+  static const String scheduledPaymentTitle = "scheduledPaymentTitle";
+  static const String scheduledPaymentAmount = "scheduledPaymentAmount";
+  static const String scheduledPaymentDate = "scheduledPaymentDate";
+  static const String scheduledPaymentCategory = "scheduledPaymentCategory";
+  static const String scheduledPaymentType = "scheduledPaymentType";
+  static const String invalidAmount = "invalidAmount";
+  static const String invalidTitle = "invalidTitle";
+  static const String invalidDate = "invalidDate";
+  static const String invalidCategory = "invalidCategory";
+  static const String invalidType = "invalidType";
+  static const String pickDate = "pickDate";
+  static const String cancel = "cancel";
+  static const String add = "add";
+
+
+  //Analytics
+  static const String statics = "Statistics";
+  static const String balance = "Balance";
+  static const String averageExpense = "Average Expense";
+  static const String maxExpense = "Max Expense";
+  static const String categoryExpanses = "Category Expenses";
+  static const String monthlyExpanses = "Monthly Expenses";
 
 
 
@@ -176,6 +204,26 @@ mixin LocalData {
       expenseType: 'Expense',
       transfer: 'Transfer',
 
+
+      // Schedule
+      schedule: 'Schedule',
+      errorSchedule: 'Error',
+      noScheduledPayments: 'No scheduled payments',
+      selectScheduleIcon: 'Select icon',
+      addScheduledPayment: 'Add scheduled payment',
+      scheduledPaymentTitle: 'Title',
+      scheduledPaymentAmount: 'Amount',
+      scheduledPaymentDate: 'Date',
+      scheduledPaymentCategory: 'Category',
+      scheduledPaymentType: 'Type',
+      invalidAmount: 'Invalid amount',
+      invalidTitle: 'Invalid title',
+      invalidDate: 'Invalid date',
+      invalidCategory: 'Invalid category',
+      invalidType: 'Invalid type',
+      pickDate: 'Pick date',
+      cancel: 'Cancel',
+      add: 'Add',
       //Time greeting
       morning: 'Good morning',
       afternoon: 'Good afternoon',
@@ -203,6 +251,14 @@ mixin LocalData {
       pets: 'Pets',
       insurance: 'Insurance',
       other: 'Other',
+
+      // Analytics
+      statics: 'Statistics',
+      balance: 'Balance',
+      averageExpense: 'Average Expense',
+      maxExpense: 'Max Expense',
+      categoryExpanses: 'Category Expenses',
+      monthlyExpanses: 'Monthly Expenses',
 
       // Days
       today: "Today",
@@ -282,6 +338,27 @@ mixin LocalData {
     passwordRequired: "Пароль обязателен",
     passwordTooShort: "Пароль должен содержать не менее 6 символов",
 
+
+    // Schedule
+    schedule: "Расписание",
+    errorSchedule: "Ошибка",
+    noScheduledPayments: "Нет запланированных платежей",
+    selectScheduleIcon: "Выберите иконку",
+    addScheduledPayment: "Добавить запланированный платеж",
+    scheduledPaymentTitle: "Название",
+    scheduledPaymentAmount: "Сумма",
+    scheduledPaymentDate: "Дата",
+    scheduledPaymentCategory: "Категория",
+    scheduledPaymentType: "Тип",
+    invalidAmount: "Недействительная сумма",
+    invalidTitle: "Недействительное название",
+    invalidDate: "Недействительная дата",
+    invalidCategory: "Недействительная категория",
+    invalidType: "Недействительный тип",
+    pickDate: "Выбрать дату",
+    cancel: "Отмена",
+    add: "Добавить",
+
     // List
     allType: "Все",
     incomeType: "Доход",
@@ -334,6 +411,14 @@ mixin LocalData {
     friday: "ПТ",
     saturday: "СБ",
     sunday: "ВСК",
+
+    // Analytics
+    statics: "Статистика",
+    balance: "Баланс",
+    averageExpense: "Средний расход",
+    maxExpense: "Макс. расход",
+    categoryExpanses: "Расходы по категориям",
+    monthlyExpanses: "Ежемесячные расходы",
 
     // Onboarding components
     onboardingNextButton: 'Далее',
@@ -407,6 +492,27 @@ mixin LocalData {
     expenseType: "Шығын",
     transfer: "Аудару",
 
+    // Schedule
+    schedule: "Кесте",
+    errorSchedule: "Қате",
+    noScheduledPayments: "Жоспарланған төлемдер жоқ",
+    selectScheduleIcon: "Иконканы таңдаңыз",
+    addScheduledPayment: "Жоспарланған төлем қосу",
+    scheduledPaymentTitle: "Атауы",
+    scheduledPaymentAmount: "Сомасы",
+    scheduledPaymentDate: "Күні",
+    scheduledPaymentCategory: "Санаты",
+    scheduledPaymentType: "Түрі",
+    invalidAmount: "Жарамсыз сома",
+    invalidTitle: "Жарамсыз атау",
+    invalidDate: "Жарамсыз күн",
+    invalidCategory: "Жарамсыз санат",
+    invalidType: "Жарамсыз түр",
+    pickDate: "Күнді таңдаңыз",
+    cancel: "Бас тарту",
+    add: "Қосу",
+
+
     //Time greeting
     morning: "Қайырлы таң",
     afternoon: "Қайырлы күн",
@@ -444,6 +550,17 @@ mixin LocalData {
     friday: "ЖМБ",
     saturday: "СНБ",
     sunday: "ЖЕК",
+
+    // Analytics
+    statics: "Статистика",
+    balance: "Баланс",
+    averageExpense: "Орташа шығын",
+    maxExpense: "Макс. шығын",
+    categoryExpanses: "Санат бойынша шығындар",
+    monthlyExpanses: "Айлық шығындар",
+
+
+    // Schedule
 
 
     // Onboarding components

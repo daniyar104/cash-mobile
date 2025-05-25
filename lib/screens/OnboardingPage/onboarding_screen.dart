@@ -4,6 +4,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:untitled1/localization/locales.dart';
 
 import '../login/login_page.dart';
+import '../pinCode/PinLoginScreen.dart';
+import '../pinCode/PinSetupScreen.dart';
 import 'onboarding_page_1.dart';
 import 'onboarding_page_2.dart';
 import 'onboarding_page_3.dart';
@@ -16,6 +18,7 @@ class OnboardingScreen extends StatefulWidget {
 
 class _OnboardingScreenState extends State<OnboardingScreen> {
   final PageController _controller = PageController();
+
   int _currentPage = 0;
 
   final List<Widget> _pages = const [
@@ -26,8 +29,27 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
   void _finishOnboarding() async {
     final prefs = await SharedPreferences.getInstance();
+    final userId = prefs.getInt('userId');
+    final pin = prefs.getString('user_pin');
     await prefs.setBool('onboarding_seen', true);
-    Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const LoginPage()));
+
+
+    if (userId == null) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (_) => PinSetupScreen()),
+      );
+    } else if (pin == null || pin.isEmpty) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (_) => const LoginPage()),
+      );
+    } else {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (_) => PinLoginScreen()),
+      );
+    }
   }
 
   void _nextPage() {
