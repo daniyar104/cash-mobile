@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localization/flutter_localization.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 import '../../db/database_helper.dart';
+import '../../localization/locales.dart';
 
 
 class StatisticsPage extends StatefulWidget {
@@ -91,11 +93,11 @@ class _StatisticsPageState extends State<StatisticsPage> {
         padding: const EdgeInsets.all(16),
         child: Column(
           children: [
-            _buildStatRow("Доходы:", incomeTotal),
-            _buildStatRow("Расходы:", expenseTotal),
-            _buildStatRow("Баланс:", balance),
-            _buildStatRow("Средний расход:", averageExpense),
-            _buildStatRow("Максимальный расход:", maxExpense),
+            _buildStatRow(LocalData.income.getString(context), incomeTotal),
+            _buildStatRow(LocalData.expenses.getString(context), expenseTotal),
+            _buildStatRow(LocalData.balance.getString(context), balance),
+            _buildStatRow(LocalData.averageExpense.getString(context), averageExpense),
+            _buildStatRow(LocalData.maxExpense.getString(context), maxExpense),
           ],
         ),
       ),
@@ -122,7 +124,7 @@ class _StatisticsPageState extends State<StatisticsPage> {
         .toList();
 
     return SfCircularChart(
-      title: ChartTitle(text: 'Расходы по категориям'),
+      title: ChartTitle(text: LocalData.categoryExpanses.getString(context)),
       legend: Legend(isVisible: true, overflowMode: LegendItemOverflowMode.wrap),
       series: <PieSeries<_ChartData, String>>[
         PieSeries<_ChartData, String>(
@@ -142,7 +144,7 @@ class _StatisticsPageState extends State<StatisticsPage> {
       ..sort((a, b) => a.label.compareTo(b.label));
 
     return SfCartesianChart(
-      title: ChartTitle(text: 'Расходы по месяцам'),
+      title: ChartTitle(text: LocalData.monthlyExpanses.getString(context)),
       primaryXAxis: CategoryAxis(),
         series: <CartesianSeries<_ChartData, String>>[
           ColumnSeries<_ChartData, String>(

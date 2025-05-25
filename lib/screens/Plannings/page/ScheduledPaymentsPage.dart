@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localization/flutter_localization.dart';
 import '../../../db/sembast_database_helper.dart';
+import '../../../localization/locales.dart';
 import '../../../models/ScheduledPayment.dart';
 
 class ScheduledPaymentsPage extends StatefulWidget {
@@ -58,7 +60,7 @@ class _ScheduledPaymentsPageState extends State<ScheduledPaymentsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Scheduled Payments'),
+        title: Text(LocalData.scheduledPaymentTitle.getString(context)),
       ),
       body: FutureBuilder<List<ScheduledPayment>>(
         future: _paymentsFuture,
@@ -67,11 +69,11 @@ class _ScheduledPaymentsPageState extends State<ScheduledPaymentsPage> {
             return Center(child: CircularProgressIndicator());
           }
           if (snapshot.hasError) {
-            return Center(child: Text('Error loading payments'));
+            return Center(child: Text(LocalData.errorSchedule.getString(context)));
           }
           final payments = snapshot.data ?? [];
           if (payments.isEmpty) {
-            return Center(child: Text('No scheduled payments'));
+            return Center(child: Text(LocalData.noScheduledPayments.getString(context)));
           }
           return ListView.builder(
             itemCount: payments.length,
@@ -162,7 +164,7 @@ class _AddScheduledPaymentDialogState extends State<AddScheduledPaymentDialog> {
     if (_formKey.currentState?.validate() ?? false) {
       if (_selectedIcon == null) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Please select an icon')),
+          SnackBar(content: Text(LocalData.selectScheduleIcon.getString(context))),
         );
         return;
       }
@@ -184,7 +186,7 @@ class _AddScheduledPaymentDialogState extends State<AddScheduledPaymentDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text('Add Scheduled Payment'),
+      title: Text(LocalData.addScheduledPayment.getString(context)),
       content: SingleChildScrollView(
         child: Form(
           key: _formKey,
@@ -192,22 +194,22 @@ class _AddScheduledPaymentDialogState extends State<AddScheduledPaymentDialog> {
             mainAxisSize: MainAxisSize.min,
             children: [
               TextFormField(
-                decoration: InputDecoration(labelText: 'Title'),
-                validator: (val) => val == null || val.isEmpty ? 'Enter title' : null,
+                decoration: InputDecoration(labelText: LocalData.scheduledPaymentTitle.getString(context)),
+                validator: (val) => val == null || val.isEmpty ? LocalData.invalidTitle.getString(context) : null,
                 onSaved: (val) => _title = val,
               ),
               TextFormField(
-                decoration: InputDecoration(labelText: 'Amount'),
+                decoration: InputDecoration(labelText: LocalData.scheduledPaymentAmount.getString(context)),
                 keyboardType: TextInputType.numberWithOptions(decimal: true),
                 validator: (val) {
-                  if (val == null || val.isEmpty) return 'Enter amount';
-                  if (double.tryParse(val) == null) return 'Invalid number';
+                  if (val == null || val.isEmpty) return LocalData.invalidAmount.getString(context);
+                  if (double.tryParse(val) == null) return LocalData.invalidAmount.getString(context);
                   return null;
                 },
                 onSaved: (val) => _amount = double.parse(val!),
               ),
               SizedBox(height: 12),
-              Text('Select Icon'),
+              Text(LocalData.selectScheduleIcon.getString(context)),
               SizedBox(height: 8),
               Container(
                 height: 80,
@@ -240,9 +242,9 @@ class _AddScheduledPaymentDialogState extends State<AddScheduledPaymentDialog> {
               SizedBox(height: 12),
               Row(
                 children: [
-                  Text(_date != null ? _date!.toLocal().toString().split(' ')[0] : 'Select Date'),
+                  Text(_date != null ? _date!.toLocal().toString().split(' ')[0] : LocalData.pickDate.getString(context)),
                   Spacer(),
-                  TextButton(onPressed: _pickDate, child: Text('Pick Date')),
+                  TextButton(onPressed: _pickDate, child: Text(LocalData.pickDate.getString(context))),
                 ],
               ),
             ],
@@ -250,8 +252,8 @@ class _AddScheduledPaymentDialogState extends State<AddScheduledPaymentDialog> {
         ),
       ),
       actions: [
-        TextButton(onPressed: () => Navigator.of(context).pop(), child: Text('Cancel')),
-        ElevatedButton(onPressed: _submit, child: Text('Add')),
+        TextButton(onPressed: () => Navigator.of(context).pop(), child: Text(LocalData.cancel.getString(context))),
+        ElevatedButton(onPressed: _submit, child: Text(LocalData.add.getString(context))),
       ],
     );
   }
