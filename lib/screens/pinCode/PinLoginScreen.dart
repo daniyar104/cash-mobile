@@ -31,7 +31,7 @@ class _PinLoginScreenState extends State<PinLoginScreen> {
   void _validatePin() async {
     final savedPin = await _pinService.getSavedPin();
     if (_enteredPin == savedPin) {
-      Navigator.pushReplacementNamed(context, '/main'); // 👈 заменено на /main
+      Navigator.pushReplacementNamed(context, '/home'); // 👈 заменено на /main
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('❌ Неверный PIN')),

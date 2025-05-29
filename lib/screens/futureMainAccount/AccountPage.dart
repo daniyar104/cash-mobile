@@ -6,6 +6,7 @@ import 'package:flutter_localization/flutter_localization.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:untitled1/db/app_database_helper.dart';
+import 'package:untitled1/screens/FQAPage/FAQScreen.dart';
 import 'package:untitled1/screens/accountPage/settings/SettingsPage.dart';
 import 'package:untitled1/screens/accountPage/settings/categories/CategoryListPage.dart';
 import 'package:untitled1/screens/accountPage/settings/language/ChangeLanguagePage.dart';
@@ -99,6 +100,17 @@ class _AccountPageState extends State<AccountPage> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) => SettingsPage()),
+                    );
+                  },
+                ),
+                SizedBox(height: 5),
+                SettingsTile(
+                  leadingIcon: Icons.question_mark,
+                  localizationKey: LocalData.faq.getString(context),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => FAQScreen()),
                     );
                   },
                 ),

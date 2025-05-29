@@ -37,6 +37,7 @@ mixin LocalData {
   static const String security = "security";
   static const String key = "key";
   static const String logoutButton = "logoutButton";
+  static const String faq = "faq";
 
   //Login
   static const String unCurrect = "unCurrect";
@@ -178,6 +179,7 @@ mixin LocalData {
       security: 'Security',
       key: 'Key',
       logoutButton: 'Logout',
+      faq: 'FAQ',
 
 
       // Login Page
@@ -319,6 +321,7 @@ mixin LocalData {
     security: "Безопасность",
     key: "Ключ",
     logoutButton: "Выйти",
+    faq: "Часто задаваемые вопросы",
 
 
     // Login Page
@@ -466,6 +469,7 @@ mixin LocalData {
     security: "Қауіпсіздік",
     key: "Кілт",
     logoutButton: "Шығу",
+    faq: "Жиі қойылатын сұрақтар",
 
 
     // Login Page
