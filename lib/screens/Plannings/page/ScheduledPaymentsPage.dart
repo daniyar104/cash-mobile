@@ -1,26 +1,46 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localization/flutter_localization.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../../db/sembast_database_helper.dart';
 import '../../../localization/locales.dart';
 import '../../../models/ScheduledPayment.dart';
 
 class ScheduledPaymentsPage extends StatefulWidget {
   final int userId;
-
   const ScheduledPaymentsPage({Key? key, required this.userId}) : super(key: key);
 
   @override
-  _ScheduledPaymentsPageState createState() => _ScheduledPaymentsPageState();
+  State<ScheduledPaymentsPage> createState() => _ScheduledPaymentsPageState();
 }
 
 class _ScheduledPaymentsPageState extends State<ScheduledPaymentsPage> {
   final dbHelper = SembastDatabaseHelper.instance;
   late Future<List<ScheduledPayment>> _paymentsFuture;
+  String _currencySymbol = '₸';
 
   @override
   void initState() {
     super.initState();
+    _loadCurrency();
     _loadScheduledPayments();
+  }
+
+  Future<void> _loadCurrency() async {
+    final prefs = await SharedPreferences.getInstance();
+    final currency = prefs.getString('currency') ?? 'KZT';
+    setState(() {
+      _currencySymbol = _getCurrencySymbol(currency);
+    });
+  }
+
+  String _getCurrencySymbol(String code) {
+    switch (code) {
+      case 'USD': return '\$';
+      case 'EUR': return '€';
+      case 'RUB': return '₽';
+      case 'KZT':
+      default: return '₸';
+    }
   }
 
   void _loadScheduledPayments() {
@@ -34,7 +54,6 @@ class _ScheduledPaymentsPageState extends State<ScheduledPaymentsPage> {
       context: context,
       builder: (context) => AddScheduledPaymentDialog(userId: widget.userId),
     );
-
     if (newPayment != null) {
       await dbHelper.insertScheduledPayment(newPayment);
       _loadScheduledPayments();
@@ -66,7 +85,7 @@ class _ScheduledPaymentsPageState extends State<ScheduledPaymentsPage> {
         future: _paymentsFuture,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           }
           if (snapshot.hasError) {
             return Center(child: Text(LocalData.errorSchedule.getString(context)));
@@ -85,19 +104,27 @@ class _ScheduledPaymentsPageState extends State<ScheduledPaymentsPage> {
                 background: Container(
                   color: Colors.red,
                   alignment: Alignment.centerLeft,
-                  padding: EdgeInsets.only(left: 16),
-                  child: Icon(Icons.delete, color: Colors.white),
+                  padding: const EdgeInsets.only(left: 16),
+                  child: const Icon(Icons.delete, color: Colors.white),
                 ),
                 direction: DismissDirection.startToEnd,
                 onDismissed: (_) => _deleteScheduledPayment(payment.id!),
-                child: ListTile(
-                  leading: Icon(iconData),
-                  title: Text(payment.title),
-                  subtitle: Text(payment.date.toLocal().toString().split(' ')[0]),
-                  trailing: Text(payment.amount.toStringAsFixed(0), style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18,
-                  )),
+                child: Card(
+                  margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                  elevation: 2,
+                  child: ListTile(
+                    leading: CircleAvatar(
+                      backgroundColor: Theme.of(context).colorScheme.primary.withOpacity(0.1),
+                      child: Icon(iconData, color: Theme.of(context).colorScheme.primary),
+                    ),
+                    title: Text(payment.title, style: const TextStyle(fontWeight: FontWeight.w600)),
+                    subtitle: Text(payment.date.toLocal().toString().split(' ')[0]),
+                    trailing: Text(
+                      '$_currencySymbol ${payment.amount.toStringAsFixed(2)}',
+                      style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                    ),
+                  ),
                 ),
               );
             },
@@ -106,7 +133,7 @@ class _ScheduledPaymentsPageState extends State<ScheduledPaymentsPage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _addScheduledPayment,
-        child: Icon(Icons.add),
+        child: const Icon(Icons.add),
       ),
     );
   }
@@ -114,7 +141,6 @@ class _ScheduledPaymentsPageState extends State<ScheduledPaymentsPage> {
 
 class AddScheduledPaymentDialog extends StatefulWidget {
   final int userId;
-
   const AddScheduledPaymentDialog({Key? key, required this.userId}) : super(key: key);
 
   @override
@@ -125,7 +151,7 @@ class _AddScheduledPaymentDialogState extends State<AddScheduledPaymentDialog> {
   final _formKey = GlobalKey<FormState>();
   double? _amount;
   String? _title;
-  DateTime? _date;
+  DateTime _date = DateTime.now();
   IconData? _selectedIcon;
 
   final List<IconData> _icons = [
@@ -142,16 +168,15 @@ class _AddScheduledPaymentDialogState extends State<AddScheduledPaymentDialog> {
   @override
   void initState() {
     super.initState();
-    _date = DateTime.now();
-    _selectedIcon = _icons[0]; // По умолчанию первая иконка выбрана
+    _selectedIcon = _icons[0];
   }
 
   Future<void> _pickDate() async {
     final picked = await showDatePicker(
       context: context,
-      initialDate: _date ?? DateTime.now(),
-      firstDate: DateTime.now().subtract(Duration(days: 365)),
-      lastDate: DateTime.now().add(Duration(days: 365)),
+      initialDate: _date,
+      firstDate: DateTime.now().subtract(const Duration(days: 365)),
+      lastDate: DateTime.now().add(const Duration(days: 365)),
     );
     if (picked != null) {
       setState(() {
@@ -169,13 +194,12 @@ class _AddScheduledPaymentDialogState extends State<AddScheduledPaymentDialog> {
         return;
       }
       _formKey.currentState?.save();
-
       final payment = ScheduledPayment(
         id: null,
         title: _title!,
         amount: _amount!,
-        date: _date!,
-        category: _selectedIcon!.codePoint.toString(), // Сохраняем код иконки как строку
+        date: _date,
+        category: _selectedIcon!.codePoint.toString(),
         userId: widget.userId,
         type: '',
       );
@@ -185,76 +209,102 @@ class _AddScheduledPaymentDialogState extends State<AddScheduledPaymentDialog> {
 
   @override
   Widget build(BuildContext context) {
-    return AlertDialog(
-      title: Text(LocalData.addScheduledPayment.getString(context)),
-      content: SingleChildScrollView(
-        child: Form(
-          key: _formKey,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              TextFormField(
-                decoration: InputDecoration(labelText: LocalData.scheduledPaymentTitle.getString(context)),
-                validator: (val) => val == null || val.isEmpty ? LocalData.invalidTitle.getString(context) : null,
-                onSaved: (val) => _title = val,
-              ),
-              TextFormField(
-                decoration: InputDecoration(labelText: LocalData.scheduledPaymentAmount.getString(context)),
-                keyboardType: TextInputType.numberWithOptions(decimal: true),
-                validator: (val) {
-                  if (val == null || val.isEmpty) return LocalData.invalidAmount.getString(context);
-                  if (double.tryParse(val) == null) return LocalData.invalidAmount.getString(context);
-                  return null;
-                },
-                onSaved: (val) => _amount = double.parse(val!),
-              ),
-              SizedBox(height: 12),
-              Text(LocalData.selectScheduleIcon.getString(context)),
-              SizedBox(height: 8),
-              Container(
-                height: 80,
-                child: SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
-                    children: List.generate(_icons.length, (index) {
-                      final icon = _icons[index];
-                      final selected = icon == _selectedIcon;
-                      return GestureDetector(
-                        onTap: () => setState(() => _selectedIcon = icon),
-                        child: Container(
-                          margin: EdgeInsets.symmetric(horizontal: 5),
-                          decoration: BoxDecoration(
-                            color: selected ? Colors.blueAccent.withOpacity(0.3) : null,
-                            border: Border.all(
-                              color: selected ? Colors.blue : Colors.grey,
-                              width: selected ? 2 : 1,
-                            ),
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          padding: EdgeInsets.all(8),
-                          child: Icon(icon, size: 30, color: selected ? Colors.blue : Colors.black54),
-                        ),
-                      );
-                    }),
-                  ),
-                ),
-              ),
-              SizedBox(height: 12),
-              Row(
+    return Dialog(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+      insetPadding: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
+      child: Padding(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(LocalData.addScheduledPayment.getString(context), style: Theme.of(context).textTheme.titleLarge),
+            const SizedBox(height: 16),
+            Form(
+              key: _formKey,
+              child: Column(
                 children: [
-                  Text(_date != null ? _date!.toLocal().toString().split(' ')[0] : LocalData.pickDate.getString(context)),
-                  Spacer(),
-                  TextButton(onPressed: _pickDate, child: Text(LocalData.pickDate.getString(context))),
+                  TextFormField(
+                    decoration: InputDecoration(labelText: LocalData.scheduledPaymentTitle.getString(context)),
+                    validator: (val) => val == null || val.isEmpty ? LocalData.invalidTitle.getString(context) : null,
+                    onSaved: (val) => _title = val,
+                  ),
+                  const SizedBox(height: 12),
+                  TextFormField(
+                    decoration: InputDecoration(labelText: LocalData.scheduledPaymentAmount.getString(context)),
+                    keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                    validator: (val) {
+                      if (val == null || val.isEmpty || double.tryParse(val) == null) {
+                        return LocalData.invalidAmount.getString(context);
+                      }
+                      return null;
+                    },
+                    onSaved: (val) => _amount = double.parse(val!),
+                  ),
+                  const SizedBox(height: 16),
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(LocalData.selectScheduleIcon.getString(context), style: Theme.of(context).textTheme.labelLarge),
+                  ),
+                  const SizedBox(height: 8),
+                  SizedBox(
+                    height: 70,
+                    child: ListView.separated(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: _icons.length,
+                      separatorBuilder: (_, __) => const SizedBox(width: 8),
+                      itemBuilder: (_, index) {
+                        final icon = _icons[index];
+                        final selected = icon == _selectedIcon;
+                        return GestureDetector(
+                          onTap: () => setState(() => _selectedIcon = icon),
+                          child: Container(
+                            padding: const EdgeInsets.all(8),
+                            decoration: BoxDecoration(
+                              color: selected ? Theme.of(context).colorScheme.primary.withOpacity(0.2) : null,
+                              border: Border.all(
+                                color: selected ? Theme.of(context).colorScheme.primary : Colors.grey,
+                                width: selected ? 2 : 1,
+                              ),
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: Icon(icon, size: 28, color: selected ? Theme.of(context).colorScheme.primary : Colors.black45),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  Row(
+                    children: [
+                      Text(_date.toLocal().toString().split(' ')[0]),
+                      const Spacer(),
+                      TextButton(
+                        onPressed: _pickDate,
+                        child: Text(LocalData.pickDate.getString(context)),
+                      ),
+                    ],
+                  ),
                 ],
               ),
-            ],
-          ),
+            ),
+            const SizedBox(height: 20),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                TextButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  child: Text(LocalData.cancel.getString(context)),
+                ),
+                const SizedBox(width: 12),
+                ElevatedButton(
+                  onPressed: _submit,
+                  child: Text(LocalData.add.getString(context)),
+                ),
+              ],
+            )
+          ],
         ),
       ),
-      actions: [
-        TextButton(onPressed: () => Navigator.of(context).pop(), child: Text(LocalData.cancel.getString(context))),
-        ElevatedButton(onPressed: _submit, child: Text(LocalData.add.getString(context))),
-      ],
     );
   }
 }
