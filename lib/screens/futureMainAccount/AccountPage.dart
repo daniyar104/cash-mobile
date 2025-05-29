@@ -11,6 +11,7 @@ import 'package:untitled1/screens/accountPage/settings/SettingsPage.dart';
 import 'package:untitled1/screens/accountPage/settings/categories/CategoryListPage.dart';
 import 'package:untitled1/screens/accountPage/settings/language/ChangeLanguagePage.dart';
 import 'package:untitled1/screens/accountPage/settings/template/TemplatePage.dart';
+import 'package:untitled1/screens/pinCode/ChangePinScreen.dart';
 
 import '../../db/database_factory.dart';
 import '../../localization/locales.dart';
@@ -195,7 +196,10 @@ class _AccountPageState extends State<AccountPage> {
                   leadingIcon: Icons.vpn_key,
                   localizationKey: LocalData.key.getString(context),
                   onTap: () {
-                    // Navigate to change password
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => ChangePinScreen()),
+                    );
                   },
                 ),
                 SizedBox(height: 5),
