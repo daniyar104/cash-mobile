@@ -21,6 +21,7 @@ class _MainScreenState extends State<MainScreen>{
   int _currentIndex = 0;
   late List<Widget> _pages;
   late int _userId = 0;
+  Color _accentColor = Colors.blue;
   @override
   void initState() {
     super.initState();
@@ -32,6 +33,7 @@ class _MainScreenState extends State<MainScreen>{
       AccountPage(),
     ];
     _loadUserId();
+    _loadAccentColor();
   }
   Future<void> _loadUserId() async {
     final prefs = await SharedPreferences.getInstance();
@@ -48,7 +50,13 @@ class _MainScreenState extends State<MainScreen>{
       });
     }
   }
-
+  Future<void> _loadAccentColor() async {
+    final prefs = await SharedPreferences.getInstance();
+    final colorValue = prefs.getInt('theme_color') ?? Colors.blue.value;
+    setState(() {
+      _accentColor = Color(colorValue);
+    });
+  }
   void _showAddTransactionForm() {
     Navigator.push(context,
       MaterialPageRoute(
@@ -75,7 +83,7 @@ class _MainScreenState extends State<MainScreen>{
             IconButton(
               icon: Icon(
                 Icons.home_filled,
-                color: _currentIndex == 0 ? Colors.blue : Colors.grey,
+                color: _currentIndex == 0 ? _accentColor : Colors.grey,
                 size: _currentIndex == 0 ? 32 : 24,
               ),
               onPressed: () => setState(() => _currentIndex = 0),
@@ -83,7 +91,7 @@ class _MainScreenState extends State<MainScreen>{
             IconButton(
               icon: Icon(
                 Icons.analytics_outlined,
-                color: _currentIndex == 1 ? Colors.blue : Colors.grey,
+                color: _currentIndex == 1 ? _accentColor : Colors.grey,
                 size: _currentIndex == 1 ? 32 : 24,
               ),
               onPressed: () => setState(() => _currentIndex = 1),
@@ -92,7 +100,7 @@ class _MainScreenState extends State<MainScreen>{
             IconButton(
               icon: Icon(
                 Icons.calendar_today,
-                color: _currentIndex == 2 ? Colors.blue : Colors.grey,
+                color: _currentIndex == 2 ? _accentColor : Colors.grey,
                 size: _currentIndex == 2 ? 32 : 24,
               ),
               onPressed: () => setState(() => _currentIndex = 2),
@@ -100,7 +108,7 @@ class _MainScreenState extends State<MainScreen>{
             IconButton(
               icon: Icon(
                 Icons.person,
-                color: _currentIndex == 3 ? Colors.blue : Colors.grey,
+                color: _currentIndex == 3 ? _accentColor : Colors.grey,
                 size: _currentIndex == 3 ? 32 : 24,
               ),
               onPressed: () => setState(() => _currentIndex = 3),

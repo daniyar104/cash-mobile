@@ -24,6 +24,8 @@ void main() async{
   final userId = prefs.getInt('userId');
   final pin = prefs.getString('user_pin');
   final onboardingSeen = prefs.getBool('onboarding_seen') ?? false;
+  final seedColorValue = prefs.getInt('theme_color') ?? Colors.blue.value;
+  final Color seedColor = Color(seedColorValue);
   Widget initialRoute;
 
   const AndroidInitializationSettings initializationSettingsAndroid =
@@ -49,12 +51,13 @@ void main() async{
 
 
   await FlutterLocalization.instance.ensureInitialized();
-  runApp(MyApp(initialRoute: initialRoute));
+  runApp(MyApp(initialRoute: initialRoute, seedColor: seedColor));
 }
 
 class MyApp extends StatefulWidget {
   final Widget initialRoute;
-  const MyApp({super.key, required this.initialRoute});
+  final Color seedColor;
+  const MyApp({super.key, required this.initialRoute, required this.seedColor,});
 
   @override
   State<MyApp> createState() => _MyAppState();
@@ -137,11 +140,11 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
       title: 'Flutter Demo',
       theme: ThemeData(
         useMaterial3: true,
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
+        colorScheme: ColorScheme.fromSeed(seedColor: widget.seedColor),
       ),
       darkTheme: ThemeData(
         useMaterial3: true,
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue, brightness: Brightness.dark),
+        colorScheme: ColorScheme.fromSeed(seedColor: widget.seedColor, brightness: Brightness.dark),
         brightness: Brightness.dark,
       ),
       themeMode: _themeMode,
