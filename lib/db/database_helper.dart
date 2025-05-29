@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
@@ -14,7 +15,6 @@ class DataBaseHelper implements AppDatabaseHelper {
 
   Future<Database> get database async {
     if (_database != null) return _database!;
-
     _database = await _initDatabase();
     return _database!;
   }
@@ -24,11 +24,14 @@ class DataBaseHelper implements AppDatabaseHelper {
     return await openDatabase(
       path,
       version: 1,
-      onCreate: _createDatabase,
+      onCreate: (db, version) async {
+        await _createDatabase(db);
+        await _insertFakeData(db);
+      },
     );
   }
 
-  Future<void> _createDatabase(Database db, int version) async {
+  Future<void> _createDatabase(Database db) async {
     await db.execute('''
       CREATE TABLE users(
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -65,7 +68,80 @@ class DataBaseHelper implements AppDatabaseHelper {
         FOREIGN KEY (user_id) REFERENCES users(id)
       )
     ''');
+  }
 
+  Future<void> _insertFakeData(Database db) async {
+    int userId = await db.insert('users', {
+      'username': 'demo_user',
+      'email': 'demo@example.com',
+      'password': '123456',
+      'amount': 10000.0,
+    });
+
+    final now = DateTime.now();
+    final List<String> expenseTitles = ['Магазин', 'Кафе', 'Проезд', 'Подписка', 'Транспорт', 'Кино', 'Аптека'];
+    final List<String> incomeTitles = ['Зарплата', 'Фриланс', 'Подарок', 'Возврат налога'];
+
+    for (int i = 0; i < 30; i++) {
+      final date = now.subtract(Duration(days: i));
+      final dateStr = DateFormat('yyyy-MM-dd').format(date);
+      final timeStr = DateFormat('HH:mm').format(date);
+
+      if (i % 3 == 0) {
+        await db.insert('transactions', {
+          'title': incomeTitles[i % incomeTitles.length],
+          'amount': 5000 + (i * 7 % 1000),
+          'date': dateStr,
+          'time': timeStr,
+          'category': '💼',
+          'user_id': userId,
+          'type': 'income',
+        });
+      }
+
+      await db.insert('transactions', {
+        'title': expenseTitles[i % expenseTitles.length],
+        'amount': 300 + (i * 11 % 500),
+        'date': dateStr,
+        'time': timeStr,
+        'category': '🛒',
+        'user_id': userId,
+        'type': 'expense',
+      });
+
+      if (i % 2 == 0) {
+        await db.insert('transactions', {
+          'title': expenseTitles[(i + 1) % expenseTitles.length],
+          'amount': 150 + (i * 9 % 300),
+          'date': dateStr,
+          'time': timeStr,
+          'category': '🍔',
+          'user_id': userId,
+          'type': 'expense',
+        });
+      }
+    }
+
+    final List<Map<String, dynamic>> scheduled = [
+      {'title': 'Интернет', 'amount': 3500.0, 'icon': Icons.wifi},
+      {'title': 'Коммунальные', 'amount': 8000.0, 'icon': Icons.home},
+      {'title': 'Мобильная связь', 'amount': 2000.0, 'icon': Icons.phone_android},
+      {'title': 'Транспортная карта', 'amount': 4000.0, 'icon': Icons.directions_bus},
+      {'title': 'Netflix', 'amount': 2990.0, 'icon': Icons.movie},
+      {'title': 'Spotify', 'amount': 1590.0, 'icon': Icons.music_note},
+      {'title': 'Страховка', 'amount': 12000.0, 'icon': Icons.shield},
+    ];
+
+    for (var item in scheduled) {
+      await db.insert('scheduled_payments', {
+        'title': item['title'],
+        'amount': item['amount'],
+        'date': DateFormat('yyyy-MM-dd').format(now.add(const Duration(days: 7))),
+        'category': item['icon'].codePoint.toString(),
+        'user_id': userId,
+        'type': 'monthly',
+      });
+    }
   }
 
   // Методы для работы с UserModel
@@ -362,6 +438,8 @@ class DataBaseHelper implements AppDatabaseHelper {
   @override
   Future<void> init() async {
     await database;
+    await _insertFakeData(await database);
+
   }
 
 
