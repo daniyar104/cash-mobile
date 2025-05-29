@@ -22,6 +22,7 @@ class _StatisticsPageState extends State<StatisticsPage> {
   double maxExpense = 0.0;
   Map<String, double> categoryExpenses = {};
   Map<String, double> monthlyExpenses = {};
+  String currencySymbol = '₸';
 
   @override
   void initState() {
@@ -32,7 +33,11 @@ class _StatisticsPageState extends State<StatisticsPage> {
   Future<void> _loadStats() async {
     final prefs = await SharedPreferences.getInstance();
     final userId = prefs.getInt('userId');
+    final currency = prefs.getString('currency') ?? 'KZT';
+    currencySymbol = _getCurrencySymbol(currency);
+
     if (userId == null) return;
+
 
     final income = await DataBaseHelper.instance.getUserIncomeTotal(userId);
     final expense = await DataBaseHelper.instance.getUserExpensesTotal(userId);
@@ -65,11 +70,23 @@ class _StatisticsPageState extends State<StatisticsPage> {
       monthlyExpenses = monthlyMap;
     });
   }
-
+  String _getCurrencySymbol(String code) {
+    switch (code) {
+      case 'USD':
+        return '\$';
+      case 'EUR':
+        return '€';
+      case 'RUB':
+        return '₽';
+      case 'KZT':
+      default:
+        return '₸';
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Статистика")),
+      appBar: AppBar(title: Text(LocalData.statics.getString(context))),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Column(
@@ -111,7 +128,7 @@ class _StatisticsPageState extends State<StatisticsPage> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(label, style: const TextStyle(fontSize: 16)),
-          Text("${value.toStringAsFixed(2)} ₽",
+          Text("${value.toStringAsFixed(2)} $currencySymbol",
               style: const TextStyle(fontWeight: FontWeight.bold)),
         ],
       ),

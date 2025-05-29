@@ -6,10 +6,13 @@ import 'package:flutter_localization/flutter_localization.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:untitled1/db/app_database_helper.dart';
+import 'package:untitled1/screens/%D1%81urrency/CurrencySettingsPage.dart';
+import 'package:untitled1/screens/FQAPage/FAQScreen.dart';
 import 'package:untitled1/screens/accountPage/settings/SettingsPage.dart';
 import 'package:untitled1/screens/accountPage/settings/categories/CategoryListPage.dart';
 import 'package:untitled1/screens/accountPage/settings/language/ChangeLanguagePage.dart';
 import 'package:untitled1/screens/accountPage/settings/template/TemplatePage.dart';
+import 'package:untitled1/screens/pinCode/ChangePinScreen.dart';
 
 import '../../db/database_factory.dart';
 import '../../localization/locales.dart';
@@ -102,6 +105,17 @@ class _AccountPageState extends State<AccountPage> {
                     );
                   },
                 ),
+                SizedBox(height: 5),
+                SettingsTile(
+                  leadingIcon: Icons.question_mark,
+                  localizationKey: LocalData.faq.getString(context),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => FAQScreen()),
+                    );
+                  },
+                ),
                 Padding(
                   padding: const EdgeInsets.only(bottom: 8.0, top: 16.0),
                   child: Text(LocalData.operations.getString(context),
@@ -128,7 +142,7 @@ class _AccountPageState extends State<AccountPage> {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => CategoryListPage()),
+                      MaterialPageRoute(builder: (context) => CurrencySettingsPage()),
                     );
                   },
                 ),
@@ -183,7 +197,10 @@ class _AccountPageState extends State<AccountPage> {
                   leadingIcon: Icons.vpn_key,
                   localizationKey: LocalData.key.getString(context),
                   onTap: () {
-                    // Navigate to change password
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => ChangePinScreen()),
+                    );
                   },
                 ),
                 SizedBox(height: 5),

@@ -1,43 +1,61 @@
 import 'package:flutter/material.dart';
 import '../../models/PinService.dart';
 
-class PinLoginScreen extends StatefulWidget {
-  const PinLoginScreen({super.key});
+class ChangePinScreen extends StatefulWidget {
+  const ChangePinScreen({super.key});
 
   @override
-  State<PinLoginScreen> createState() => _PinLoginScreenState();
+  State<ChangePinScreen> createState() => _ChangePinScreenState();
 }
 
-class _PinLoginScreenState extends State<PinLoginScreen> {
-  String _enteredPin = '';
+class _ChangePinScreenState extends State<ChangePinScreen> {
   final PinService _pinService = PinService();
+  String _currentStep = 'verify'; // verify or new
+  String _input = '';
+  String _newPin = '';
 
   void _onDigitPressed(String digit) {
-    if (_enteredPin.length < 4) {
-      setState(() => _enteredPin += digit);
-
-      if (_enteredPin.length == 4) _validatePin();
+    if (_input.length < 4) {
+      setState(() => _input += digit);
+      if (_input.length == 4) {
+        if (_currentStep == 'verify') {
+          _verifyCurrentPin();
+        } else {
+          _saveNewPin();
+        }
+      }
     }
   }
 
   void _deleteLast() {
-    if (_enteredPin.isNotEmpty) {
+    if (_input.isNotEmpty) {
       setState(() {
-        _enteredPin = _enteredPin.substring(0, _enteredPin.length - 1);
+        _input = _input.substring(0, _input.length - 1);
       });
     }
   }
 
-  void _validatePin() async {
+  void _verifyCurrentPin() async {
     final savedPin = await _pinService.getSavedPin();
-    if (_enteredPin == savedPin) {
-      Navigator.pushReplacementNamed(context, '/home'); // 👈 заменено на /main
+    if (_input == savedPin) {
+      setState(() {
+        _input = '';
+        _currentStep = 'new';
+      });
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('❌ Неверный PIN')),
+        const SnackBar(content: Text('❌ Неверный текущий PIN')),
       );
-      setState(() => _enteredPin = '');
+      setState(() => _input = '');
     }
+  }
+
+  void _saveNewPin() async {
+    await _pinService.savePin(_input);
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('✅ PIN успешно изменён')),
+    );
+    Navigator.pop(context); // возвращаемся назад
   }
 
   Widget _buildPinCircles() {
@@ -50,7 +68,7 @@ class _PinLoginScreenState extends State<PinLoginScreen> {
           height: 20,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
-            color: index < _enteredPin.length
+            color: index < _input.length
                 ? Theme.of(context).colorScheme.primary
                 : Colors.grey.shade400,
           ),
@@ -113,15 +131,20 @@ class _PinLoginScreenState extends State<PinLoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final title = _currentStep == 'verify' ? 'Введите текущий PIN' : 'Введите новый PIN';
+
     return Scaffold(
-      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      appBar: AppBar(
+        title: const Text("Смена PIN-кода"),
+        centerTitle: true,
+      ),
       body: SafeArea(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const SizedBox(height: 40),
+            const SizedBox(height: 30),
             Text(
-              "Введите PIN-код",
+              title,
               style: Theme.of(context).textTheme.titleLarge,
             ),
             const SizedBox(height: 20),
