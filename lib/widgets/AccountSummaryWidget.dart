@@ -15,6 +15,7 @@ class AccountSummaryWidget extends StatefulWidget{
 class _AccountSummaryWidgetState extends State<AccountSummaryWidget>{
   double userAmount = 0.0;
   int userId = 0;
+  String _currency = 'KZT';
 
   final AppDatabaseHelper _dbHelper = getDatabaseHelper();
 
@@ -27,6 +28,7 @@ class _AccountSummaryWidgetState extends State<AccountSummaryWidget>{
   Future<void> _loadUserAmount() async {
     final prefs = await SharedPreferences.getInstance();
     userId = prefs.getInt('userId') ?? 0;
+    _currency = prefs.getString('currency') ?? 'KZT';
     final users = await _dbHelper.getUsers();
 
     final user = users.firstWhere((user) => user.id == userId);
@@ -34,9 +36,24 @@ class _AccountSummaryWidgetState extends State<AccountSummaryWidget>{
 
     setState(() {});
   }
+  String _getCurrencySymbol(String currencyCode) {
+    switch (currencyCode) {
+      case 'USD':
+        return '\$';
+      case 'EUR':
+        return '€';
+      case 'RUB':
+        return '₽';
+      case 'KZT':
+        return '₸';
+      default:
+        return currencyCode;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
+    final symbol = _getCurrencySymbol(_currency);
     return Container(
       width: double.infinity,
       height: 200,
@@ -56,7 +73,7 @@ class _AccountSummaryWidgetState extends State<AccountSummaryWidget>{
               ),
               SizedBox(height: 10),
               Text(
-                '₸ ${userAmount.toStringAsFixed(1)}',
+                '$symbol ${userAmount.toStringAsFixed(1)}',
                 style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
               ),
               SizedBox(height: 20),

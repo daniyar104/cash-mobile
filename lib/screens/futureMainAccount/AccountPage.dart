@@ -6,6 +6,7 @@ import 'package:flutter_localization/flutter_localization.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:untitled1/db/app_database_helper.dart';
+import 'package:untitled1/screens/%D1%81urrency/CurrencySettingsPage.dart';
 import 'package:untitled1/screens/FQAPage/FAQScreen.dart';
 import 'package:untitled1/screens/accountPage/settings/SettingsPage.dart';
 import 'package:untitled1/screens/accountPage/settings/categories/CategoryListPage.dart';
@@ -141,7 +142,7 @@ class _AccountPageState extends State<AccountPage> {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => CategoryListPage()),
+                      MaterialPageRoute(builder: (context) => CurrencySettingsPage()),
                     );
                   },
                 ),
