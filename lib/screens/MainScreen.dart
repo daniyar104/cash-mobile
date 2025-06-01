@@ -7,6 +7,7 @@ import 'package:untitled1/screens/HomeScreen/HomePage.dart';
 import 'package:untitled1/screens/Plannings/page/ScheduledPaymentsPage.dart';
 import 'package:untitled1/screens/accountPage/MainAccountPage.dart';
 import 'Analitics/AnalyticsPage.dart';
+import 'ChartDashboard/ChartDashboardPage.dart';
 import 'TransactionsListPage.dart';
 import 'futureMainAccount/AccountPage.dart';
 
@@ -28,7 +29,8 @@ class _MainScreenState extends State<MainScreen>{
     super.initState();
     _pages = [
       TransactionsListPage(userID: _userId),
-      StatisticsPage(),
+      // StatisticsPage(),
+      ChartDashboardPage(),
       ScheduledPaymentsPage(userId: _userId),
       AccountPage(),
     ];
