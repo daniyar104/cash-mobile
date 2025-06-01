@@ -93,7 +93,7 @@ class DataBaseHelper implements AppDatabaseHelper {
           'amount': 5000 + (i * 7 % 1000),
           'date': dateStr,
           'time': timeStr,
-          'category': '💼',
+          'category': 'Salary',
           'user_id': userId,
           'type': 'income',
         });
@@ -104,7 +104,17 @@ class DataBaseHelper implements AppDatabaseHelper {
         'amount': 300 + (i * 11 % 500),
         'date': dateStr,
         'time': timeStr,
-        'category': '🛒',
+        'category': 'Shopping',
+        'user_id': userId,
+        'type': 'expense',
+      });
+
+      await db.insert('transactions', {
+        'title': expenseTitles[i % expenseTitles.length],
+        'amount': 700 + (i * 8 % 500),
+        'date': dateStr,
+        'time': timeStr,
+        'category': 'Entertainment',
         'user_id': userId,
         'type': 'expense',
       });
@@ -115,7 +125,7 @@ class DataBaseHelper implements AppDatabaseHelper {
           'amount': 150 + (i * 9 % 300),
           'date': dateStr,
           'time': timeStr,
-          'category': '🍔',
+          'category': 'Food',
           'user_id': userId,
           'type': 'expense',
         });

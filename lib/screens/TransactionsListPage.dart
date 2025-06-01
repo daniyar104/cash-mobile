@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:untitled1/screens/HomeScreen/HomePage.dart';
 import 'package:untitled1/widgets/AccountSummaryWidget.dart';
 import 'package:untitled1/widgets/RecentTransactionsWidget.dart';
 import 'package:untitled1/widgets/welcomeWidget/WelcomeWidget.dart';
@@ -9,6 +10,7 @@ import '../db/database_factory.dart';
 import '../widgets/syncfusion/ExpensesChart.dart';
 import '../widgets/totalCategory/TotalExpenseFood.dart';
 import '../widgets/totalCategory/TotalExpenseShoping.dart';
+import 'HomeScreen/SimpleTransactionListPage.dart';
 
 class TransactionsListPage extends StatefulWidget {
   final int userID;
@@ -23,12 +25,14 @@ class _TransactionsListPageState extends State<TransactionsListPage> {
   final AppDatabaseHelper _dbHelper = getDatabaseHelper();
   File? _avatarImage;
   String? _avatarPath;
+  late int userId = 0;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     _loadAvatar();
+    _loadUserId();
   }
 
   Future<void> _loadAvatar() async {
@@ -40,6 +44,10 @@ class _TransactionsListPageState extends State<TransactionsListPage> {
       }
     });
   }
+  Future<void> _loadUserId() async {
+    final prefs = await SharedPreferences.getInstance();
+    userId = prefs.getInt('userId')!;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -48,31 +56,31 @@ class _TransactionsListPageState extends State<TransactionsListPage> {
         future: _dbHelper.getUserById(widget.userID),
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
-            return Center(child: Text('Error: ${snapshot.error}'));
+            return Center(child: Text('Ошибка: ${snapshot.error}'));
           } else {
             return SafeArea(
-              child: "${snapshot.data?.username}" == null
-                  ? Center(child: CircularProgressIndicator())
-                  : SingleChildScrollView(
-                padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 8),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
+              child: snapshot.data?.username == null
+                  ? const Center(child: CircularProgressIndicator())
+                  : Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding:
+                    const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                    child: Row(
                       children: [
-                        Row(
-                          children: [
-                            WelcomeWidget(),
-                            Text("${snapshot.data?.username}",
-                                style: TextStyle(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.black)),
-                          ],
+                        WelcomeWidget(),
+                        const SizedBox(width: 8),
+                        Text(
+                          "${snapshot.data?.username}",
+                          style: const TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black),
                         ),
-                        Spacer(),
+                        const Spacer(),
                         CircleAvatar(
                           radius: 20,
                           backgroundImage: _avatarImage != null
@@ -81,26 +89,16 @@ class _TransactionsListPageState extends State<TransactionsListPage> {
                         ),
                       ],
                     ),
-                    SizedBox(height: 10),
-                    AccountSummaryWidget(),
-                    SizedBox(height: 20),
-                    ExpensesChart(userId: widget.userID),
-                    Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      margin: const EdgeInsets.symmetric(vertical: 5),
-                      padding: const EdgeInsets.only(top: 10),
-                      child: Column(
-                        children: [
-                          // TotalExpenseFood(userId: widget.userID),
-                          // TotalExpenseShopping(userId: widget.userID),
-                          RecentTransactionsWidget(userID: widget.userID),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    child: AccountSummaryWidget(),
+                  ),
+                  const SizedBox(height: 10),
+                  Expanded(
+                    child: SimpleTransactionListPage(userID: widget.userID),
+                  ),
+                ],
               ),
             );
           }
