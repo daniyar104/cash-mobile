@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import '../../db/app_database_helper.dart';
 import '../../db/database_factory.dart';
 import '../../models/TransactionModel.dart';
@@ -44,8 +45,20 @@ class _SimpleTransactionListPageState extends State<SimpleTransactionListPage> {
     });
   }
 
+  Map<String, List<TransactionModel>> _groupByDate(List<TransactionModel> transactions) {
+    Map<String, List<TransactionModel>> grouped = {};
+    for (var tx in transactions) {
+      final dateStr = DateFormat('yyyy-MM-dd').format(DateTime.parse(tx.date));
+      grouped.putIfAbsent(dateStr, () => []).add(tx);
+    }
+    return grouped;
+  }
+
   @override
   Widget build(BuildContext context) {
+    final grouped = _groupByDate(_filteredTransactions);
+    final sortedDates = grouped.keys.toList()..sort((a, b) => b.compareTo(a));
+
     return Column(
       children: [
         Padding(
@@ -68,44 +81,61 @@ class _SimpleTransactionListPageState extends State<SimpleTransactionListPage> {
           child: _filteredTransactions.isEmpty
               ? const Center(child: Text('Нет транзакций'))
               : ListView.builder(
-            itemCount: _filteredTransactions.length,
+            itemCount: sortedDates.length,
             itemBuilder: (context, index) {
-              final tx = _filteredTransactions[index];
-              return Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-                child: Card(
-                  elevation: 3,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: ListTile(
-                    leading: CircleAvatar(
-                      backgroundColor: tx.type == 'income' ? Colors.green : Colors.red,
-                      child: Icon(
-                        tx.type == 'income' ? Icons.arrow_downward : Icons.arrow_upward,
-                        color: Colors.white,
-                      ),
-                    ),
-                    title: Text(
-                      tx.category ?? '',
-                      style: const TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                    subtitle: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text('${tx.date} — ${tx.time}')
-                      ],
-                    ),
-                    trailing: Text(
-                      tx.type == 'income' ? '+${tx.amount}' : '-${tx.amount}',
-                      style: TextStyle(
-                        color: tx.type == 'income' ? Colors.green : Colors.red,
+              final date = sortedDates[index];
+              final items = grouped[date]!;
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                    child: Text(
+                      DateFormat('dd MMMM yyyy', 'ru').format(DateTime.parse(date)),
+                      style: const TextStyle(
+                        fontSize: 18,
                         fontWeight: FontWeight.bold,
-                        fontSize: 16,
+                        color: Colors.deepPurple,
                       ),
                     ),
                   ),
-                ),
+                  ...items.map((tx) => Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                    child: Card(
+                      elevation: 3,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: ListTile(
+                        leading: CircleAvatar(
+                          backgroundColor: tx.type == 'income' ? Colors.green : Colors.red,
+                          child: Icon(
+                            tx.type == 'income' ? Icons.arrow_downward : Icons.arrow_upward,
+                            color: Colors.white,
+                          ),
+                        ),
+                        title: Text(
+                          tx.category ?? '',
+                          style: const TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                        subtitle: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text('${tx.date} — ${tx.time}')
+                          ],
+                        ),
+                        trailing: Text(
+                          tx.type == 'income' ? '+${tx.amount}' : '-${tx.amount}',
+                          style: TextStyle(
+                            color: tx.type == 'income' ? Colors.green : Colors.red,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ))
+                ],
               );
             },
           ),
