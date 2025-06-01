@@ -3,6 +3,7 @@ import 'package:flutter_localization/flutter_localization.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:untitled1/localization/locales.dart';
 import 'package:untitled1/screens/ExpenseInputScreen.dart';
+import 'package:untitled1/screens/HomeScreen/HomePage.dart';
 import 'package:untitled1/screens/Plannings/page/ScheduledPaymentsPage.dart';
 import 'package:untitled1/screens/accountPage/MainAccountPage.dart';
 import 'Analitics/AnalyticsPage.dart';
@@ -29,7 +30,6 @@ class _MainScreenState extends State<MainScreen>{
       TransactionsListPage(userID: _userId),
       StatisticsPage(),
       ScheduledPaymentsPage(userId: _userId),
-      // MainAcountPage(),
       AccountPage(),
     ];
     _loadUserId();
