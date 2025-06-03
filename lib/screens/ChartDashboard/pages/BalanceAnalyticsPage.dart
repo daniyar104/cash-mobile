@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localization/flutter_localization.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
+import 'package:untitled1/localization/locales.dart';
 import '../../../db/database_factory.dart';
 import '../../../models/TransactionModel.dart';
 
@@ -108,7 +110,7 @@ class _BalanceAnalyticsPageState extends State<BalanceAnalyticsPage> {
     final sortedDates = grouped.keys.toList()..sort((a, b) => b.compareTo(a));
 
     return Scaffold(
-      appBar: AppBar(title: const Text("Доходы/Расходы")),
+      appBar: AppBar(title: Text("${LocalData.expenses.getString(context)}/${LocalData.income.getString(context)}")),
       body: Column(
         children: [
           Padding(
@@ -117,7 +119,6 @@ class _BalanceAnalyticsPageState extends State<BalanceAnalyticsPage> {
               children: [
                 const Icon(Icons.wallet),
                 const SizedBox(width: 8),
-                const Text('Все счета', style: TextStyle(fontSize: 16)),
                 const Spacer(),
                 InkWell(
                   onTap: _selectDateRange,
@@ -153,8 +154,8 @@ class _BalanceAnalyticsPageState extends State<BalanceAnalyticsPage> {
                       style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
                     ),
                     const SizedBox(height: 4),
-                    Text('Заработано: ${income.toStringAsFixed(0)} ₸'),
-                    Text('Потрачено: ${expense.toStringAsFixed(0)} ₸'),
+                    Text('${LocalData.earned.getString(context)}: ${income.toStringAsFixed(0)} ₸'),
+                    Text('${LocalData.spent.getString(context)}: ${expense.toStringAsFixed(0)} ₸'),
                   ],
                 ),
               ],

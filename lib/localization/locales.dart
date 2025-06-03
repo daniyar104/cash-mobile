@@ -38,6 +38,9 @@ mixin LocalData {
   static const String key = "key";
   static const String logoutButton = "logoutButton";
   static const String faq = "faq";
+  static const String available = "available";
+  static const String earned = "earned";
+  static const String spent = "spent";
 
   //Login
   static const String unCurrect = "unCurrect";
@@ -56,6 +59,20 @@ mixin LocalData {
   static const String invalidEmail = "invalidEmail";
   static const String passwordRequired = "passwordRequired";
   static const String passwordTooShort = "passwordTooShort";
+
+  //search
+  static const String search = "search";
+
+// Pin code
+  static const String pinCode = "pinCode";
+  static const String newPinCode = "newPinCode";
+  static const String pinCodeNow = "pinCodeNow";
+  static const String changePinCode = "changePinCode";
+
+  static const String pinCodeError = "pinCodeError";
+  static const String pinCodeSuccess = "pinCodeSuccess";
+
+  static const String enterPinCode = "enterPinCode";
 
   // List
   static const String allType = "All";
@@ -180,6 +197,9 @@ mixin LocalData {
       key: 'Key',
       logoutButton: 'Logout',
       faq: 'FAQ',
+      available: 'Available funds',
+      earned: 'Earned',
+      spent: 'Spent',
 
 
       // Login Page
@@ -190,6 +210,9 @@ mixin LocalData {
       dontHaveAccount: 'Don\'t have an account?',
       createAccount: 'Create account',
       error: "Ops, something went wrong.",
+
+    // Search
+      search: 'Search',
 
       // Register
       register: 'Registration',
@@ -289,6 +312,16 @@ mixin LocalData {
       onboardingTitle03: 'Visual analytics',
       onboardingBodyText03: 'Find unnecessary expenses and reduce them.',
 
+
+    // Pin code
+      pinCode: "Pin Code",
+      newPinCode: "New Pin Code",
+      pinCodeNow: "Enter your current Pin Code",
+      changePinCode: "Change Pin Code",
+      pinCodeError: "Incorrect Pin Code",
+      pinCodeSuccess: "Pin Code changed successfully",
+      enterPinCode: "Enter Pin Code",
+
   };
 
   static const Map<String, dynamic> RU = {
@@ -322,6 +355,9 @@ mixin LocalData {
     key: "Ключ",
     logoutButton: "Выйти",
     faq: "Часто задаваемые вопросы",
+    available: "Доступные средства",
+    earned: "Заработано",
+    spent: "Потрачено",
 
 
     // Login Page
@@ -332,6 +368,10 @@ mixin LocalData {
     dontHaveAccount: "Нет аккаунта?",
     createAccount: "Создать аккаунт",
     error: "Упс, что-то пошло не так.",
+
+    // Search
+    search: "Поиск",
+
     // Register
     register: "Регистрация",
     createNewAccount: "Создать аккаунт",
@@ -340,6 +380,16 @@ mixin LocalData {
     invalidEmail: "Недействительная электронная почта",
     passwordRequired: "Пароль обязателен",
     passwordTooShort: "Пароль должен содержать не менее 6 символов",
+
+
+    // Pin code
+    pinCode: "Пин-код",
+    newPinCode: "Новый пин-код",
+    pinCodeNow: "Введите ваш текущий пин-код",
+    changePinCode: "Изменить пин-код",
+    pinCodeError: "Неверный пин-код",
+    pinCodeSuccess: "Пин-код успешно изменен",
+    enterPinCode: "Введите пин-код",
 
 
     // Schedule
@@ -470,6 +520,19 @@ mixin LocalData {
     key: "Кілт",
     logoutButton: "Шығу",
     faq: "Жиі қойылатын сұрақтар",
+    available: "Жарамды сомасы",
+    earned: "Табыс",
+    spent: "Шығындалған",
+
+
+    // Pin code
+    pinCode: "Пин-код",
+    newPinCode: "Жаңа пин-код",
+    pinCodeNow: "Қазіргі пин-кодты енгізіңіз",
+    changePinCode: "Пин-кодты өзгерту",
+    pinCodeError: "Пин-код қате",
+    pinCodeSuccess: "Пин-код сәтті өзгертілді",
+    enterPinCode: "Пин-кодты енгізіңіз",
 
 
     // Login Page
@@ -480,6 +543,9 @@ mixin LocalData {
     dontHaveAccount: "Есеп жоқ па?",
     createAccount: "Есеп жасау",
     error: "Упс, бір нәрсе дұрыс емес.",
+
+    // Search
+    search: "Іздеу",
 
     // Register
     register: "Тіркелу",

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localization/flutter_localization.dart';
+import 'package:untitled1/localization/locales.dart';
 import '../../models/PinService.dart';
 
 class PinLoginScreen extends StatefulWidget {
@@ -34,7 +36,7 @@ class _PinLoginScreenState extends State<PinLoginScreen> {
       Navigator.pushReplacementNamed(context, '/home'); // 👈 заменено на /main
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('❌ Неверный PIN')),
+        SnackBar(content: Text('❌ ${LocalData.pinCodeError.getString(context)}')),
       );
       setState(() => _enteredPin = '');
     }
@@ -121,7 +123,7 @@ class _PinLoginScreenState extends State<PinLoginScreen> {
           children: [
             const SizedBox(height: 40),
             Text(
-              "Введите PIN-код",
+              LocalData.enterPinCode.getString(context),
               style: Theme.of(context).textTheme.titleLarge,
             ),
             const SizedBox(height: 20),

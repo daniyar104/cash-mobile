@@ -84,13 +84,13 @@ class _ChartDashboardPageState extends State<ChartDashboardPage> {
             ChartCardBalance(balance: balance),
             ChartCardIncomeExpense(income: incomeTotal, expense: expenseTotal),
             ExpenceChartCardDonut(
-              title: 'Расходы',
+              title: LocalData.expenses.getString(context),
               amount: '${expenseTotal.toStringAsFixed(0)} ₸',
               color: Colors.deepOrange,
               dataMap: expenseCategories,
             ),
             IncomeChartCardDonut(
-              title: 'Доходы',
+              title: LocalData.income.getString(context),
               amount: '${incomeTotal.toStringAsFixed(0)} ₸',
               color: Colors.lightBlue,
               dataMap: incomeCategories,
@@ -148,7 +148,7 @@ class ChartCardBalance extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 8),
-              const Text('Доступные средства', style: TextStyle(fontWeight: FontWeight.w500)),
+              Text(LocalData.available.getString(context), style: TextStyle(fontWeight: FontWeight.w500)),
               Text('${balance.toStringAsFixed(0)} ₸',
                   style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
             ],
@@ -196,19 +196,19 @@ class ChartCardIncomeExpense extends StatelessWidget {
                   series: <CartesianSeries<ChartData, String>>[
                     ColumnSeries<ChartData, String>(
                       dataSource: [
-                        ChartData('Доходы', income),
-                        ChartData('Расходы', expense),
+                        ChartData(LocalData.income.getString(context), income),
+                        ChartData(LocalData.expenses.getString(context), expense),
                       ],
                       xValueMapper: (ChartData data, _) => data.category,
                       yValueMapper: (ChartData data, _) => data.value,
                       pointColorMapper: (ChartData data, _) =>
-                      data.category == 'Доходы' ? Colors.green : Colors.red,
+                      data.category == LocalData.income.getString(context) ? Colors.green : Colors.red,
                     )
                   ],
                 ),
               ),
               const SizedBox(height: 8),
-              const Text('Доходы/Расходы', style: TextStyle(fontWeight: FontWeight.w500)),
+              Text("${LocalData.income.getString(context)}/${LocalData.expenses.getString(context)}", style: TextStyle(fontWeight: FontWeight.w500)),
               Text('${net.toStringAsFixed(0)} ₸',
                   style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
             ],

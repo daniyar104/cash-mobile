@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localization/flutter_localization.dart';
+import 'package:untitled1/localization/locales.dart';
 import '../../models/PinService.dart';
 
 class ChangePinScreen extends StatefulWidget {
@@ -44,7 +46,7 @@ class _ChangePinScreenState extends State<ChangePinScreen> {
       });
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('❌ Неверный текущий PIN')),
+        SnackBar(content: Text('❌ ${LocalData.pinCodeError.getString(context)}')),
       );
       setState(() => _input = '');
     }
@@ -53,7 +55,7 @@ class _ChangePinScreenState extends State<ChangePinScreen> {
   void _saveNewPin() async {
     await _pinService.savePin(_input);
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('✅ PIN успешно изменён')),
+      SnackBar(content: Text('✅ ${LocalData.pinCodeSuccess.getString(context)}')),
     );
     Navigator.pop(context); // возвращаемся назад
   }
@@ -131,11 +133,11 @@ class _ChangePinScreenState extends State<ChangePinScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final title = _currentStep == 'verify' ? 'Введите текущий PIN' : 'Введите новый PIN';
+    final title = _currentStep == 'verify' ? "${LocalData.pinCodeNow.getString(context)}" : '${LocalData.newPinCode.getString(context)}';
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Смена PIN-кода"),
+        title: Text(LocalData.changePinCode.getString(context)),
         centerTitle: true,
       ),
       body: SafeArea(

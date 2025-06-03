@@ -203,14 +203,6 @@ class _AccountPageState extends State<AccountPage> {
                     );
                   },
                 ),
-                SizedBox(height: 5),
-                SettingsTile(
-                  leadingIcon: Icons.lock,
-                  localizationKey: LocalData.password.getString(context),
-                  onTap: () {
-                    // Navigate to change password
-                  },
-                ),
                 SizedBox(height: 50),
                 Padding(
                   padding: const EdgeInsets.only(bottom: 8.0, top: 16.0),

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localization/flutter_localization.dart';
 import 'package:intl/intl.dart';
+import 'package:untitled1/localization/locales.dart';
 import '../../db/app_database_helper.dart';
 import '../../db/database_factory.dart';
 import '../../models/TransactionModel.dart';
@@ -66,7 +68,7 @@ class _SimpleTransactionListPageState extends State<SimpleTransactionListPage> {
           child: TextField(
             onChanged: _filterTransactions,
             decoration: InputDecoration(
-              hintText: 'Поиск по названию или категории...',
+              hintText: LocalData.search.getString(context),
               prefixIcon: const Icon(Icons.search),
               filled: true,
               fillColor: Colors.grey[100],

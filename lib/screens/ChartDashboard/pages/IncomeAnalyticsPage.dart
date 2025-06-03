@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localization/flutter_localization.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:intl/intl.dart';
+import 'package:untitled1/localization/locales.dart';
 import '../../../db/database_factory.dart';
 
 class IncomeAnalyticsPage extends StatefulWidget {
@@ -82,7 +84,7 @@ class _IncomeAnalyticsPageState extends State<IncomeAnalyticsPage> {
       ..sort((a, b) => b.amount.compareTo(a.amount));
 
     return Scaffold(
-      appBar: AppBar(title: const Text("Доходы")),
+      appBar: AppBar(title: Text(LocalData.expenses.getString(context))),
       body: Column(
         children: [
           Padding(
@@ -91,7 +93,6 @@ class _IncomeAnalyticsPageState extends State<IncomeAnalyticsPage> {
               children: [
                 const Icon(Icons.wallet),
                 const SizedBox(width: 8),
-                const Text('Все счета', style: TextStyle(fontSize: 16)),
                 const Spacer(),
                 InkWell(
                   onTap: _selectDateRange,
@@ -110,13 +111,13 @@ class _IncomeAnalyticsPageState extends State<IncomeAnalyticsPage> {
               ],
             ),
           ),
-          const Padding(
+          Padding(
             padding: EdgeInsets.symmetric(horizontal: 20),
             child: Row(
               children: [
-                Text('Доходы', style: TextStyle(fontWeight: FontWeight.bold)),
+                Text(LocalData.income.getString(context), style: TextStyle(fontWeight: FontWeight.bold)),
                 SizedBox(width: 20),
-                Text('Расходы', style: TextStyle(color: Colors.grey)),
+                Text(LocalData.expenses.getString(context), style: TextStyle(color: Colors.grey)),
               ],
             ),
           ),
@@ -138,7 +139,6 @@ class _IncomeAnalyticsPageState extends State<IncomeAnalyticsPage> {
                     children: [
                       Text('${totalIncome.toStringAsFixed(0)} ₸',
                           style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
-                      const Text('Больше среднего на 0 ₸', style: TextStyle(fontSize: 12)),
                     ],
                   ),
                 )
