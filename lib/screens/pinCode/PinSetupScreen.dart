@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localization/flutter_localization.dart';
+import 'package:untitled1/localization/locales.dart';
 import '../../models/PinService.dart';
 
 class PinSetupScreen extends StatefulWidget {
@@ -113,7 +115,7 @@ class _PinSetupScreenState extends State<PinSetupScreen> {
           children: [
             const SizedBox(height: 40),
             Text(
-              "Создайте PIN-код",
+              LocalData.newPinCode.getString(context),
               style: Theme.of(context).textTheme.titleLarge,
             ),
             const SizedBox(height: 20),

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localization/flutter_localization.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:intl/intl.dart';
+import 'package:untitled1/localization/locales.dart';
 import '../../../db/database_factory.dart';
 
 
@@ -83,7 +85,7 @@ class _ExpenseAnalyticsPageState extends State<ExpenseAnalyticsPage> {
       ..sort((a, b) => b.amount.compareTo(a.amount));
 
     return Scaffold(
-      appBar: AppBar(title: const Text("Аналитика")),
+      appBar: AppBar(title: Text(LocalData.statics.getString(context))),
       body: Column(
         children: [
           Padding(
@@ -92,7 +94,6 @@ class _ExpenseAnalyticsPageState extends State<ExpenseAnalyticsPage> {
               children: [
                 const Icon(Icons.wallet),
                 const SizedBox(width: 8),
-                const Text('Все счета', style: TextStyle(fontSize: 16)),
                 const Spacer(),
                 InkWell(
                   onTap: _selectDateRange,
@@ -111,13 +112,13 @@ class _ExpenseAnalyticsPageState extends State<ExpenseAnalyticsPage> {
               ],
             ),
           ),
-          const Padding(
+          Padding(
             padding: EdgeInsets.symmetric(horizontal: 20),
             child: Row(
               children: [
-                Text('Расходы', style: TextStyle(fontWeight: FontWeight.bold)),
+                Text(LocalData.expenses.getString(context), style: TextStyle(fontWeight: FontWeight.bold)),
                 SizedBox(width: 20),
-                Text('Доходы', style: TextStyle(color: Colors.grey)),
+                Text(LocalData.income.getString(context), style: TextStyle(color: Colors.grey)),
               ],
             ),
           ),
@@ -139,7 +140,6 @@ class _ExpenseAnalyticsPageState extends State<ExpenseAnalyticsPage> {
                     children: [
                       Text('${totalExpense.toStringAsFixed(0)} ₸',
                           style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
-                      const Text('Больше среднего на 0 ₸', style: TextStyle(fontSize: 12)),
                     ],
                   ),
                 )
