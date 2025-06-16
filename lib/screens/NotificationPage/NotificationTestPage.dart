@@ -1,22 +1,10 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:flutter_localization/flutter_localization.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-void main() {
-  runApp(const MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: NotificationTestPage(),
-    );
-  }
-}
+import '../../localization/locales.dart';
 
 class NotificationTestPage extends StatefulWidget {
   const NotificationTestPage({Key? key}) : super(key: key);
@@ -29,6 +17,8 @@ class _NotificationTestPageState extends State<NotificationTestPage> {
   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
   FlutterLocalNotificationsPlugin();
 
+  bool _notificationEnabled = false;
+
   @override
   void initState() {
     super.initState();
@@ -37,13 +27,12 @@ class _NotificationTestPageState extends State<NotificationTestPage> {
 
   Future<void> requestPermissionAndInit() async {
     if (Platform.isAndroid) {
-      var status = await Permission.notification.status;
-      print('Notification permission status: $status');
+      final status = await Permission.notification.status;
       if (!status.isGranted) {
-        var result = await Permission.notification.request();
-        print('Permission request result: $result');
+        await Permission.notification.request();
       }
     }
+
     await initializeNotifications();
   }
 
@@ -51,7 +40,8 @@ class _NotificationTestPageState extends State<NotificationTestPage> {
     const AndroidInitializationSettings initializationSettingsAndroid =
     AndroidInitializationSettings('@mipmap/ic_launcher');
 
-    const InitializationSettings initializationSettings = InitializationSettings(
+    const InitializationSettings initializationSettings =
+    InitializationSettings(
       android: initializationSettingsAndroid,
     );
 
@@ -93,13 +83,27 @@ class _NotificationTestPageState extends State<NotificationTestPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Тест уведомлений')),
-      body: Center(
-        child: ElevatedButton(
-          onPressed: showNotification,
-          child: const Text('Показать уведомление'),
+      appBar: AppBar(title: Text(LocalData.notification.getString(context))),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(LocalData.notificationTitle.getString(context)),
+            Switch(
+              value: _notificationEnabled,
+              onChanged: (bool value) {
+                setState(() {
+                  _notificationEnabled = value;
+                });
+                if (value) {
+                  showNotification();
+                }
+              },
+            ),
+          ],
         ),
-      ),
+      )
     );
   }
 }

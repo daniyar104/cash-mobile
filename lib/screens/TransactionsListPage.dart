@@ -81,12 +81,6 @@ class _TransactionsListPageState extends State<TransactionsListPage> {
                               color: Colors.black),
                         ),
                         const Spacer(),
-                        CircleAvatar(
-                          radius: 20,
-                          backgroundImage: _avatarImage != null
-                              ? FileImage(_avatarImage!)
-                              : null,
-                        ),
                       ],
                     ),
                   ),
