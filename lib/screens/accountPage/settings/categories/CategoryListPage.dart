@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localization/flutter_localization.dart';
 
 import '../../../../localization/locales.dart';
 import '../../../../utils/categories.dart';
@@ -16,7 +17,7 @@ class _CategoryListPageState extends State<CategoryListPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Categories'),
+        title: Text(LocalData.categories.getString(context)),
       ),
       body: ListView.builder(
           itemCount: categoriesList.length,

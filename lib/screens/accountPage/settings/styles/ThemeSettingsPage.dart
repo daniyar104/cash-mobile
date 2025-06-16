@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localization/flutter_localization.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../../../localization/locales.dart';
 
 class ThemeSettingsPage extends StatefulWidget {
   final ThemeMode currentThemeMode;
@@ -58,11 +61,11 @@ class _ThemeSettingsPageState extends State<ThemeSettingsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Настройки темы')),
+      appBar: AppBar(title: Text(LocalData.theme.getString(context))),
       body: Column(
         children: [
           SwitchListTile(
-            title: const Text('Тёмная тема'),
+            title:  Text(LocalData.themeColor.getString(context)),
             value: isDark,
             onChanged: (val) {
               setState(() {
@@ -72,9 +75,9 @@ class _ThemeSettingsPageState extends State<ThemeSettingsPage> {
             },
           ),
           const Divider(),
-          const Padding(
+          Padding(
             padding: EdgeInsets.all(16.0),
-            child: Text("Выберите цвет темы:", style: TextStyle(fontSize: 16)),
+            child: Text(LocalData.selectColor.getString(context), style: TextStyle(fontSize: 16)),
           ),
           Wrap(
             spacing: 10,

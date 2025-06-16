@@ -99,10 +99,10 @@ class _AccountPageState extends State<AccountPage> {
                   leadingIcon: Icons.person,
                   localizationKey: name,
                   onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => SettingsPage()),
-                    );
+                    // Navigator.push(
+                    //   context,
+                    //   MaterialPageRoute(builder: (context) => SettingsPage()),
+                    // );
                   },
                 ),
                 SizedBox(height: 5),

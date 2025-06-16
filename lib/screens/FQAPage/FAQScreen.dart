@@ -1,48 +1,48 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localization/flutter_localization.dart';
+import 'package:path/path.dart';
 
 import '../../localization/locales.dart';
 
 class FAQScreen extends StatelessWidget {
-  const FAQScreen({super.key});
-
-  final List<Map<String, String>> faqList = const [
-    {
-      "question": "Как добавить доход или расход?",
-      "answer": "Нажмите на кнопку ➕ на главном экране, выберите категорию, введите сумму и описание. Доходы и расходы будут отображаться в общем балансе."
-    },
-    {
-      "question": "Можно ли редактировать или удалить запись?",
-      "answer": "Да. В списке транзакций смахните запись влево для удаления, либо нажмите на неё для редактирования."
-    },
-    {
-      "question": "Что такое категории расходов?",
-      "answer": "Категории помогают отслеживать, куда уходят деньги. Примеры: 'Еда', 'Транспорт', 'Развлечения'. Вы можете добавлять и редактировать категории."
-    },
-    {
-      "question": "Как работает статистика?",
-      "answer": "Раздел статистики показывает графики и аналитику по вашим доходам и расходам — по дням, неделям и месяцам. Это помогает находить лишние траты."
-    },
-    {
-      "question": "Мои данные в безопасности?",
-      "answer": "Да. Все данные хранятся локально на вашем устройстве. Вы также можете включить PIN-код или биометрию для защиты доступа."
-    },
-    {
-      "question": "Как сделать резервную копию?",
-      "answer": "В разделе 'Настройки' → 'Резервное копирование' вы можете экспортировать данные или настроить автосохранение в облако (в будущем)."
-    },
-    {
-      "question": "Как переключаться между темами?",
-      "answer": "Откройте настройки → Внешний вид и выберите между светлой и тёмной темой. Вы также можете включить авто-настройку по времени суток."
-    },
-    {
-      "question": "Приложение платное?",
-      "answer": "Нет, базовая версия бесплатна навсегда. В будущем может появиться PRO-версия с дополнительными функциями, такими как облачное хранилище или продвинутая аналитика."
-    },
-  ];
+  FAQScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final List<Map<String, String>> faqList = [
+      {
+        "question": LocalData.question1.getString(context),
+        "answer": LocalData.answer1.getString(context),
+      },
+      {
+        "question": LocalData.question2.getString(context),
+        "answer": LocalData.answer2.getString(context),
+      },
+      {
+        "question": LocalData.question3.getString(context),
+        "answer": LocalData.answer3.getString(context),
+      },
+      {
+        "question": LocalData.question4.getString(context),
+        "answer": LocalData.answer4.getString(context),
+      },
+      {
+        "question": LocalData.question5.getString(context),
+        "answer": LocalData.answer5.getString(context),
+      },
+      {
+        "question": LocalData.question6.getString(context),
+        "answer": LocalData.answer6.getString(context),
+      },
+      {
+        "question": LocalData.question7.getString(context),
+        "answer": LocalData.answer7.getString(context),
+      },
+      {
+        "question": LocalData.question8.getString(context),
+        "answer": LocalData.answer8.getString(context),
+      },
+    ];
     return Scaffold(
       appBar: AppBar(
         title: Text(LocalData.faq.getString(context)),
