@@ -91,12 +91,14 @@ class DateTimeCategoryRow extends StatelessWidget {
 
     final formattedDate = DateFormat('d MMM').format(selectedDate);
 
-    if (isToday) {
-      return '${LocalData.today.getString(context)}, $formattedDate'; // Только дата, например "20 Apr"
-    } else {
-      final dayOfWeek = _getLocalizedDayOfWeek(selectedDate, context);
-      return '$dayOfWeek, $formattedDate'; // Например, "Пятница, 19 Apr"
-    }
+    // if (isToday) {
+    //   return '${LocalData.today.getString(context)}, $formattedDate'; // Только дата, например "20 Apr"
+    // } else {
+    //   final dayOfWeek = _getLocalizedDayOfWeek(selectedDate, context);
+    //   return '$dayOfWeek, $formattedDate'; // Например, "Пятница, 19 Apr"
+    // }
+    final dayOfWeek = _getLocalizedDayOfWeek(selectedDate, context);
+    return '$dayOfWeek, $formattedDate'; // Например, "Пятница, 19 Apr"
   }
   @override
   Widget build(BuildContext context) {

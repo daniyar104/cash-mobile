@@ -26,7 +26,7 @@ class DataBaseHelper implements AppDatabaseHelper {
       version: 1,
       onCreate: (db, version) async {
         await _createDatabase(db);
-        await _insertFakeData(db);
+        // await _insertFakeData(db);
       },
     );
   }

@@ -151,18 +151,6 @@ import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
                   ),
                 ),
                 SizedBox(height: 10),
-                TextButton(
-                  onPressed: () {
-                    // Handle forgot password
-                  },
-                  child: Text(
-                    LocalData.fogotPassword.getString(context),
-                    style: TextStyle(
-                      color: Theme.of(context).colorScheme.primary,
-                      fontSize: 16,
-                    ),
-                  ),
-                ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
